@@ -1,0 +1,17 @@
+{
+	"name": "alchemy-form",
+	"description": "Form plugin for Alchemy",
+	"version": "0.1.0-alpha",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/skerit/alchemy-form.git"
+	},
+	"peerDependencies": {
+		"alchemymvc": "~1.0.5"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": "~8.9.0"
+	},
+	"private": true
+}
