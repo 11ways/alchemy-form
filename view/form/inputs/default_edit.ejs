@@ -1,0 +1,8 @@
+<input
+	type="text"
+	value="<%= String(value || '').encodeHTML() %>"
+	name="<%= path %>"
+	<% if (form_id) { %>
+		form="<%= form_id %>"
+	<% } %>
+>

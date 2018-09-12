@@ -1,0 +1,13 @@
+<input
+	type="checkbox"
+	name="<%= path %>"
+	data-value-property="checked"
+
+	<% if (form_id) { %>
+		form="<%= form_id %>"
+	<% } %>
+
+	<% if (value) { %>
+	checked
+	<% } %>
+>

@@ -1,0 +1,7 @@
+<button
+	type="submit"
+	name="<%= path %>"
+	<% if (form_id) { %>
+		form="<%= form_id %>"
+	<% } %>
+><%= options.content || options.title || options.placeholder %></button>
