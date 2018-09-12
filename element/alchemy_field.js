@@ -193,8 +193,6 @@ AlField.setMethod(function setFieldConfig(field_config, options) {
 
 	this.field_config = field_config;
 
-	console.log('Field config:', field_config, options);
-
 	// Clear out any children
 	this.childNodes.length = 0;
 

@@ -46,7 +46,6 @@ AlFEntry.setProperty(function view() {
  * @version  0.1.0
  */
 AlFEntry.setAssignedProperty('field', null, function setField(field) {
-	console.log('Setting field:', field, 'on', this);
 	this.input = field.input(field.options, this.index);
 });
 

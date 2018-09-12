@@ -281,10 +281,12 @@ AlInput.setMethod(function makeContent(callback) {
 	};
 
 	variables = {
-		options : this.options,
-		value   : this.original_value,
-		form_id : this.form.options.id,
-		path    : this.path
+		al_input : this,
+		field    : this.field,
+		options  : this.options,
+		value    : this.original_value,
+		form_id  : this.form.options.id,
+		path     : this.path
 	};
 
 	placeholder = this.view.print_element(this.getViewName(), variables, options);

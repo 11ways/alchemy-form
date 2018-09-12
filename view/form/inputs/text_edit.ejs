@@ -1,0 +1,6 @@
+<textarea
+	name="<%= path %>"
+	<% if (form_id) { %>
+		form="<%= form_id %>"
+	<% } %>
+><%= String(value || '').encodeHTML() %></textarea>

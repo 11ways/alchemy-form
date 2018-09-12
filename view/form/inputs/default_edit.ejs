@@ -1,5 +1,16 @@
-<input
-	type="text"
+<%
+type = 'text';
+
+if (field && field.field_config && field.field_config.format) {
+	switch (field.field_config.format) {
+		case 'email':
+		case 'tel':
+			type = field.field_config.format;
+			break;
+	}
+}
+%><input
+	type="<%= type %>"
 	value="<%= String(value || '').encodeHTML() %>"
 	name="<%= path %>"
 	<% if (form_id) { %>
