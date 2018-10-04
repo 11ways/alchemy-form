@@ -63,6 +63,21 @@ AlFEntry.setMethod(function getData() {
 });
 
 /**
+ * Validate this entry
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlFEntry.setMethod(function validate() {
+	if (this.input) {
+		return this.input.validate();
+	}
+
+	return true;
+});
+
+/**
  * Get the viewname
  *
  * @author   Jelle De Loecker <jelle@develry.be>

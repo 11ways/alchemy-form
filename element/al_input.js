@@ -148,6 +148,28 @@ AlInput.setMethod(function getData() {
 });
 
 /**
+ * Validate this value
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInput.setMethod(function validate() {
+
+	if (!this.field_config) {
+		return true;
+	}
+
+	let data = this.getData();
+
+	if (this.field_config.required && (!data && data !== 0 && data !== false)) {
+		return false;
+	}
+
+	return true;
+});
+
+/**
  * Wait for the given element
  *
  * @author   Jelle De Loecker <jelle@develry.be>

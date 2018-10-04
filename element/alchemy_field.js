@@ -171,8 +171,6 @@ AlField.setMethod(function input(options, index) {
 			element.original_value = original_value;
 		}
 
-		console.log('Index', index, 'value:', element.original_value, 'isarr:', this.field_config.array)
-
 		element.value = element.original_value;
 	}
 
@@ -297,6 +295,34 @@ AlField.setMethod(function getData() {
 		}
 	} else if (this.field_entries && this.field_entries.length) {
 		result = this.field_entries[0].getData();
+	}
+
+	return result;
+});
+
+/**
+ * Validate this field
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlField.setMethod(function validate() {
+
+	var is_array = this.field_config.array,
+	    result,
+	    entry,
+	    i;
+
+	if (is_array) {
+		console.log('@TODO: implement validating array fields');
+		result = [];
+
+		for (i = 0; i < this.field_entries.length; i++) {
+			result[i] = this.field_entries[i].validate();
+		}
+	} else if (this.field_entries && this.field_entries.length) {
+		result = this.field_entries[0].validate();
 	}
 
 	return result;

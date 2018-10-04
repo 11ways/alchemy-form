@@ -248,6 +248,11 @@ Form.setMethod(function submit(callback) {
 		callback = Function.thrower;
 	}
 
+	if (!this.validate()) {
+		alert('Gelieve het formulier correct in the vullen');
+		return callback(new Error('Unable to validate form'));
+	}
+
 	// If no url is given, use the current url
 	if (this.url) {
 		url = this.url;
@@ -261,13 +266,9 @@ Form.setMethod(function submit(callback) {
 	// Store the form data under the record name
 	data[this.document.$model.name] = this.getData();
 
-	console.log('Form data:', data);
-
 	// Construct the options object
 	options = {};
 	options[this.method || 'post'] = {data: data};
-
-	console.log('Opening url', url, 'with options', options);
 
 	hawkejs.scene.openUrl(url, options, function done(err, result) {
 
@@ -277,6 +278,41 @@ Form.setMethod(function submit(callback) {
 
 		callback(null, result);
 	});
+});
+
+/**
+ * Attempt to validate the form
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Form.setMethod(function validate() {
+
+	var that = this,
+	    result = {},
+	    has_error = false;
+
+	this.inputs.forEach(function eachInput(input) {
+
+		var value;
+
+		if (!input.path) {
+			return;
+		}
+
+		value = input.validate();
+
+		if (!value) {
+			has_error = true;
+		}
+	});
+
+	if (has_error) {
+		return false;
+	}
+
+	return result;
 });
 
 /**

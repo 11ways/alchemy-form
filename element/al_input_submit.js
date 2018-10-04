@@ -21,8 +21,6 @@ Submit.setMethod(function introduced() {
 	var that = this,
 	    button = this.querySelector('button');
 
-	console.log('Introduced?', this, button);
-
 	button.addEventListener('click', function onClick(e) {
 		e.preventDefault();
 		that.form.submit();
