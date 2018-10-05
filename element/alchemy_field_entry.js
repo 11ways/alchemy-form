@@ -5,38 +5,19 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var AlFEntry = Function.inherits('Alchemy.Element.AlInput', function AlchemyFieldEntry() {
+var AlFEntry = Function.inherits('Alchemy.Element.AlFormBase', function AlchemyFieldEntry() {
 	return AlchemyFieldEntry.super.call(this);
 });
 
 /**
- * The actual input
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlFEntry.setAssignedProperty('input');
-
-/**
- * The index of this entry
+ * The index of this entry in an arrayable-field.
+ * Should be 0 when not in an arrayable field
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
 AlFEntry.setAssignedProperty('index');
-
-/**
- * A reference to the view
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlFEntry.setProperty(function view() {
-	return this.field.view;
-});
 
 /**
  * The field this belongs to
@@ -60,6 +41,24 @@ AlFEntry.setMethod(function getData() {
 	if (this.input) {
 		return this.input.getData();
 	}
+});
+
+/**
+ * Set an error message
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String|Object}   message
+ */
+AlFEntry.setMethod(function setError(message) {
+
+	if (!this.input) {
+		throw new Error('Unable to find input element');
+	}
+
+	this.input.setError(message);
 });
 
 /**

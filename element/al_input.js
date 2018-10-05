@@ -5,45 +5,9 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var AlInput = Function.inherits('Alchemy.Element', function AlInput() {
+var AlInput = Function.inherits('Alchemy.Element.AlFormBase', function AlInput() {
 	AlInput.super.call(this);
 });
-
-/**
- * The options property (will be stored in assigned_data)
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlInput.setAssignedProperty('options', function get_options(options) {
-
-	// Make sure "options" is an object
-	if (!options) {
-		options = {};
-		this.assigned_data.options = options;
-	}
-
-	return options;
-});
-
-/**
- * The form it belongs to
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlInput.setAssignedProperty('form');
-
-/**
- * The optional field this input belongs to
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlInput.setAssignedProperty('field');
 
 /**
  * The original value of this field
@@ -54,17 +18,7 @@ AlInput.setAssignedProperty('field');
  */
 AlInput.setAssignedProperty('original_value');
 AlInput.setAssignedProperty('value');
-
-/**
- * The view
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlInput.setProperty(function view() {
-	return this.form.view || hawkejs.scene.generalView;
-});
+AlInput.setAssignedProperty('al_validation');
 
 /**
  * The path of this field
@@ -106,6 +60,24 @@ AlInput.setProperty(function model_field() {
 	result = this.form.getModelField(this.options.name);
 
 	return result;
+});
+
+/**
+ * Set an error message
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String|Object}   message
+ */
+AlInput.setMethod(function setError(message) {
+
+	if (!this.al_validation) {
+		throw new Error('Unable to find linked validation element');
+	}
+
+	this.al_validation.setError(message);
 });
 
 /**
@@ -246,44 +218,6 @@ AlInput.setMethod(function introduced() {
 });
 
 /**
- * Get the content for hawkejs
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlInput.setMethod(function getContent(callback) {
-
-	var that = this;
-
-	if (!callback) {
-		callback = Function.thrower;
-	}
-
-	if (!this.get_content_pledge) {
-		this.get_content_pledge = new Blast.Classes.Pledge();
-	}
-
-	this.makeContent(function madeContent(err) {
-
-		if (err) {
-			callback(err);
-			that.get_content_pledge.reject(err);
-			return;
-		}
-
-		callback(null);
-		that.get_content_pledge.resolve();
-	});
-
-	if (this.waiting_for_pledge) {
-		while (this.waiting_for_pledge.length) {
-			this.get_content_pledge.handleCallback(this.waiting_for_pledge.pop());
-		}
-	}
-});
-
-/**
  * Make the content, should only be called by getContent
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -295,6 +229,7 @@ AlInput.setMethod(function makeContent(callback) {
 	var that = this,
 	    placeholder,
 	    variables,
+	    view_name,
 	    options;
 
 	options = {
@@ -311,7 +246,9 @@ AlInput.setMethod(function makeContent(callback) {
 		path     : this.path
 	};
 
-	placeholder = this.view.print_element(this.getViewName(), variables, options);
+	view_name = this.getViewName();
+
+	placeholder = this.view.print_element(view_name, variables, options);
 
 	placeholder.getContent(function gotResult(err, html) {
 

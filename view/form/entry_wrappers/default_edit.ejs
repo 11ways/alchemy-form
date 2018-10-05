@@ -4,3 +4,9 @@
 		<button class="remove-entry">x</button>
 	<% } %>
 </div>
+<%
+al_validation = create_element('al-validation');
+al_validation.field = field;
+al_validation.input = input;
+print(al_validation);
+%>

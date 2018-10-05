@@ -5,7 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var AlField = Function.inherits('Alchemy.Element.AlInput', function AlchemyField() {
+var AlField = Function.inherits('Alchemy.Element.AlFormBase', function AlchemyField() {
 	return AlchemyField.super.call(this);
 });
 
@@ -60,24 +60,6 @@ AlField.setAssignedProperty('field_config');
  * @version  0.1.0
  */
 AlField.setAssignedProperty('field_entries');
-
-/**
- * Field display options
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setAssignedProperty('options');
-
-/**
- * The form this field belongs to
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setAssignedProperty('form');
 
 /**
  * A reference to the document
@@ -189,7 +171,7 @@ AlField.setMethod(function setFieldConfig(field_config, options) {
 	var default_options = {},
 	    type;
 
-	this.field_config = field_config;
+	this.field_config = Object.assign({}, field_config);
 
 	// Clear out any children
 	this.childNodes.length = 0;

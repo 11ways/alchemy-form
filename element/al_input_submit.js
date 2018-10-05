@@ -23,6 +23,13 @@ Submit.setMethod(function introduced() {
 
 	button.addEventListener('click', function onClick(e) {
 		e.preventDefault();
-		that.form.submit();
+
+		that.form.submit(function done(err) {
+
+			if (err) {
+				return alert('Er liep iets mis:\n' + (err.message || err));
+			}
+
+		});
 	});
 });
