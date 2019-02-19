@@ -19,7 +19,47 @@ var AlValidation = Function.inherits('Alchemy.Element.AlFormBase', function AlVa
 AlValidation.setProperty('getContent', null);
 
 /**
- * Listen for field assignments
+ * Add an error message
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String|Object}   message
+ */
+AlValidation.setMethod(function addError(message) {
+
+	if (!this.innerHTML.length) {
+		return this.setError(message);
+	}
+
+	if (this.innerHTML.indexOf('<ul') == -1) {
+		let ul = this.createElement('ul'),
+		    li = this.createElement('li');
+
+		ul.appendChild(li);
+		li.innerHTML = this.innerHTML;
+		this.innerHTML = '';
+		this.append(ul);
+	} else {
+		let li = this.createElement('li'),
+		    ul = this.children[0];
+
+		ul.appendChild(li);
+		li.innerHTML = message;
+	}
+
+	if (!this.field || !this.form) {
+		return;
+	}
+
+	this.form.validation_elements.forEach(function eachElement(element) {
+		element.addError(message);
+	});
+});
+
+/**
+ * Set an error message
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
@@ -28,7 +68,18 @@ AlValidation.setProperty('getContent', null);
  * @param    {String|Object}   message
  */
 AlValidation.setMethod(function setError(message) {
-	this.innerText = message;
+
+	var form = this.form || (this.field && this.field.form);
+
+	this.innerHTML = message;
+
+	if (!form) {
+		return;
+	}
+
+	form.validation_elements.forEach(function eachElement(element) {
+		element.addError(message);
+	});
 });
 
 /**

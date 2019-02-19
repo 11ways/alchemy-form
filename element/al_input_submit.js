@@ -26,7 +26,7 @@ Submit.setMethod(function introduced() {
 
 		that.form.submit(function done(err) {
 
-			if (err) {
+			if (err && err._code != 'ERR_VAL') {
 				return alert('Er liep iets mis:\n' + (err.message || err));
 			}
 

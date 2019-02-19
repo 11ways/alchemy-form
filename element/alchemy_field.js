@@ -9,6 +9,8 @@ var AlField = Function.inherits('Alchemy.Element.AlFormBase', function AlchemyFi
 	return AlchemyField.super.call(this);
 });
 
+AlField.setAssignedProperty('al_validation');
+
 /**
  * A reference to the view
  *

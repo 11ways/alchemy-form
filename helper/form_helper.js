@@ -39,6 +39,9 @@ var Form = Function.inherits('Informer', function FormRecord(view, options) {
 	// The inputs
 	this.inputs = [];
 
+	// The validation elements
+	this.validation_elements = [];
+
 	if (model_name) {
 		this.setDocument(model_name);
 	}
@@ -99,8 +102,8 @@ Form.setProperty(function url() {
  * Revive this object
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    1.1.0
- * @version  1.1.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setStatic(function unDry(obj, force) {
 
@@ -108,6 +111,7 @@ Form.setStatic(function unDry(obj, force) {
 
 	result.inputs = obj.inputs || [];
 	result.document = obj.document;
+	result.validation_elements = obj.validation_elements || [];
 
 	return result;
 });
@@ -116,15 +120,16 @@ Form.setStatic(function unDry(obj, force) {
  * Dry this object
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    1.1.0
- * @version  1.1.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(function toDry() {
 	return {
 		value: {
 			options   : this.options,
 			inputs    : this.inputs,
-			document  : this.document
+			document  : this.document,
+			validation_elements : this.validation_elements
 		}
 	};
 });
@@ -249,8 +254,10 @@ Form.setMethod(function submit(callback) {
 	}
 
 	if (!this.validate()) {
-		alert('Gelieve het formulier correct in the vullen');
-		return callback(new Error('Unable to validate form'));
+		let err = new Error('Unable to validate form');
+		err._code = 'ERR_VAL';
+
+		return callback(err);
 	}
 
 	// If no url is given, use the current url
@@ -264,7 +271,7 @@ Form.setMethod(function submit(callback) {
 	data = {};
 
 	// Store the form data under the record name
-	data[this.document.$model.name] = this.getData();
+	data[this.document.$model_name] = this.getData();
 
 	// Construct the options object
 	options = {};
@@ -292,6 +299,10 @@ Form.setMethod(function validate() {
 	var that = this,
 	    result = {},
 	    has_error = false;
+
+	this.validation_elements.forEach(function eachElement(element) {
+		element.innerHTML = '';
+	});
 
 	this.inputs.forEach(function eachInput(input) {
 
@@ -428,7 +439,43 @@ Form.setMethod(function input(options) {
 });
 
 /**
- * Print a field
+ * Return the field title with an asterix if it's required
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String}   name
+ *
+ * @return   {String}
+ */
+Form.setMethod(function fieldTitle(name) {
+
+	var element,
+	    config,
+	    result = '';
+
+	if (typeof name == 'object') {
+		options = name;
+		name = options.name;
+	}
+
+	// Get the field configuration
+	config = this.getModelField(name);
+
+	if (config) {
+		result = config.title || config.name;
+
+		if (config.required) {
+			result += '*';
+		}
+	}
+
+	return result;
+});
+
+/**
+ * Create a field element
  * (this can contain multiple inputs)
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
@@ -437,6 +484,8 @@ Form.setMethod(function input(options) {
  *
  * @param    {String}   name
  * @param    {Object}   options
+ *
+ * @return   <alchemy-field>
  */
 Form.setMethod(function field(name, options) {
 
@@ -465,6 +514,67 @@ Form.setMethod(function field(name, options) {
 
 	// Add it as an input
 	this.inputs.push(element);
+
+	return element;
+});
+
+/**
+ * Get an existing field by name
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String}   name
+ *
+ * @return   <alchemy-field>
+ */
+Form.setMethod(function getFieldByName(name) {
+
+	var input,
+	    i;
+
+	for (i = 0; i < this.inputs.length; i++) {
+		input = this.inputs[i];
+
+		if (input.options.name == name) {
+			return input;
+		}
+	}
+
+});
+
+/**
+ * Create a validation element
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String}   field
+ */
+Form.setMethod(function validation(field) {
+
+	var element = this.view.create_element('al-validation'),
+	    field;
+
+	// Set the form
+	element.form = this;
+
+	if (arguments.length) {
+		// This is actually not needed: most views include an al-validation field
+		field = this.getFieldByName(field);
+
+		if (!field) {
+			throw new Error('Unable to create al-validation for field "' + field + '"');
+		}
+
+		field.al_validation = field;
+		element.field = field;
+
+	} else {
+		this.validation_elements.push(element);
+	}
 
 	return element;
 });

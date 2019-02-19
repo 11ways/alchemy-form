@@ -43,6 +43,21 @@ AlInput.setProperty(function action() {
 });
 
 /**
+ * The field config
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @type     {Object}
+ */
+AlInput.setProperty(function field_config() {
+	if (this.field) {
+		return this.field.field_config;
+	}
+});
+
+/**
  * The model field, if any
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -63,6 +78,30 @@ AlInput.setProperty(function model_field() {
 });
 
 /**
+ * Add an error message
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {String|Object}   message
+ */
+AlInput.setMethod(function addError(message) {
+
+	var element = this.al_validation;
+
+	if (!element && this.field) {
+		element = this.field.al_validation;
+	}
+
+	if (!element) {
+		throw new Error('Unable to find linked al-validation element for "' + this.options.name + '" field');
+	}
+
+	element.addError(message);
+});
+
+/**
  * Set an error message
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -73,11 +112,17 @@ AlInput.setProperty(function model_field() {
  */
 AlInput.setMethod(function setError(message) {
 
-	if (!this.al_validation) {
-		throw new Error('Unable to find linked validation element');
+	var element = this.al_validation;
+
+	if (!element && this.field) {
+		element = this.field.al_validation;
 	}
 
-	this.al_validation.setError(message);
+	if (!element) {
+		throw new Error('Unable to find linked al-validation element for "' + this.options.name + '" field');
+	}
+
+	element.setError(message);
 });
 
 /**
@@ -132,13 +177,46 @@ AlInput.setMethod(function validate() {
 		return true;
 	}
 
-	let data = this.getData();
+	let data = this.getData(),
+	    result = true;
 
-	if (this.field_config.required && (!data && data !== 0 && data !== false)) {
-		return false;
+	let element = this.al_validation;
+
+	if (!element && this.field) {
+		element = this.field.al_validation;
 	}
 
-	return true;
+	if (element) {
+		element.innerHTML = '';
+	}
+
+	if (this.field_config.required && (!data && data !== 0 && data !== false)) {
+		let msg = alchemy.__('default', 'field.{title}.required', {
+			title : this.field_config.title || this.field_config.name
+		});
+
+		this.addError(msg);
+		result = false;
+	}
+
+	if (result && this.field_config.format) {
+		let format = this.field_config.format;
+
+		if (format == 'email') {
+			let pass = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.exec(data);
+
+			if (!pass) {
+				let msg = alchemy.__('default', 'field.{title}.fails.email', {
+					title : this.field_config.title || this.field_config.name
+				});
+
+				result = false;
+				this.addError(msg);
+			}
+		}
+	}
+
+	return result;
 });
 
 /**
