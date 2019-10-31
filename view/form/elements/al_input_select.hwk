@@ -1,0 +1,11 @@
+<div class="value-wrapper">
+	<input
+		type="text"
+		class="type-area"
+		autocomplete="off"
+	>
+</div>
+<div class="dropdown">
+	<div class="dropdown-content"></div>
+	<div class="dropdown-pager js-he-ais-pager"></div>
+</div>

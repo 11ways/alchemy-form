@@ -8,25 +8,25 @@
 var AlInputSelect = Function.inherits('Alchemy.Element.AlInput', function AlInputSelect() {
 
 	AlInputSelect.super.call(this);
-
-	this.setAttribute('name', 'alinselect')
-
-	// The value wrapper
-	this.wrapper = this.grab('div', 'value-wrapper');
-
-	// The actual type input
-	this.type_area = this.grab.call(this.wrapper, 'input', 'type-area');
-
-	// The dropdown list
-	this.dropdown = this.grab('div', 'dropdown');
-
-	// The dropdown content
-	this.dropdown_content = this.grab.call(this.dropdown, 'div', 'dropdown-content');
-
-	// The pager helper
-	this.dropdown_pager = this.grab.call(this.dropdown, 'div', 'dropdown-pager');
-	this.dropdown_pager.classList.add('js-he-ais-pager');
 });
+
+/**
+ * The remote url attribute
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.setAttribute('src');
+
+/**
+ * The hawkejs template to use
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.setTemplateFile('form/elements/al_input_select');
 
 /**
  * The stylesheet to load for this element
@@ -87,7 +87,7 @@ AlInputSelect.setProperty(function current_option() {
 		for (i = this.wrapper.childNodes.length - 1; i >= 0; i--) {
 			entry = this.wrapper.childNodes[i];
 
-			if (!entry.dataset.value) {
+			if (!entry.dataset || !entry.dataset.value) {
 				continue;
 			}
 
@@ -167,6 +167,66 @@ AlInputSelect.setProperty(function loading_dropdown() {
 });
 
 /**
+ * The search value
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.setProperty(function search_value() {
+	var type_area = this.type_area;
+
+	if (type_area) {
+		return type_area.value;
+	}
+});
+
+/**
+ * Getter for the value-wrapper div
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.addElementGetter('wrapper', '.value-wrapper');
+
+/**
+ * Getter for the text input
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.addElementGetter('type_area', '.type-area');
+
+/**
+ * Getter for the dropdown wrapper
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.addElementGetter('dropdown', '.dropdown');
+
+/**
+ * Getter for the dropdown content
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.addElementGetter('dropdown_content', '.dropdown-content');
+
+/**
+ * Getter for the dropdown pager
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.addElementGetter('dropdown_pager', '.dropdown-pager');
+
+/**
  * This element has been inserted in the DOM
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -210,7 +270,9 @@ AlInputSelect.setMethod(function introduced() {
 		that.refitTypeArea(e);
 	});
 
-	this.type_area.addEventListener('keyup', function onKeyUp() {
+	this.type_area.addEventListener('keyup', function onKeyUp(e) {
+		var is_input = e.target === this;
+		that.onTypeAreKeyup(e, is_input);
 		that.refitTypeArea();
 	});
 
@@ -380,16 +442,26 @@ AlInputSelect.setMethod(function loadRemote(page) {
 	var that = this,
 	    url;
 
-	if (this.options.url) {
+	if (this.src) {
+		url = this.src;
+	} else if (this.options.url) {
 		url = this.options.url;
 	} else if (this.options.route) {
 		url = hawkejs.scene.helpers.Router.routeUrl(this.options.route);
 	}
 
+	if (!url) {
+		return;
+	}
+
 	this.loading_dropdown = true;
 
+	let data = {
+		search : this.search_value
+	};
+
 	// @TODO: add page & query stuff
-	hawkejs.scene.fetch(url, function gotResponse(err, data, xhr) {
+	hawkejs.scene.fetch(url, {get: data}, function gotResponse(err, data, xhr) {
 
 		var record,
 		    item,
@@ -400,10 +472,14 @@ AlInputSelect.setMethod(function loadRemote(page) {
 			throw err;
 		}
 
+		if (page == null) {
+			Hawkejs.removeChildren(that.dropdown_content);
+		}
+
 		for (i = 0; i < data.records.length; i++) {
 			record = data.records[i];
 
-			item = that._makeOption(record._id, record);
+			item = that._makeOption(record._id || record.id, record);
 			that.addToDropdown(item);
 		}
 
@@ -451,7 +527,7 @@ AlInputSelect.setMethod(function loadOptions(page) {
 		}
 
 		records.forEach(function eachRecord(record) {
-			var item = that._makeOption(record._id, record);
+			var item = that._makeOption(record._id || record.id, record);
 			that.addToDropdown(item);
 		});
 
@@ -607,7 +683,7 @@ AlInputSelect.setMethod(function _makeValueItem(type, value, data, callback) {
 
 		if (!view_name) {
 			if (data != null) {
-				result.textContent = data.title || data.name || data._id || data;
+				result.textContent = data.title || data.name || data._id || data.id || data;
 			} else {
 				result.textContent = value;
 			}
@@ -703,6 +779,10 @@ AlInputSelect.setMethod(function addToDropdown(item) {
 
 	for (i = 0; i < this.dropdown_content.children.length; i++) {
 		entry = this.dropdown_content.children[i];
+
+		if (!entry.dataset) {
+			continue;
+		}
 
 		// Don't add something twice
 		if (entry.dataset.value == item.dataset.value) {
@@ -913,21 +993,20 @@ AlInputSelect.setMethod(function advanceCaret(direction) {
  * @version  0.1.0
  */
 AlInputSelect.setMethod(function onTypeAreaKeydown(e, is_input) {
-	console.log('Typearea:', e.key, is_input, e);
 
 	switch (e.key) {
 		case 'ArrowUp':
 		case 'ArrowDown':
 			this.handleArrowKey(e);
-			break;
+			return;
 
 		case 'ArrowLeft':
 			this.advanceSelection(-1);
-			break;
+			return;
 
 		case 'ArrowRight':
 			this.advanceSelection(1);
-			break;
+			return;
 
 		case 'Backspace':
 			if (this.type_area.value.length) {
@@ -947,6 +1026,46 @@ AlInputSelect.setMethod(function onTypeAreaKeydown(e, is_input) {
 	}
 
 });
+
+/**
+ * The user is typing
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.setMethod(function onTypeAreKeyup(e, is_input) {
+
+	console.log('Typearea up:', e.key, is_input, e);
+
+	switch (e.key) {
+		case 'ArrowUp':
+		case 'ArrowDown':
+		case 'ArrowLeft':
+		case 'ArrowRight':
+			return;
+	}
+
+	if (this.search_value && this.search_value.length > 2) {
+		this.refreshRemote();
+	}
+});
+
+
+/**
+ * Refresh the remote
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlInputSelect.setMethod('refreshRemote', Fn.throttle(function refreshRemote() {
+	this.loadRemote();
+}, {
+	minimum_wait  : 350,
+	immediate     : false,
+	reset_on_call : true
+}));
 
 /**
  * An option has been clicked
