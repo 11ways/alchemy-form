@@ -1,381 +1,424 @@
 /**
- * The alchemy field element
+ * The alchemy-field element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+var Field = Function.inherits('Alchemy.Element.Form.Base', function Field() {
+	Field.super.call(this);
+});
+
+/**
+ * The template to use for the content of this element
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-var AlField = Function.inherits('Alchemy.Element.AlFormBase', function AlchemyField() {
-	return AlchemyField.super.call(this);
-});
-
-AlField.setAssignedProperty('al_validation');
+Field.setTemplateFile('form/elements/alchemy_field');
 
 /**
- * A reference to the view
+ * Use a new Renderer scope for the contents
  *
- * @author   Jelle De Loecker <jelle@develry.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-AlField.setProperty(function view() {
-	if (this.form) {
-		return this.form.view;
+Field.setStatic('use_new_renderer_scope', true);
+
+/**
+ * The name of the field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setAttribute('field-name');
+
+/**
+ * Get the parent alchemy-form element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.addParentTypeGetter('alchemy_form', 'alchemy-form');
+
+/**
+ * Get the optional alchemy-field-schema it belongs to
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
+
+	if (!new_value) {
+		new_value = this.queryUp('alchemy-field-schema');
 	}
+
+	return new_value;
 });
 
 /**
- * A place to put the entires
+ * Get the field info
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setProperty(function entries_element() {
+Field.enforceProperty(function config(new_value, old_value) {
 
-	if (this._entries_element) {
-		return this._entries_element;
+	if (!new_value && this.field_name) {
+
+		let schema = this.schema;
+
+		if (schema) {
+			new_value = schema.getField(this.field_name);
+		}
 	}
 
-	if (Blast.isNode) {
-		return null;
+	return new_value;
+});
+
+/**
+ * Get the schema this field belongs to
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.enforceProperty(function schema(new_value, old_value) {
+
+	if (!new_value) {
+		// See if this is in a schema field
+		if (this.alchemy_field_schema) {
+			new_value = this.alchemy_field_schema.schema;
+		}
 	}
 
-	this._entries_element = this.querySelector('.field-entries');
-	return this._entries_element;
+	if (!new_value) {
+
+		let model_name = this.model;
+
+		if (model_name) {
+			// @TODO: Always get the Client-side model here
+			let model = alchemy.getModel(model_name);
+
+			if (model) {
+				new_value = model.schema;
+			}
+		}
+
+	}
+
+	return new_value;
 });
 
 /**
- * The actual field configuration
+ * Is this an array field?
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setAssignedProperty('field_config');
+Field.setProperty(function is_array() {
 
-/**
- * The entries
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setAssignedProperty('field_entries');
+	let config = this.config;
 
-/**
- * A reference to the document
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setProperty(function document() {
-	return this.form.document;
+	if (config) {
+		return config.is_array;
+	}
+
+	return false;
 });
 
 /**
- * The path of this field
+ * Is this a translatable field?
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setProperty(function path() {
-	return this.field_config.name;
+Field.setProperty(function is_translatable() {
+
+	let config = this.config;
+
+	if (config) {
+		return config.is_translatable;
+	}
+
+	return false;
 });
 
 /**
- * The original value of this field
+ * Get the title of this field
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setProperty(function original_value() {
+Field.setProperty(function field_title() {
 
-	if (!this.options || !this.options.name || !this.form || !this.form.document) {
+	let config = this.config,
+	    result;
+
+	if (config) {
+		result = config.title;
+	}
+
+	if (!result && this.field_name) {
+		result = this.field_name.titleize();
+	}
+
+	return result;
+});
+
+/**
+ * Get the description of this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setProperty(function field_description() {
+
+	let config = this.config,
+	    result;
+
+	if (config && config.options) {
+		result = config.options.description;
+	}
+
+	return result;
+});
+
+/**
+ * Get the name of the model this field belongs to
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setProperty(function model() {
+
+	if (this.hasAttribute('model')) {
+		return this.getAttribute('model');
+	}
+
+	let form = this.alchemy_form;
+
+	if (form) {
+		return form.model;
+	}
+}, function setModel(model) {
+	return this.setAttribute('model', model);
+});
+
+/**
+ * Get the view to use for this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.enforceProperty(function view_file(new_value, old_value) {
+
+	if (!new_value) {
+
+		let config = this.config,
+		    view_type = this.view_type;
+
+		if (config) {
+			let field_type = config.constructor.type_name;
+			return 'form/inputs/' + view_type + '/' + field_type;
+		}
+	}
+
+	return new_value;
+});
+
+
+/**
+ * Get the wrapper to use for this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.enforceProperty(function wrapper_file(new_value, old_value) {
+
+	if (!new_value) {
+
+		let config = this.config,
+		    view_type = this.view_type;
+
+		let wrapper_type = this.wrapper_type;
+
+		if (wrapper_type === false) {
+			return false;
+		}
+
+		if (config) {
+			let field_type = config.constructor.type_name;
+			return 'form/wrappers/' + view_type + '/' + field_type;
+		}
+	}
+
+	return new_value;
+});
+
+/**
+ * Get the view files to use for this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setProperty(function view_files() {
+
+	let result = [],
+	    view_file = this.view_file;
+
+	if (view_file) {
+		result.push(view_file);
+	}
+
+	let config = this.config,
+	    view_type = this.view_type;
+
+	if (config) {
+		let field_type = config.constructor.type_name,
+		    view = 'form/inputs/' + view_type + '/' + field_type;
+
+		result.push(view);
+	}
+
+	if (result.length == 0) {
+		return false;
+	}
+
+	return result;
+});
+
+/**
+ * Get the wrapper files to use for this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setProperty(function wrapper_files() {
+
+	let wrapper_file = this.wrapper_file;
+
+	if (wrapper_file === false) {
+		return false;
+	}
+
+	let result = [];
+
+	if (wrapper_file) {
+		result.push(wrapper_file);
+	}
+
+	let config = this.config,
+	    view_type = this.view_type;
+
+	if (config) {
+		let field_type = config.constructor.type_name,
+		    view = 'form/wrappers/' + view_type + '/' + field_type;
+
+		result.push(view);
+
+		view = 'form/wrappers/' + view_type + '/default';
+		result.push(view);
+
+		view = 'form/wrappers/default/' + field_type;
+		result.push(view);
+
+		view = 'form/wrappers/default/default';
+		result.push(view);
+	}
+
+	if (result.length == 0) {
+		return false;
+	}
+
+	return result;
+});
+
+/**
+ * Get the original value
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setProperty(function original_value() {
+
+	let alchemy_field_schema = this.alchemy_field_schema;
+
+	if (alchemy_field_schema) {
+		let original_schema_value = alchemy_field_schema.original_value;
+
+		if (original_schema_value) {
+			return original_schema_value[this.field_name];
+		}
+
 		return;
 	}
 
-	return this.form.document[this.options.name];
+	let form = this.alchemy_form;
+
+	if (form && form.document) {
+		return form.document[this.field_name];
+	}
+
 });
 
 /**
- * Create an input
+ * Get the main field value element
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- *
- * @param    {Object}   options
- * @param    {Number}   index
- *
- * @return   {HTMLElement}
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setMethod(function input(options, index) {
+Field.setProperty(function value_element() {
 
-	var original_value,
-	    tag_name,
-	    element;
+	let input;
 
-	// Get the normalized options
-	options = this.form.normalizeInputOptions(options);
-
-	if (options.register_input == null) {
-		options.register_input = false;
-	}
-
-	// Get the name of the element to create
-	tag_name = this.form.getInputTagName(options);
-
-	// Create the element
-	element = this.view.create_element(tag_name);
-
-	// Set the form
-	element.form = this.form;
-
-	// Set the field
-	element.field = this;
-
-	// Set the options
-	element.options = options;
-
-	// Set the original value
-	if (options.name && this.document && typeof this.document[options.name] != 'undefined') {
-		original_value = this.document[options.name];
-
-		if (this.field_config.array) {
-			index = index || 0;
-
-			if (Array.isArray(original_value)) {
-				element.original_value = original_value[index];
-			}
-		} else {
-			element.original_value = original_value;
-		}
-
-		element.value = element.original_value;
-	}
-
-	return element;
-});
-
-/**
- * Apply the field config
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function setFieldConfig(field_config, options) {
-
-	var default_options = {},
-	    type;
-
-	this.field_config = Object.assign({}, field_config);
-
-	// Clear out any children
-	this.childNodes.length = 0;
-
-	if (field_config.type == 'HasAndBelongsToMany') {
-		type = 'select';
-		default_options.multiple = true;
-	} else if (field_config.type == 'BelongsTo') {
-		type = 'select';
+	if (this.is_array) {
+		input = this.querySelector('alchemy-field-array');
 	} else {
-		type = field_config.type_name;
+		input = this.querySelector('.alchemy-field-value');
 	}
 
-	default_options.name = field_config.name;
-	default_options.type = type;
-
-	options = Object.assign(default_options, options);
-	this.options = options;
-
-	if (options.hidden === true) {
-		this.setAttribute('hidden', 'hidden');
-	} else if (options.hidden === false) {
-		this.removeAttribute('hidden');
-	}
+	return input;
 });
 
 /**
- * Add a field entry
+ * Get the live value
  *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-AlField.setMethod(function addFieldEntry(index) {
+Field.setProperty(function value() {
 
-	var entry;
+	let element = this.value_element;
 
-	if (!this.field_entries) {
-		this.field_entries = [];
+	if (element) {
+		return element.value;
 	}
 
-	if (index == null) {
-		// The index this field will get
-		index = this.field_entries.length;
+}, function setValue(value) {
+
+	let element = this.value_element;
+
+	if (element) {
+		element.value = value;
 	}
 
-	// Create a new entry
-	entry = this.view.create_element('alchemy-field-entry');
-
-	// Set the index
-	entry.index = index;
-
-	// Create a link to this field
-	entry.field = this;
-
-	// Append it as a childnode
-	this.field_entries.push(entry);
-
-	if (this.entries_element) {
-		this.entries_element.appendChild(entry);
-	}
-
-	return entry;
-});
-
-/**
- * Get the viewname
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function getViewName() {
-
-	if (this.options) {
-		if (this.options.type) {
-			return 'form/' + this.options.type;
-		}
-	}
-
-	return 'form/default_edit';
-});
-
-/**
- * Get the value of this field
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function getData() {
-
-	var is_array = this.field_config.array,
-	    result,
-	    entry,
-	    i;
-
-	if (is_array) {
-		result = [];
-
-		for (i = 0; i < this.field_entries.length; i++) {
-			result[i] = this.field_entries[i].getData();
-		}
-	} else if (this.field_entries && this.field_entries.length) {
-		result = this.field_entries[0].getData();
-	}
-
-	return result;
-});
-
-/**
- * Validate this field
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function validate() {
-
-	var is_array = this.field_config.array,
-	    result,
-	    entry,
-	    i;
-
-	if (is_array) {
-		console.log('@TODO: implement validating array fields');
-		result = [];
-
-		for (i = 0; i < this.field_entries.length; i++) {
-			result[i] = this.field_entries[i].validate();
-		}
-	} else if (this.field_entries && this.field_entries.length) {
-		result = this.field_entries[0].validate();
-	}
-
-	return result;
-});
-
-/**
- * The element has been introduced to the dom
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function introduced() {
-
-	var that = this,
-	    add_entry;
-
-	if (!this.innerHTML) {
-		this.getContent();
-	}
-
-	add_entry = this.querySelector('.add-field-entry');
-
-	if (add_entry) {
-		add_entry.addEventListener('click', function onClick(e) {
-			e.preventDefault();
-			that.addFieldEntry();
-		});
-	}
-
-});
-
-/**
- * Get the content for hawkejs
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlField.setMethod(function makeContent(callback) {
-
-	var that = this,
-	    tasks = [],
-	    placeholder,
-	    variables,
-	    view_name,
-	    options,
-	    i;
-
-	view_name = 'form/field_wrappers/default_edit';
-
-	variables = {
-		form  : this.form,
-		field : this
-	};
-
-	options = {
-		wrap : this
-	};
-
-	placeholder = this.view.print_element(view_name, variables, options);
-
-	placeholder.getContent(function gotResult(err, html) {
-
-		if (err) {
-			return callback(err);
-		}
-
-		that.innerHTML = html;
-		callback(null);
-	});
 });

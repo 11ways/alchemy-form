@@ -1,0 +1,7 @@
+<div class="form-field-info">
+	<label for="field-">
+		<span data-he-name="field-title"><%= alchemy_field.field_title %></span>
+		<small data-he-name="field-description"><%= alchemy_field.field_description %></small>
+	</label>
+</div>
+<div data-he-name="field"></div>

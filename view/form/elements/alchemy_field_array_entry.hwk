@@ -1,0 +1,15 @@
+<% alchemy_field = self.alchemy_field %>
+<% view_files = alchemy_field.view_files %>
+
+<% variables = {
+	alchemy_field : alchemy_field,
+	field_context : self,
+	value         : self.value
+} %>
+
+<div class="field">
+	<% include(view_files, variables) %>
+</div>
+<div class="button">
+	<button class="remove">Remove</button>
+</div>

@@ -1,0 +1,26 @@
+<% alchemy_field = self.alchemy_field %>
+<% view_files = alchemy_field.view_files %>
+<% values = self.original_value %>
+<% prefixes = expose('prefixes') %>
+<% if (!values) values = {} %>
+
+<div class="prefix-buttons">
+	<% for (prefix in prefixes) { %>
+		<button data-prefix=<% prefix %>>
+			{%= prefix %}
+		</button>
+	<% } %>
+</div>
+
+<div class="entries">
+	<% for (prefix in prefixes) { %>
+		<alchemy-field-translatable-entry
+			#alchemy_field_translatable=<% self %>
+			#field_context=<% self %>
+			#alchemy_field=<% alchemy_field %>
+
+			#value=<% values[prefix] %>
+			prefix=<% prefix %>
+		></alchemy-field-translatable-entry>
+	<% } %>
+</div>

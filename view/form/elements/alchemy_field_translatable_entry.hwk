@@ -1,0 +1,19 @@
+<% alchemy_field = self.alchemy_field %>
+<% view_files = alchemy_field.view_files %>
+
+<% variables = {
+	alchemy_field : alchemy_field,
+	field_context : self,
+	value         : self.value
+} %>
+
+<div class="field">
+	<% if (alchemy_field.is_array) { %>
+		<alchemy-field-array
+			#field_context=<% self %>
+			#alchemy_field=<% alchemy_field %>
+		></alchemy-field-array>
+	<% } else { %>
+		<% include(view_files, variables) %>
+	<% } %>
+</div>

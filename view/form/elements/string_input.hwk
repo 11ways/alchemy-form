@@ -1,0 +1,33 @@
+<%
+if (self.hasAttribute('autocomplete')) {
+	autocomplete = self.getAttribute('autocomplete');
+
+	if (autocomplete == 'off' || autocomplete == 'false') {
+		// Annoying workaround, only new-password value works
+		autocomplete = 'new-password';
+	}
+}
+%>
+<label>
+	<div class="inputlabel">
+		<span class="label" data-he-slot="label"></span>
+		<span class="description" data-he-slot="description"></span>
+		<hr class="spacer">
+	</div>
+	<div class="inputbox">
+		<input
+			name=<% self.getAttribute('input-name') || 'name' %>
+			placeholder=<% self.getAttribute('placeholder') %>
+			class="input"
+			minlength=<% self.getAttribute('min-length') %>
+			maxlength=<% self.getAttribute('max-length') %>
+			value="<% self.getAttribute('value') || '' %>"
+			type=<% self.getAttribute('type') || 'text' %>
+			<% if (autocomplete) print('autocomplete="' + autocomplete + '"') %>
+		>
+		<i class="icon cross"></i>
+		<i class="icon checkmark"></i>
+	</div>
+	<div class="errors"></div>
+	<div class="success"></div>
+</label>

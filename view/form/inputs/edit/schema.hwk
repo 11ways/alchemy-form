@@ -1,0 +1,6 @@
+<% console.log('FIELD CONTEXT:', field_context) %>
+
+<alchemy-field-schema
+	#alchemy_field=<% alchemy_field %>
+	#field_context=<% field_context %>
+></alchemy-field-schema>
