@@ -1,0 +1,2 @@
+<% data = self.data %>
+{%= data.title or data.name or data.$pk or self.value %}

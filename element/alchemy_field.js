@@ -46,6 +46,15 @@ Field.setAttribute('field-name');
 Field.addParentTypeGetter('alchemy_form', 'alchemy-form');
 
 /**
+ * Get the error area
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.addElementGetter('error_area', '.error-area');
+
+/**
  * Get the optional alchemy-field-schema it belongs to
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -421,4 +430,77 @@ Field.setProperty(function value() {
 		element.value = value;
 	}
 
+});
+
+/**
+ * Get the rule violations for this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ *
+ * @return   {Promise<Array>}
+ */
+Field.setMethod(async function getViolations() {
+
+	let violations = [],
+	    config = this.config;
+
+	if (config) {
+
+		let violation,
+		    rules = config.getRules(),
+		    rule;
+
+		for (rule of rules) {
+			violation = await rule.validateFieldValue(config, this.value);
+
+			if (violation) {
+				violations.push(violation);
+			}
+		}
+	}
+
+	return violations;
+});
+
+/**
+ * Validate this field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ *
+ * @return   {Promise<Boolean>}
+ */
+Field.setMethod(async function validate() {
+
+	let violations = await this.getViolations();
+
+	// Remove the errors AFTER the violations check
+	// (Preventing a flash of empty errors)
+	this.removeErrors();
+
+	if (violations.length == 0) {
+		return true;
+	}
+
+	let violation;
+
+	for (violation of violations) {
+		this.error_area.append('' + violation);
+	}
+
+	return false;
+});
+
+/**
+ * Remove all errors
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setMethod(function removeErrors() {
+	Hawkejs.removeChildren(this.error_area);
 });

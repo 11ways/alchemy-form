@@ -59,6 +59,27 @@ Base.setStatic(function addParentTypeGetter(name, type) {
 });
 
 /**
+ * Add a getter with a query selector
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Base.setStatic(function addElementGetter(name, query) {
+
+	var symbol = Symbol(name);
+
+	this.setProperty(name, function performQuery() {
+
+		if (this[symbol] == null) {
+			this[symbol] = this.querySelector(query);
+		}
+
+		return this[symbol];
+	});
+});
+
+/**
  * The view-type determines which type of wrapper/field to use,
  * e.g.: view, list, edit, ...
  *

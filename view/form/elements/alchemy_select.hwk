@@ -1,0 +1,26 @@
+<% listbox_id = getId() %>
+<% description_id = getId() %>
+
+<div class="value-wrapper">
+	<% if (self.current_option) print(self.current_option) %>
+	<input
+		type="text"
+		class="type-area"
+		autocomplete="off"
+		aria-label="Filter"
+		tabindex="-1"
+
+		aria-describedby=<% description_id %>
+	>
+</div>
+<div class="dropdown">
+	<div
+		id=<% listbox_id %>
+		class="dropdown-content"
+		role="listbox"
+	></div>
+	<div class="dropdown-pager js-he-ais-pager"></div>
+</div>
+
+<div id=<% description_id %> hidden></div>
+<div class="result-info" aria-live="assertive"></div>

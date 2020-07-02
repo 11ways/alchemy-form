@@ -5,3 +5,12 @@
 	</label>
 </div>
 <div data-he-name="field"></div>
+<div class="validation-feedback">
+	<div data-he-slot="valid-feedback"></div>
+	<div data-he-slot="invalid-feedback"></div>
+	<div
+		class="error-area"
+		aria-live="assertive"
+		aria-relevant="additions removals"
+	></div>
+</div>
