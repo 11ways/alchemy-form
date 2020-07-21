@@ -1,0 +1,11 @@
+alchemy-form {
+	.error-area:empty {
+		display: none;
+	}
+
+	.error-area:not(:empty) {
+		border: 1px solid red;
+		color: red;
+		padding: 0.2rem;
+	}
+}

@@ -10,6 +10,24 @@ var Form = Function.inherits('Alchemy.Element.Form.Base', function Form() {
 });
 
 /**
+ * The stylesheet to load for this element
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Form.setStylesheetFile('form/form');
+
+/**
+ * The stylesheet to load for this element
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Form.setStylesheetFile('form/alchemy_form');
+
+/**
  * The attribute to use for the route
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -46,6 +64,37 @@ Form.setAttribute('model');
 Form.setAssignedProperty('document');
 
 /**
+ * Pre-set violations
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setAssignedProperty('violations');
+
+/**
+ * Get the main error-area
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setProperty(function main_error_area() {
+
+	let element = this.queryAllNotNested('.main-error-area')[0];
+
+	if (!element) {
+		element = this.createElement('div');
+		element.classList.add('error-area', 'main-error-area');
+		this.prepend(element);
+	}
+
+	element.setAttribute('aria-role', 'alert');
+
+	return element;
+});
+
+/**
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -68,6 +117,12 @@ Form.setProperty(function value() {
 		field = fields[i];
 
 		result[field.field_name] = field.value;
+	}
+
+	if (this.model) {
+		result = {
+			[this.model] : result
+		};
 	}
 
 	return result;
@@ -111,18 +166,44 @@ Form.setMethod(async function submit() {
 
 	let result;
 
+	if (false && this.model) {
+		let model = alchemy.getModel(this.model);
+
+		if (model) {
+			let doc = model.createDocument(this.value);
+
+			let violations = await doc.getViolations();
+
+			if (violations) {
+				this.showError(violations);
+				throw violations;
+			}
+		}
+	}
+
 	try {
-		result = await hawkejs.scene.onFormSubmit(this);
+		result = await hawkejs.scene.onFormSubmit(this, null, {render_error: false});
 	} catch (err) {
 		if (err instanceof Classes.Alchemy.Error.Validation) {
 			this.showError(err);
 		} else {
-			console.log('Got submit error:', err);
 			throw err;
 		}
 	}
+});
 
-	console.log('Result?', result);
+/**
+ * Clear all errors
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setMethod(function clearErrors() {
+
+	let error_areas = this.querySelectorAll('.error-area');
+
+	Hawkejs.removeChildren(error_areas);
 });
 
 /**
@@ -134,7 +215,90 @@ Form.setMethod(async function submit() {
  */
 Form.setMethod(function showError(err) {
 
-	console.log('Showing error:', err);
+	this.clearErrors();
+
+	// Also show the errors inline
+	if (err instanceof Classes.Alchemy.Error.Validation) {
+		this.showViolations(err);
+	} else {
+		this.main_error_area.textContent = String(err);
+	}
+});
+
+/**
+ * Print inline violations
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setMethod(function showViolations(err) {
+
+	let violation,
+	    field,
+	    lis = [],
+	    li;
+
+	for (violation of err.violations) {
+		field = this.findFieldByPath(violation.path);
+
+		li = this.createElement('li');
+		lis.push(li);
+
+		if (field && field.id) {
+			let anchor = this.createElement('a');
+			anchor.textContent = violation.message;
+			anchor.href = '#' + field.id;
+			li.append(anchor);
+		} else {
+			li.textContent = violation.message;
+			continue;
+		}
+
+		field.showError(violation);
+	}
+
+	let ul = this.createElement('ul');
+	Hawkejs.replaceChildren(ul, lis);
+	Hawkejs.replaceChildren(this.main_error_area, ul);
+});
+
+/**
+ * Get a specific field instance
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ *
+ * @param    {String}   path
+ *
+ * @return   {AlchemyField}
+ */
+Form.setMethod(function findFieldByPath(path) {
+
+	let current = this,
+	    result,
+	    pieces = path.split('.'),
+	    piece,
+	    query,
+	    temp;
+
+	for (piece of pieces) {
+
+		if (!current) {
+			return null;
+		}
+
+		if (current.config && current.config.is_array) {
+			query = 'alchemy-field-array-entry:nth-child(' + (Number(piece) + 1) + ') .field > *';
+		} else {
+			query = 'alchemy-field[field-name="' + piece + '"]';
+		}
+
+		current = current.queryAllNotNested(query)[0];
+	}
+
+	return current;
 
 });
 
@@ -149,6 +313,10 @@ Form.setMethod(function introduced() {
 
 	const that = this;
 
+	if (this.violations) {
+		this.showError(this.violations);
+	}
+
 	this.onEventSelector('click', '[type="submit"]', function onSubmit(e) {
 		that.emit('submit');
 	});
@@ -157,5 +325,33 @@ Form.setMethod(function introduced() {
 		e.preventDefault();
 		that.submit();
 	});
+
+});
+
+/**
+ * The element is being assembled by hawkejs
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setMethod(function retained() {
+
+	if (!this.id) {
+
+		// @TODO: this doesn't work on the server
+		let parent = this.queryParents('[data-he-template]'),
+		    id = 'f-';
+
+		if (parent) {
+			id = parent.dataset.heTemplate.slug() + '-';
+		}
+
+		if (this.model) {
+			id += this.model.slug();
+		}
+
+		this.id = id;
+	}
 
 });

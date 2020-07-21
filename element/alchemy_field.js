@@ -495,6 +495,19 @@ Field.setMethod(async function validate() {
 });
 
 /**
+ * Show the given error
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setMethod(function showError(err) {
+
+	this.error_area.append(err.message);
+
+});
+
+/**
  * Remove all errors
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -503,4 +516,27 @@ Field.setMethod(async function validate() {
  */
 Field.setMethod(function removeErrors() {
 	Hawkejs.removeChildren(this.error_area);
+});
+
+/**
+ * The element is being assembled by hawkejs
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Field.setMethod(function retained() {
+
+	if (!this.id) {
+		let id = 'field-';
+
+		if (this.alchemy_form) {
+			id += this.alchemy_form.id + '-';
+		}
+
+		id += this.field_name.slug();
+
+		this.id = id;
+	}
+
 });

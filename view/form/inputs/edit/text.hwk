@@ -1,0 +1,5 @@
+<textarea
+	class="alchemy-field-value"
+	form=<% form_id %>
+	name=<% path %>
+>{%= value.encodeHTML() %}</textarea>

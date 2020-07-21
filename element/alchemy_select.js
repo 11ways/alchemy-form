@@ -52,7 +52,15 @@ AlchemySelect.setStylesheetFile('form/alchemy_select');
  * @since    0.1.0
  * @version  0.1.0
  */
-AlchemySelect.setAssignedProperty('value');
+AlchemySelect.setAssignedProperty('value', function getValue(value) {
+
+	if (this.multiple && !Array.isArray(value)) {
+		value = Array.cast(value);
+		this.value = value;
+	}
+
+	return value;
+});
 
 /**
  * Listen for value changes
@@ -62,7 +70,12 @@ AlchemySelect.setAssignedProperty('value');
  * @version  0.1.0
  */
 AlchemySelect.addObservedAttribute('value', function onValueChange(value) {
-	if (this.value != value) {
+
+	if (this.multiple && !Array.isArray(value)) {
+		value = Array.cast(value);
+	}
+
+	if (Object.alike(this.value, value)) {
 		this.value = value;
 	}
 });
