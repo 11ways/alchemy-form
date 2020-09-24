@@ -451,6 +451,10 @@ AlchemySelect.setMethod(function introduced() {
 			that.onClickOption(e, element);
 		}
 	});
+
+	if (this.value) {
+		this.selectByValue(this.value);
+	}
 });
 
 /**
@@ -1644,7 +1648,6 @@ AlchemySelect.setMethod(function _selectByValue(value) {
 	if (!this.multiple) {
 		// Remove the current option, since only 1 is allowed
 		if (this.current_option) {
-			this.current_option.setAttribute('removed', 'yup')
 			this.current_option.remove();
 		}
 	}
@@ -1664,13 +1667,13 @@ AlchemySelect.setMethod(function _selectByValue(value) {
 		value = String(value);
 	}
 
-	this.current_option = this._makeValue(value);
-
-	this.current_option.setAttribute('aria-selected', 'true');
-
 	if (!this.childNodes.length) {
 		return;
 	}
+
+	this.current_option = this._makeValue(value);
+
+	this.current_option.setAttribute('aria-selected', 'true');
 
 	this.type_area.parentElement.insertBefore(this.current_option, this.type_area);
 	this.type_area.value = '';
@@ -2003,6 +2006,7 @@ AlchemySelect.setMethod(function syncValueOrderWithElements() {
 	var element,
 	    current_index,
 	    index = -1,
+	    value,
 	    i;
 
 	if (!this.multiple) {
@@ -2019,13 +2023,22 @@ AlchemySelect.setMethod(function syncValueOrderWithElements() {
 		// This will be the index it needs to be in the array
 		index++;
 
+		// Get the actual value
+		value = element.getAttribute('data-value');
+
+		// Force the value to be a number
+		if (isFinite(value)) {
+			value = Number(value);
+		}
+
 		// Get the current index of the value in the value array
-		current_index = this.value.indexOf(element.getAttribute('data-value'));
+		current_index = this.value.indexOf(value);
 
 		this.value.splice(index, 0, this.value.splice(current_index, 1)[0]);
 	}
 
-	console.log('New value is', this.value);
+	// Make sure entries are unique
+	this.value = this.value.unique();
 });
 
 /**
