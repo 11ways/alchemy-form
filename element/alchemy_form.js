@@ -64,6 +64,15 @@ Form.setAttribute('model');
 Form.setAssignedProperty('document');
 
 /**
+ * A specific schema to edit
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Form.setAssignedProperty('schema');
+
+/**
  * Pre-set violations
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -339,7 +348,6 @@ Form.setMethod(function retained() {
 
 	if (!this.id) {
 
-		// @TODO: this doesn't work on the server
 		let parent = this.queryParents('[data-he-template]'),
 		    id = 'f-';
 

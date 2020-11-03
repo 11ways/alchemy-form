@@ -107,6 +107,11 @@ Field.enforceProperty(function schema(new_value, old_value) {
 		}
 	}
 
+	// See if the alchemy-form element has an explicit schema instance
+	if (!new_value && this.alchemy_form) {
+		new_value = this.alchemy_form.schema;
+	}
+
 	if (!new_value) {
 
 		let model_name = this.model;
@@ -119,7 +124,6 @@ Field.enforceProperty(function schema(new_value, old_value) {
 				new_value = model.schema;
 			}
 		}
-
 	}
 
 	return new_value;

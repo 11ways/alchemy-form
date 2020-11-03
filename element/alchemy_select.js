@@ -46,7 +46,7 @@ AlchemySelect.setTemplateFile('form/elements/alchemy_select');
 AlchemySelect.setStylesheetFile('form/alchemy_select');
 
 /**
- * The sortable property
+ * The value property
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
