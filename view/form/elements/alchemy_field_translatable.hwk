@@ -5,15 +5,21 @@
 <% if (!values) values = {} %>
 
 <div class="prefix-buttons">
+	<% index = 0 %>
 	<% for (prefix in prefixes) { %>
 		<button data-prefix=<% prefix %>>
+			<% if (index == 0) $0.classList.add('active') %>
 			{%= prefix %}
 		</button>
+
+		<% index++ %>
 	<% } %>
 </div>
 
 <div class="entries">
+	<% index = 0 %>
 	<% for (prefix in prefixes) { %>
+
 		<alchemy-field-translatable-entry
 			#alchemy_field_translatable=<% self %>
 			#field_context=<% self %>
@@ -21,6 +27,8 @@
 
 			#value=<% values[prefix] %>
 			prefix=<% prefix %>
-		></alchemy-field-translatable-entry>
+		><% if (index > 0) $0.hidden = true; %></alchemy-field-translatable-entry>
+
+		<% index++ %>
 	<% } %>
 </div>

@@ -25,19 +25,31 @@ AlchemyForm.setMethod(function populateWidget(widget) {
 	let config = this.config,
 	    form = this.createElement('alchemy-form');
 
-	// this.createElement('alchemy-widgets-column')
-	let col = new Classes.Alchemy.Widget.Column();
+	let col_el = this.createElement('alchemy-widgets-column'),
+	    col = col_el.instance;
 
-	// col.config.widgets = ....
+	col.parent_instance = this;
 
 	form.classList.add('alchemy-widgets-container');
-
-	console.log('Populating form', widget, form, 'with', this)
-	console.log(' »» Col widget el:', col.widget);
 
 	if (this.config && this.config.widgets) {
 		col.widget.value = this.config.widgets;
 	}
+
+	let record = widget.getContextVariable('record');
+
+	console.log('Setting form record:', record, this.config.widgets);
+	console.log('On form', form)
+
+	if (record) {
+		form.document = record;
+	}
+
+	if (config.model) {
+		form.model = config.model;
+	}
+
+	form.view_type = config.view_type || 'edit';
 
 	form.append(col.widget);
 
@@ -76,8 +88,6 @@ AlchemyForm.setMethod(function getNestedColumn(widget) {
 AlchemyForm.setMethod(function _startEditor() {
 
 	let col = this.getNestedColumn();
-
-	console.log('Nested column?', col);
 
 	if (!col) {
 		return;

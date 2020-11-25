@@ -24,7 +24,9 @@ variables = {
 			#field_context=<% self %>
 			#alchemy_field=<% self %>
 		></alchemy-field-array>
-	<% } else { %>
+	<% } else if (view_files && view_files.length) { %>
 		<% include(view_files, variables); %>
+	<% } else { %>
+		<!-- No view files were defined -->
 	<% } %>
 <% if (wrapper_files) end('field') %>

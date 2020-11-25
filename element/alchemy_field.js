@@ -19,6 +19,15 @@ var Field = Function.inherits('Alchemy.Element.Form.Base', function Field() {
 Field.setTemplateFile('form/elements/alchemy_field');
 
 /**
+ * The stylesheet to load for this element
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Field.setStylesheetFile('form/alchemy_field');
+
+/**
  * Use a new Renderer scope for the contents
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
@@ -79,6 +88,9 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
+	console.log(' »» CONFIG:', this.field_name, new_value);
+	console.log(' »» SCHEMA?', this.schema);
+
 	if (!new_value && this.field_name) {
 
 		let schema = this.schema;
@@ -115,6 +127,8 @@ Field.enforceProperty(function schema(new_value, old_value) {
 	if (!new_value) {
 
 		let model_name = this.model;
+
+		console.log('-- No schema found, getting model:', model_name, '--');
 
 		if (model_name) {
 			// @TODO: Always get the Client-side model here
@@ -312,6 +326,9 @@ Field.setProperty(function view_files() {
 		return false;
 	}
 
+	// Fallback to a simple string input
+	result.push('form/inputs/' + view_type + '/string');
+
 	return result;
 });
 
@@ -404,6 +421,8 @@ Field.setProperty(function value_element() {
 
 	if (this.is_array) {
 		input = this.querySelector('alchemy-field-array');
+	} else if (this.is_translatable) {
+		input = this.querySelector('alchemy-field-translatable');
 	} else {
 		input = this.querySelector('.alchemy-field-value');
 	}
@@ -541,6 +560,37 @@ Field.setMethod(function retained() {
 		id += this.field_name.slug();
 
 		this.id = id;
+	}
+
+});
+
+/**
+ * Load remote data for some fields
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ *
+ * @param    {Object}        config
+ * @param    {HTMLElement}   element
+ */
+Field.setMethod(function loadData(config, element) {
+
+	let field = this.config;
+
+	console.log('Loading data for field', field);
+
+	if (field) {
+		return this.hawkejs_helpers.Alchemy.getResource({
+			name  : 'FormApi#related',
+			post  : true,
+			body  : {
+				field        : field.name,
+				model        : field.parent_schema.model_name,
+				assoc_model  : field.options.modelName,
+				config       : config,
+			}
+		});
 	}
 
 });

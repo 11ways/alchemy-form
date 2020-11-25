@@ -17,19 +17,18 @@ const AlchemyTable = Function.inherits('Alchemy.Widget', 'AlchemyTable');
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
  * @version  0.1.0
- *
- * @param    {HTMLElement}   widget
  */
-AlchemyTable.setMethod(function populateWidget(widget) {
+AlchemyTable.setMethod(function populateWidget() {
 
 	let table = this.createElement('alchemy-table'),
 	    config = this.config;
 
-	console.log('Populating', widget, table, 'with', this)
-
 	if (config.id) {
 		table.id = config.id;
 	}
+
+	// Always enable the actions?
+	table.has_actions = true;
 
 	if (config.fieldset) {
 		table.fieldset = config.fieldset;
@@ -43,5 +42,5 @@ AlchemyTable.setMethod(function populateWidget(widget) {
 		table.recordsource = config.recordsource;
 	}
 
-	widget.append(table);
+	this.element.append(table);
 });

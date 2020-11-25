@@ -75,7 +75,7 @@ AlchemySelect.addObservedAttribute('value', function onValueChange(value) {
 		value = Array.cast(value);
 	}
 
-	if (Object.alike(this.value, value)) {
+	if (!Object.alike(this.value, value)) {
 		this.value = value;
 	}
 });
@@ -88,6 +88,16 @@ AlchemySelect.addObservedAttribute('value', function onValueChange(value) {
  * @version  0.1.0
  */
 AlchemySelect.setAssignedProperty('sortable');
+
+/**
+ * The dataprovider is an instance of something that will load
+ * the remote data for this element
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setAssignedProperty('dataprovider');
 
 /**
  * The options property (will be stored in assigned_data)
@@ -352,6 +362,21 @@ AlchemySelect.addElementGetter('dropdown_pager', '.dropdown-pager');
 AlchemySelect.addElementGetter('result_info', '.result-info');
 
 /**
+ * This element has been retained by hawkejs
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setMethod(function retained() {
+	console.log('Retained!', this, this.children);
+
+	if (this.value) {
+		this.selectByValue(this.value);
+	}
+});
+
+/**
  * This element has been inserted in the DOM
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -451,6 +476,8 @@ AlchemySelect.setMethod(function introduced() {
 			that.onClickOption(e, element);
 		}
 	});
+
+	console.log('Has value?', this.value);
 
 	if (this.value) {
 		this.selectByValue(this.value);
@@ -590,6 +617,101 @@ AlchemySelect.setMethod(function _initAttributes() {
 });
 
 /**
+ * Get the data for a specific value
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {*}   value
+ *
+ * @return   {Object}
+ */
+AlchemySelect.setMethod(function getValueData(value) {
+
+	let data;
+
+	if (this.options.values && this.options.values[value]) {
+		data = this.options.values[value];
+	}
+
+	return data;
+});
+
+/**
+ * Ensure the data for the given value is laoded
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {Number}   page
+ *
+ * @return   {Pledge}
+ */
+AlchemySelect.setMethod(function _ensureValueData(value) {
+
+	let data = this.getValueData(value);
+
+	if (data) {
+		return data;
+	}
+
+	if (!this.src && !this.dataprovider) {
+		return false;
+	}
+
+	const that = this,
+	      pledge = new Classes.Pledge();
+
+	this.delayAssemble(pledge);
+
+	this._loadRemote({value: value}).done(function gotValueData(err, result) {
+
+		if (err) {
+			return pledge.reject(err);
+		}
+
+		that._processResponseData(result);
+
+		pledge.resolve(data)
+	});
+
+	return pledge;
+});
+
+/**
+ * Process response data
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {Object}   response
+ */
+AlchemySelect.setMethod(function _processResponseData(response) {
+
+	if (response.available) {
+		this.total_item_count = response.available;
+	}
+
+	let records = response.items || response.records,
+	    record,
+	    item;
+
+	for (record of records) {
+		item = this._makeOption(record._id || record.id, record);
+		this.addToDropdown(item);
+
+		console.log('Turned', record, 'into', item)
+	}
+
+	this.loading_dropdown = false;
+	this.refreshResultAmount();
+	this._markSelectedItems();
+});
+
+/**
  * Load remote content
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -610,9 +732,7 @@ AlchemySelect.setMethod(function loadRemote(page) {
 		return;
 	}
 
-	let url = this.src;
-
-	if (!url) {
+	if (!this.src && !this.dataprovider) {
 		pledge.resolve(false);
 		return pledge;
 	}
@@ -626,15 +746,9 @@ AlchemySelect.setMethod(function loadRemote(page) {
 		page   : page
 	};
 
-	// @TODO: add page & query stuff
-	this.hawkejs_helpers.Alchemy.getResource({
-		href : url,
-		get: data
-	}, function gotResponse(err, data, xhr) {
+	this._loadRemote(data).done(gotResponse);
 
-		var record,
-		    item,
-		    i;
+	function gotResponse(err, data) {
 
 		if (err) {
 			that.loading_dropdown = false;
@@ -646,25 +760,39 @@ AlchemySelect.setMethod(function loadRemote(page) {
 			Hawkejs.removeChildren(that.dropdown_content);
 		}
 
-		if (data.available) {
-			that.total_item_count = data.available;
-		}
-
-		let items = data.items || data.records;
-
-		for (i = 0; i < items.length; i++) {
-			record = items[i];
-
-			item = that._makeOption(record._id || record.id, record);
-			that.addToDropdown(item);
-		}
-
-		that.loading_dropdown = false;
-		that.refreshResultAmount();
-		that._markSelectedItems();
+		that._processResponseData(data);
 
 		pledge.resolve(true);
-	});
+	};
+
+	return pledge;
+});
+
+/**
+ * Load remote content
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {Object)   config
+ *
+ * @return   {Pledge}
+ */
+AlchemySelect.setMethod(function _loadRemote(config) {
+
+	let pledge;
+
+	if (this.dataprovider) {
+		pledge = Blast.Classes.Pledge.cast(this.dataprovider.loadData(config, this));
+	} else {
+		let url = this.src;
+
+		pledge = this.hawkejs_helpers.Alchemy.getResource({
+			href : url,
+			get  : config
+		});
+	}
 
 	return pledge;
 });
@@ -748,7 +876,7 @@ AlchemySelect.setMethod(function loadOptions(page) {
 	}
 
 	// If an URL is provided, use that
-	if (this.src) {
+	if (this.src || this.dataprovider) {
 		return this.loadRemote(page);
 	}
 
@@ -929,8 +1057,8 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 	// Assign the value
 	item.value = value;
 
-	if (!data && this.options.values && this.options.values[value]) {
-		data = this.options.values[value];
+	if (!data) {
+		data = this.getValueData(value);
 	}
 
 	if (data) {
@@ -1641,7 +1769,7 @@ AlchemySelect.setMethod(function emitChangeEvent() {
  * @since    0.1.0
  * @version  0.1.0
  */
-AlchemySelect.setMethod(function _selectByValue(value) {
+AlchemySelect.setMethod(async function _selectByValue(value) {
 
 	var i;
 
@@ -1666,6 +1794,12 @@ AlchemySelect.setMethod(function _selectByValue(value) {
 	if (value != null) {
 		value = String(value);
 	}
+
+	console.log('»» Ensuring value of ...', value, '««')
+
+	await this._ensureValueData(value);
+
+	console.log('Ensured?', this.childNodes)
 
 	if (!this.childNodes.length) {
 		return;

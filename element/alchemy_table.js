@@ -118,6 +118,53 @@ Table.setAttribute('page', {number: true});
 Table.setAttribute('page-size', {number: true});
 
 /**
+ * Does this table have actions?
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Table.setAttribute('has-actions', {boolean: true});
+
+/**
+ * Look for changes to the has-actions attribute
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Table.addObservedAttribute('has-actions', function onHA(val) {
+
+	let cn_actions = this.querySelectorAll('.aft-actions');
+
+	if (val) {
+		if (!cn_actions || !cn_actions.length) {
+			let col = this.createElement('th');
+			col.classList.add('aft-actions');
+			this.column_names_row.append(col);
+
+			let rows = this.querySelectorAll('tbody tr'),
+			    row,
+			    i;
+
+			for (i = 0; i < rows.length; i++) {
+				row = rows[i];
+				col = this.createElement('td');
+				col.classList.add('aft-actions');
+				row.append(col);
+			}
+
+		}
+	} else if (cn_actions && cn_actions.length) {
+		let i;
+
+		for (i = 0; i < cn_actions.length; i++) {
+			cn_actions[i].remove();
+		}
+	}
+});
+
+/**
  * The field that is being sorted on
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -211,6 +258,10 @@ Table.setMethod(function setRecordsource(config) {
 		url = alchemy.routeUrl(config.route, config.parameters);
 	} else {
 		url = config;
+	}
+
+	if (url == '#') {
+		url = ''+this.getCurrentUrl();
 	}
 
 	this.src = url;
@@ -337,7 +388,7 @@ Table.setMethod(function getWantedSort() {
  * @return   {String}
  */
 Table.setMethod(function getBaseUrlParam() {
-	return 'aft[' + this.id + ']';
+	return 'aft[' + (this.id || 'unknown')  + ']';
 });
 
 /**
@@ -354,7 +405,7 @@ Table.setMethod(function getCurrentStateUrl() {
 	let url_param = this.getBaseUrlParam(),
 	    page = this.getWantedPage(),
 	    url = this.getCurrentUrl();
-console.log('Current url is: ' + url)
+
 	url.param(url_param + '[page]', page);
 
 	let sort = this.getWantedSort();
@@ -375,15 +426,11 @@ console.log('Current url is: ' + url)
  */
 Table.setMethod(function setRecords(records) {
 
-	console.log(' --- Assigned records', records, 'to', this);
-
 	this.assigned_data.records = records;
 
 	this.clearBody();
 
 	let record;
-
-	console.log('RECORDS:', records);
 
 	for (record of records) {
 		this.table_body.append(this.createDataRow(record));
@@ -438,12 +485,50 @@ Table.setMethod(function createDataRow(entry) {
 	    tr = this.createElement('tr'),
 	    td;
 
-	console.log('Iterating over:', this.fieldset, entry);
-
 	for (field of this.fieldset) {
 		td = this.createElement('td');
-		value = entry[field.name]
-		td.textContent = value;
+		value = field.getValueIn(entry);
+
+		if (value != null) {
+			td.textContent = value;
+		}
+
+		tr.append(td);
+	}
+
+	if (this.has_actions) {
+		td = this.createElement('td');
+		td.classList.add('aft-actions');
+		tr.append(td);
+
+		let actions;
+
+		if (entry.$hold && entry.$hold.actions) {
+			actions = entry.$hold.actions;
+		} else {
+			actions = entry.$actions;
+		}
+
+		if (actions && actions.length) {
+			let action,
+			    anchor;
+
+			for (action of actions) {
+				anchor = this.createElement('a');
+				anchor.dataset.name = action.name;
+
+				if (action.icon) {
+					let alico = this.createElement('al-ico');
+					alico.classList.add(action.icon);
+					anchor.append(alico);
+				} else {
+					anchor.textContent = action.title || action.name;
+				}
+
+				anchor.setAttribute('href', action.url);
+				td.append(anchor);
+			}
+		}
 
 		tr.append(td);
 	}
@@ -467,12 +552,14 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 	    icon,
 	    col;
 
-	console.log('Detected fieldset assignment on:', this)
-
 	this.clearAll();
 
 	if (!(value instanceof Classes.Alchemy.Criteria.FieldSet)) {
-		value = Classes.Alchemy.Criteria.FieldSet.unDry(value);
+		if (Array.isArray(value)) {
+			value = Classes.Alchemy.Criteria.FieldSet.fromArray(value);
+		} else {
+			value = Classes.Alchemy.Criteria.FieldSet.unDry(value);
+		}
 	}
 
 	for (field of value) {
@@ -488,7 +575,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 			// Wrap it in an anchor
 			anchor = this.createElement('a');
 			anchor.classList.add('sorting-anchor');
-			anchor.dataset.field = field.name;
+			anchor.dataset.field = field.path;
 			anchor.dataset.sortDir = 'asc';
 			anchor.append(span);
 			anchor.append(icon);
@@ -499,8 +586,11 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		}
 
 		names_row.append(col);
+	}
 
-		console.log('Adding:', field, col, 'to', names_row);
+	if (this.has_actions) {
+		col = this.createElement('td');
+		names_row.append(col);
 	}
 
 	this.updateAnchors();
@@ -614,13 +704,9 @@ Table.setMethod(function loadRemoteData() {
 	let that = this,
 	    src = this.src;
 
-	console.log('Loading:', src, 'in', this);
-
 	let body = {
 		fields : this.fieldset.toJSON(),
 	};
-
-	console.log('Page size is:', this.page_size);
 
 	if (this.page_size) {
 		body.page_size = this.page_size;
@@ -628,8 +714,6 @@ Table.setMethod(function loadRemoteData() {
 	}
 
 	body.sort = this.getWantedSort();
-
-	console.log('BODY::', body);
 
 	let options = {
 		href : this.src,
@@ -639,8 +723,6 @@ Table.setMethod(function loadRemoteData() {
 
 	this.delayAssemble(async function() {
 
-		console.log('Getting resource:', options);
-
 		let result = await that.getResource(options);
 
 		if (!result) {
@@ -648,8 +730,6 @@ Table.setMethod(function loadRemoteData() {
 		}
 
 		let records = result.records;
-
-		console.log('Result:', result);
 
 		that.records = records;
 

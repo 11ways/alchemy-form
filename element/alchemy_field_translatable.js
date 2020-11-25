@@ -19,6 +19,15 @@ var FieldTranslatable = Function.inherits('Alchemy.Element.Form.FieldCustom', fu
 FieldTranslatable.setTemplateFile('form/elements/alchemy_field_translatable');
 
 /**
+ * The stylesheet to load for this element
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+FieldTranslatable.setStylesheetFile('form/alchemy_field_translatable');
+
+/**
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
