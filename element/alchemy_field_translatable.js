@@ -2,8 +2,8 @@
  * The alchemy-field-translatable element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var FieldTranslatable = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldTranslatable() {
 	FieldTranslatable.super.call(this);
@@ -31,8 +31,8 @@ FieldTranslatable.setStylesheetFile('form/alchemy_field_translatable');
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldTranslatable.setProperty(function value() {
 
@@ -57,8 +57,8 @@ FieldTranslatable.setProperty(function value() {
  * Show the wanted prefix
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldTranslatable.setMethod(function showPrefix(prefix) {
 
@@ -93,8 +93,8 @@ FieldTranslatable.setMethod(function showPrefix(prefix) {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldTranslatable.setMethod(function introduced() {
 

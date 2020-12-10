@@ -2,8 +2,8 @@
  * The alchemy-pager element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 const Pager = Function.inherits('Alchemy.Element.Form.Base', 'Pager');
 
@@ -11,8 +11,8 @@ const Pager = Function.inherits('Alchemy.Element.Form.Base', 'Pager');
  * The template code
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setTemplate(`<ul>
 	<li class="afp-first">
@@ -34,8 +34,8 @@ Pager.setTemplate(`<ul>
  * The stylesheet to load for this element
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setStylesheetFile('form/alchemy_pager');
 
@@ -43,8 +43,8 @@ Pager.setStylesheetFile('form/alchemy_pager');
  * Pager links
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.addElementGetter({
 	link_first: 'li.afp-first',
@@ -57,8 +57,8 @@ Pager.addElementGetter({
  * The amount of page numbers to show
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setAttribute('visible-pages', {number: true});
 
@@ -66,8 +66,8 @@ Pager.setAttribute('visible-pages', {number: true});
  * The current active page
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setAttribute('page', {number: true});
 
@@ -75,8 +75,8 @@ Pager.setAttribute('page', {number: true});
  * The maximum amount of pages
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setAttribute('max-page', {number: true});
 
@@ -84,8 +84,8 @@ Pager.setAttribute('max-page', {number: true});
  * The src attribute: which url to target
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setAttribute('src', null, function setSrc(src) {
 
@@ -103,8 +103,8 @@ Pager.setAttribute('src', null, function setSrc(src) {
  * The param-name attribute: which parameter name to use in the url
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setAttribute('url-param');
 
@@ -112,8 +112,8 @@ Pager.setAttribute('url-param');
  * Get the visible pages elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Array}
  */
@@ -160,8 +160,8 @@ Pager.setMethod(function getVisiblePagesElements() {
  * Update page numbers
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {Number}   page
  * @param    {Number}   amount_of_pages
@@ -289,8 +289,8 @@ Pager.setMethod(function showPage(page, amount_of_pages) {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Pager.setMethod(function introduced() {
 

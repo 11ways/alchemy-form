@@ -2,8 +2,8 @@
  * The alchemy-field-array element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var FieldArray = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldArray() {
 	FieldArray.super.call(this);
@@ -31,8 +31,8 @@ FieldArray.setStylesheetFile('form/alchemy_field_array');
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldArray.setProperty(function value() {
 
@@ -57,8 +57,8 @@ FieldArray.setProperty(function value() {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldArray.setMethod(function introduced() {
 

@@ -2,8 +2,8 @@
  * The alchemy-table element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 const Table = Function.inherits('Alchemy.Element.Form.Base', 'Table');
 
@@ -11,8 +11,8 @@ const Table = Function.inherits('Alchemy.Element.Form.Base', 'Table');
  * The template code
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setTemplate(`<header class="aft-header"></header>
 <div class="aft-content">
@@ -31,8 +31,8 @@ Table.setTemplate(`<header class="aft-header"></header>
  * The stylesheet to load for this element
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setStylesheetFile('form/alchemy_table');
 
@@ -40,8 +40,8 @@ Table.setStylesheetFile('form/alchemy_table');
  * Getter for the header element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('header', 'header.aft-header');
 
@@ -49,8 +49,8 @@ Table.addElementGetter('header', 'header.aft-header');
  * Getter for the content element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('content', 'div.aft-content');
 
@@ -58,8 +58,8 @@ Table.addElementGetter('content', 'div.aft-content');
  * Getter for the footer element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('footer', 'footer.aft-footer');
 
@@ -67,8 +67,8 @@ Table.addElementGetter('footer', 'footer.aft-footer');
  * Getter for the table element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('table', 'table.aft-table');
 
@@ -76,8 +76,8 @@ Table.addElementGetter('table', 'table.aft-table');
  * Getter for the table body element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('table_body', 'table.aft-table tbody');
 
@@ -85,8 +85,8 @@ Table.addElementGetter('table_body', 'table.aft-table tbody');
  * Getter for the column names row
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('column_names_row', 'tr.aft-column-names');
 
@@ -94,8 +94,8 @@ Table.addElementGetter('column_names_row', 'tr.aft-column-names');
  * Getter for the column filters row
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addElementGetter('column_filters_row', 'tr.aft-column-filters');
 
@@ -103,8 +103,8 @@ Table.addElementGetter('column_filters_row', 'tr.aft-column-filters');
  * The page attribute
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAttribute('page', {number: true});
 
@@ -112,8 +112,8 @@ Table.setAttribute('page', {number: true});
  * The page-size attribute
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAttribute('page-size', {number: true});
 
@@ -121,8 +121,8 @@ Table.setAttribute('page-size', {number: true});
  * Does this table have actions?
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAttribute('has-actions', {boolean: true});
 
@@ -130,8 +130,8 @@ Table.setAttribute('has-actions', {boolean: true});
  * Look for changes to the has-actions attribute
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addObservedAttribute('has-actions', function onHA(val) {
 
@@ -168,8 +168,8 @@ Table.addObservedAttribute('has-actions', function onHA(val) {
  * The field that is being sorted on
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAttribute('sort-field');
 
@@ -177,8 +177,8 @@ Table.setAttribute('sort-field');
  * The sort direction (asc/desc)
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAttribute('sort-dir');
 
@@ -186,8 +186,8 @@ Table.setAttribute('sort-dir');
  * The fieldset property
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAssignedProperty('fieldset');
 
@@ -195,8 +195,8 @@ Table.setAssignedProperty('fieldset');
  * The records property
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAssignedProperty('records');
 
@@ -204,8 +204,8 @@ Table.setAssignedProperty('records');
  * The records property
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setAssignedProperty('recordsource', null, function onRecordsource(value) {
 	this.setRecordsource(value);
@@ -216,8 +216,8 @@ Table.setAssignedProperty('recordsource', null, function onRecordsource(value) {
  * Look for a new src value
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.enforceProperty(function src(new_value, old_value) {
 
@@ -234,8 +234,8 @@ Table.enforceProperty(function src(new_value, old_value) {
  * Look for a new src value
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.addObservedAttribute('src', function onSource(src) {
 	this.src = src;
@@ -245,8 +245,8 @@ Table.addObservedAttribute('src', function onSource(src) {
  * Clear the header elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {*}   config
  */
@@ -273,8 +273,8 @@ Table.setMethod(function setRecordsource(config) {
  * Clear all the elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function clearAll() {
 	this.clearHeaders();
@@ -285,8 +285,8 @@ Table.setMethod(function clearAll() {
  * Clear the header elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function clearHeaders() {
 	Hawkejs.removeChildren(this.column_names_row);
@@ -297,8 +297,8 @@ Table.setMethod(function clearHeaders() {
  * Clear the body elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function clearBody() {
 	Hawkejs.removeChildren(this.table_body);
@@ -308,8 +308,8 @@ Table.setMethod(function clearBody() {
  * Get the wanted page
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Number}
  */
@@ -342,8 +342,8 @@ Table.setMethod(function getWantedPage() {
  * Get the wanted sort
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Number}
  */
@@ -382,8 +382,8 @@ Table.setMethod(function getWantedSort() {
  * Get the url param identifier
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {String}
  */
@@ -395,8 +395,8 @@ Table.setMethod(function getBaseUrlParam() {
  * Get the URL of the current state of this table
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {RURL}
  */
@@ -419,8 +419,8 @@ Table.setMethod(function getCurrentStateUrl() {
  * On new records
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {Array}   records
  */
@@ -443,8 +443,8 @@ Table.setMethod(function setRecords(records) {
  * Show the pagination
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function showPagination() {
 
@@ -471,8 +471,8 @@ Table.setMethod(function showPagination() {
  * Create a datarow
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {Object}   entry
  *
@@ -540,8 +540,8 @@ Table.setMethod(function createDataRow(entry) {
  * On new fieldset
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
@@ -602,8 +602,8 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
  * Update the sort anchors
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {String|RURL}   base_url
  */
@@ -661,8 +661,8 @@ Table.setMethod(function updateAnchors(base_url) {
  * On new dataset
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function onRecordsAssignment(value, old_value) {
 	this.setRecords(value);
@@ -672,8 +672,8 @@ Table.setMethod(function onRecordsAssignment(value, old_value) {
  * Select a row
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    <TR>
  */
@@ -696,8 +696,8 @@ Table.setMethod(function selectRow(row) {
  * Load the remote data
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function loadRemoteData() {
 
@@ -746,8 +746,8 @@ Table.setMethod(function loadRemoteData() {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Table.setMethod(function introduced() {
 

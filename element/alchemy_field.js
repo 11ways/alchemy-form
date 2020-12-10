@@ -2,8 +2,8 @@
  * The alchemy-field element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var Field = Function.inherits('Alchemy.Element.Form.Base', function Field() {
 	Field.super.call(this);
@@ -40,8 +40,8 @@ Field.setStatic('use_new_renderer_scope', true);
  * The name of the field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setAttribute('field-name');
 
@@ -49,8 +49,8 @@ Field.setAttribute('field-name');
  * Get the parent alchemy-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.addParentTypeGetter('alchemy_form', 'alchemy-form');
 
@@ -58,8 +58,8 @@ Field.addParentTypeGetter('alchemy_form', 'alchemy-form');
  * Get the error area
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.addElementGetter('error_area', '.error-area');
 
@@ -67,8 +67,8 @@ Field.addElementGetter('error_area', '.error-area');
  * Get the optional alchemy-field-schema it belongs to
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
 
@@ -83,8 +83,8 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  * Get the field info
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
@@ -104,8 +104,8 @@ Field.enforceProperty(function config(new_value, old_value) {
  * Get the schema this field belongs to
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.enforceProperty(function schema(new_value, old_value) {
 
@@ -142,8 +142,8 @@ Field.enforceProperty(function schema(new_value, old_value) {
  * Is this an array field?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function is_array() {
 
@@ -160,8 +160,8 @@ Field.setProperty(function is_array() {
  * Is this a translatable field?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function is_translatable() {
 
@@ -178,8 +178,8 @@ Field.setProperty(function is_translatable() {
  * Get the title of this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function field_title() {
 
@@ -201,8 +201,8 @@ Field.setProperty(function field_title() {
  * Get the description of this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function field_description() {
 
@@ -220,8 +220,8 @@ Field.setProperty(function field_description() {
  * Get the name of the model this field belongs to
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function model() {
 
@@ -242,8 +242,8 @@ Field.setProperty(function model() {
  * Get the view to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.enforceProperty(function view_file(new_value, old_value) {
 
@@ -266,8 +266,8 @@ Field.enforceProperty(function view_file(new_value, old_value) {
  * Get the wrapper to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.enforceProperty(function wrapper_file(new_value, old_value) {
 
@@ -295,8 +295,8 @@ Field.enforceProperty(function wrapper_file(new_value, old_value) {
  * Get the view files to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function view_files() {
 
@@ -331,8 +331,8 @@ Field.setProperty(function view_files() {
  * Get the wrapper files to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function wrapper_files() {
 
@@ -378,8 +378,8 @@ Field.setProperty(function wrapper_files() {
  * Get the original value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function original_value() {
 
@@ -407,8 +407,8 @@ Field.setProperty(function original_value() {
  * Get the main field value element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function value_element() {
 
@@ -429,8 +429,8 @@ Field.setProperty(function value_element() {
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setProperty(function value() {
 
@@ -454,8 +454,8 @@ Field.setProperty(function value() {
  * Get the rule violations for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Promise<Array>}
  */
@@ -486,8 +486,8 @@ Field.setMethod(async function getViolations() {
  * Validate this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Promise<Boolean>}
  */
@@ -516,8 +516,8 @@ Field.setMethod(async function validate() {
  * Show the given error
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setMethod(function showError(err) {
 
@@ -541,8 +541,8 @@ Field.setMethod(function showError(err) {
  * Remove all errors
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setMethod(function removeErrors() {
 	Hawkejs.removeChildren(this.error_area);
@@ -552,8 +552,8 @@ Field.setMethod(function removeErrors() {
  * The element is being assembled by hawkejs
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Field.setMethod(function retained() {
 
@@ -584,8 +584,8 @@ Field.setMethod(function retained() {
  * Load remote data for some fields
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element

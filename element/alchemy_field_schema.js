@@ -2,8 +2,8 @@
  * The alchemy-field-schema element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var FieldSchema = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldSchema() {
 	FieldSchema.super.call(this);
@@ -22,8 +22,8 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  * Get the actual schema
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldSchema.setProperty(function schema() {
 
@@ -36,8 +36,8 @@ FieldSchema.setProperty(function schema() {
  * Get the actual subschema fields
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldSchema.setProperty(function sub_fields() {
 
@@ -52,8 +52,8 @@ FieldSchema.setProperty(function sub_fields() {
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldSchema.setProperty(function value() {
 
@@ -84,8 +84,8 @@ return;
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldArray.setMethod(function introduced() {
 

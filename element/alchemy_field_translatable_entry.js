@@ -2,8 +2,8 @@
  * The alchemy-field-translatable-entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var FieldTranslatableEntry = Function.inherits('Alchemy.Element.Form.FieldEntry', function FieldTranslatableEntry() {
 	FieldTranslatableEntry.super.call(this);
@@ -22,8 +22,8 @@ FieldTranslatableEntry.setTemplateFile('form/elements/alchemy_field_translatable
  * The prefix of this translation
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldTranslatableEntry.setAttribute('prefix');
 
@@ -31,8 +31,8 @@ FieldTranslatableEntry.setAttribute('prefix');
  * Get the original value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldTranslatableEntry.setProperty(function original_value() {
 

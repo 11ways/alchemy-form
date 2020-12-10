@@ -3,7 +3,7 @@
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.1.0
  */
 var Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', function Base() {
 	Base.super.call(this);
@@ -13,8 +13,8 @@ var Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', function
  * Set the custom element prefix
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Base.setStatic('custom_element_prefix', 'alchemy');
 
@@ -23,8 +23,8 @@ Base.setStatic('custom_element_prefix', 'alchemy');
  * but don't let child classes inherit this
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Base.setStatic('is_abstract_class', true, false);
 
@@ -33,8 +33,8 @@ Base.setStatic('is_abstract_class', true, false);
  * (This also works on the server)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Base.setStatic(function addParentTypeGetter(name, type) {
 
@@ -63,8 +63,8 @@ Base.setStatic(function addParentTypeGetter(name, type) {
  * e.g.: view, list, edit, ...
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Base.setProperty(function view_type() {
 
@@ -94,8 +94,8 @@ Base.setProperty(function view_type() {
  * Which type of wrapper to use
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Base.setProperty(function wrapper_type() {
 

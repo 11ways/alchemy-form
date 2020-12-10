@@ -4,8 +4,8 @@ var VALUE = Symbol('value');
  * The alchemy-field-entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var FieldEntry = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldEntry() {
 	FieldEntry.super.call(this);
@@ -16,8 +16,8 @@ var FieldEntry = Function.inherits('Alchemy.Element.Form.FieldCustom', function 
  * but don't let child classes inherit this
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldEntry.setStatic('is_abstract_class', true, false);
 
@@ -25,8 +25,8 @@ FieldEntry.setStatic('is_abstract_class', true, false);
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldEntry.setProperty(function value() {
 
@@ -54,8 +54,8 @@ FieldEntry.setProperty(function value() {
  * Get the main field value element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 FieldEntry.setProperty(function value_element() {
 

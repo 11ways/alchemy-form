@@ -2,8 +2,8 @@
  * The alchemy-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 var Form = Function.inherits('Alchemy.Element.Form.Base', function Form() {
 	Form.super.call(this);
@@ -31,8 +31,8 @@ Form.setStylesheetFile('form/alchemy_form');
  * The attribute to use for the route
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setProperty('url_attribute', 'action');
 
@@ -40,8 +40,8 @@ Form.setProperty('url_attribute', 'action');
  * The method to use for submitting the data
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setAttribute('method');
 
@@ -49,8 +49,8 @@ Form.setAttribute('method');
  * The name of the model
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setAttribute('model');
 
@@ -58,8 +58,8 @@ Form.setAttribute('model');
  * The document that is being edited
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setAssignedProperty('document');
 
@@ -67,8 +67,8 @@ Form.setAssignedProperty('document');
  * A specific schema to edit
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setAssignedProperty('schema');
 
@@ -76,8 +76,8 @@ Form.setAssignedProperty('schema');
  * Pre-set violations
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setAssignedProperty('violations');
 
@@ -85,8 +85,8 @@ Form.setAssignedProperty('violations');
  * Get the main error-area
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setProperty(function main_error_area() {
 
@@ -107,8 +107,8 @@ Form.setProperty(function main_error_area() {
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setProperty(function value() {
 
@@ -141,8 +141,8 @@ Form.setProperty(function value() {
  * Get the formdata
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {FormData}
  */
@@ -155,8 +155,8 @@ Form.setMethod(Hawkejs.GET_FORM_DATA, function getFormData() {
  * Get the serialized form data
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @return   {Object}
  */
@@ -168,8 +168,8 @@ Form.setMethod(Hawkejs.SERIALIZE_FORM, function serializeForm() {
  * Submit this form
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(async function submit() {
 
@@ -205,8 +205,8 @@ Form.setMethod(async function submit() {
  * Clear all errors
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(function clearErrors() {
 
@@ -219,8 +219,8 @@ Form.setMethod(function clearErrors() {
  * Show the given error
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(function showError(err) {
 
@@ -238,8 +238,8 @@ Form.setMethod(function showError(err) {
  * Print inline violations
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(async function showViolations(err) {
 
@@ -288,8 +288,8 @@ Form.setMethod(async function showViolations(err) {
  * Get a specific field instance
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  *
  * @param    {String}   path
  *
@@ -327,8 +327,8 @@ Form.setMethod(function findFieldByPath(path) {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(function introduced() {
 
@@ -353,8 +353,8 @@ Form.setMethod(function introduced() {
  * The element is being assembled by hawkejs
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.1.0
+ * @version  0.1.0
  */
 Form.setMethod(function retained() {
 
