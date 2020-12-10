@@ -17,10 +17,8 @@ const AlchemyForm = Function.inherits('Alchemy.Widget', 'AlchemyForm');
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
  * @version  0.1.0
- *
- * @param    {HTMLElement}   widget
  */
-AlchemyForm.setMethod(function populateWidget(widget) {
+AlchemyForm.setMethod(function populateWidget() {
 
 	let config = this.config,
 	    form = this.createElement('alchemy-form');
@@ -36,10 +34,7 @@ AlchemyForm.setMethod(function populateWidget(widget) {
 		col.widget.value = this.config.widgets;
 	}
 
-	let record = widget.getContextVariable('record');
-
-	console.log('Setting form record:', record, this.config.widgets);
-	console.log('On form', form)
+	let record = this.element.getContextVariable('record');
 
 	if (record) {
 		form.document = record;
@@ -53,7 +48,7 @@ AlchemyForm.setMethod(function populateWidget(widget) {
 
 	form.append(col.widget);
 
-	widget.append(form);
+	this.element.append(form);
 });
 
 /**

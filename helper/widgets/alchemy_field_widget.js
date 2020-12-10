@@ -34,24 +34,15 @@ AlchemyField.constitute(function prepareSchema() {
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
  * @version  0.1.0
- *
- * @param    {HTMLElement}   widget
  */
-AlchemyField.setMethod(function populateWidget(widget) {
+AlchemyField.setMethod(function populateWidget() {
 
 	let config = this.config;
 
-	console.log('Should populate Alchemy-Field', config);
-
-	console.log('Creating alchemy-field ...')
-
 	let field_el = this.createElement('alchemy-field');
-	console.log('... setting field');
 	field_el.field_name = config.field;
 
-	console.log('... Created alchemy-field:', field_el);
-
-	widget.append(field_el);
+	this.element.append(field_el);
 });
 
 /**
@@ -70,8 +61,6 @@ AlchemyField.setMethod(function syncConfig() {
 	if (!config) {
 		config = this.config = {};
 	}
-
-	console.log('Should sync Alchemy-Field:', config);
 
 	return this.config;
 });

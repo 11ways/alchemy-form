@@ -88,9 +88,6 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
-	console.log(' »» CONFIG:', this.field_name, new_value);
-	console.log(' »» SCHEMA?', this.schema);
-
 	if (!new_value && this.field_name) {
 
 		let schema = this.schema;
@@ -127,8 +124,6 @@ Field.enforceProperty(function schema(new_value, old_value) {
 	if (!new_value) {
 
 		let model_name = this.model;
-
-		console.log('-- No schema found, getting model:', model_name, '--');
 
 		if (model_name) {
 			// @TODO: Always get the Client-side model here
@@ -526,8 +521,20 @@ Field.setMethod(async function validate() {
  */
 Field.setMethod(function showError(err) {
 
-	this.error_area.append(err.message);
+	let message;
 
+	if (err.microcopy) {
+
+		let microcopy = this.hawkejs_renderer.t(err.microcopy, {
+			field : this.field_title,
+		});
+
+		message = microcopy.toElement();
+	} else {
+		message = err.message;
+	}
+
+	this.error_area.append(message);
 });
 
 /**
@@ -560,6 +567,15 @@ Field.setMethod(function retained() {
 		id += this.field_name.slug();
 
 		this.id = id;
+
+		let label = this.querySelector('.form-field-info label');
+
+		if (label && this.value_element) {
+			let v_id = id + '_fv';
+
+			label.setAttribute('for', v_id);
+			this.value_element.setAttribute('id', v_id);
+		}
 	}
 
 });
@@ -577,8 +593,6 @@ Field.setMethod(function retained() {
 Field.setMethod(function loadData(config, element) {
 
 	let field = this.config;
-
-	console.log('Loading data for field', field);
 
 	if (field) {
 		return this.hawkejs_helpers.Alchemy.getResource({

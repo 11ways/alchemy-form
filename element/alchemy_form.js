@@ -241,26 +241,38 @@ Form.setMethod(function showError(err) {
  * @since    0.2.0
  * @version  0.2.0
  */
-Form.setMethod(function showViolations(err) {
+Form.setMethod(async function showViolations(err) {
 
 	let violation,
 	    field,
 	    lis = [],
+	    el,
 	    li;
 
 	for (violation of err.violations) {
-		field = this.findFieldByPath(violation.path);
+		field = this.findFieldByPath(violation.path) || false;
 
 		li = this.createElement('li');
 		lis.push(li);
 
+		if (violation.microcopy) {
+			let microcopy = this.hawkejs_renderer.t(violation.microcopy, {
+				field : field.field_title,
+			});
+
+			el = microcopy.toElement();
+		} else {
+			el = this.createElement('span');
+			el.textContent = violation.message;
+		}
+
 		if (field && field.id) {
 			let anchor = this.createElement('a');
-			anchor.textContent = violation.message;
+			anchor.append(el);
 			anchor.href = '#' + field.id;
 			li.append(anchor);
 		} else {
-			li.textContent = violation.message;
+			li.append(el);
 			continue;
 		}
 
