@@ -1,0 +1,10 @@
+<input
+	type="checkbox"
+	<% if (self.value) print('checked') %>
+>
+
+<div
+	class="at-boolean-text"
+	data-checked={% __d('Yes') %}
+	data-unchecked={% __d('No') %}
+></div>

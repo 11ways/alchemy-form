@@ -1,7 +1,4 @@
-<input
+<alchemy-toggle
 	class="alchemy-field-value"
-	type="checkbox"
-	form=<% form_id %>
-	name=<% path %>
-	#checked=<% !!value %>
->
+	#value=<% value %>
+></alchemy-toggle>

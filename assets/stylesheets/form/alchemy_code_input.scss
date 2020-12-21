@@ -1,0 +1,12 @@
+alchemy-code-input {
+	display: inline-block;
+	height: 15rem;
+	width: 100%;
+	position: relative;
+
+	.code-editor {
+		white-space: pre;
+		height: 100%;
+		width: 100%;
+	}
+}
