@@ -568,7 +568,7 @@ Field.setMethod(function retained() {
 
 		this.id = id;
 
-		let label = this.querySelector('.form-field-info label');
+		let label = this.querySelector('.form-field-info alchemy-label');
 
 		if (label && this.value_element) {
 			let v_id = id + '_fv';
