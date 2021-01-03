@@ -61,7 +61,7 @@ FieldEntry.setProperty(function value_element() {
 
 	let input;
 
-	if (this.is_array) {
+	if (this.is_array && this.tagName != 'ALCHEMY-FIELD-ARRAY' && this.tagName != 'ALCHEMY-FIELD-ARRAY-ENTRY') {
 		input = this.querySelector('alchemy-field-array');
 	} else {
 		input = this.querySelector('alchemy-field-schema, .alchemy-field-value');

@@ -414,10 +414,11 @@ Field.setProperty(function value_element() {
 
 	let input;
 
-	if (this.is_array) {
-		input = this.querySelector('alchemy-field-array');
-	} else if (this.is_translatable) {
+	// Translations always get preference
+	if (this.is_translatable) {
 		input = this.querySelector('alchemy-field-translatable');
+	} else if (this.is_array) {
+		input = this.querySelector('alchemy-field-array');
 	} else {
 		input = this.querySelector('.alchemy-field-value');
 	}

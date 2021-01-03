@@ -2,6 +2,7 @@
 <% view_files = alchemy_field.view_files %>
 <% values = self.original_value %>
 <% prefixes = expose('prefixes') %>
+
 <% if (!values) values = {} %>
 
 <div class="prefix-buttons">

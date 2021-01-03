@@ -1,5 +1,5 @@
 /**
- * The alchemy-field-array element
+ * The basis for alchemy-field-array and such element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -60,6 +60,24 @@ FieldCustom.enforceProperty(function field_context(new_value, old_value) {
 	}
 
 	return new_value;
+});
+
+/**
+ * Is this field an array?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+FieldCustom.setProperty(function is_array() {
+
+	let field = this.queryUp('alchemy-field');
+
+	if (field) {
+		return field.is_array;
+	}
+
+	return false;
 });
 
 /**
