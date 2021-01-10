@@ -118,6 +118,23 @@ AlchemySelect.setAssignedProperty('options', function get_options(options) {
 });
 
 /**
+ * Reference to all the possible values
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setProperty(function values() {
+	return this.options.values;
+}, function setValues(new_values) {
+	this.options.values = new_values;
+
+	this._processPreloadedValues();
+
+	return this.options.values;
+});
+
+/**
  * Get the textual representation of the value
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -480,7 +497,7 @@ AlchemySelect.setMethod(function introduced() {
 	console.log('Has value?', this.value);
 
 	if (this.value) {
-		this.selectByValue(this.value);
+		this._selectByValue(this.value);
 	}
 });
 
@@ -639,7 +656,7 @@ AlchemySelect.setMethod(function getValueData(value) {
 });
 
 /**
- * Ensure the data for the given value is laoded
+ * Ensure the data for the given value is loaded
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
@@ -681,6 +698,40 @@ AlchemySelect.setMethod(function _ensureValueData(value) {
 });
 
 /**
+ * Process preloaded data (like for enums)
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setMethod(function _processPreloadedValues() {
+
+	let values = this.options.values;
+
+	if (!values) {
+		return;
+	}
+
+	let response = {
+		available : 0,
+		items     : [],
+	};
+
+	let item,
+	    key;
+
+	for (key in values) {
+		response.available++;
+		item = Object.assign({}, values[key]);
+		item.id = key;
+
+		response.items.push(item);
+	}
+
+	this._processResponseData(response);
+});
+
+/**
  * Process response data
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -702,8 +753,6 @@ AlchemySelect.setMethod(function _processResponseData(response) {
 	for (record of records) {
 		item = this._makeOption(record._id || record.id, record);
 		this.addToDropdown(item);
-
-		console.log('Turned', record, 'into', item)
 	}
 
 	this.loading_dropdown = false;
@@ -1278,48 +1327,6 @@ AlchemySelect.setMethod(function addToDropdown(item) {
 });
 
 /**
- * Render the content:
- * method called by Hawkejs during render
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.setMethod(function getContent(callback) {
-
-	var that = this,
-	    tasks = [];
-
-	this._initAttributes();
-
-	// If options have been explictly defined, add them to the dropdown now
-	if (this.options) {
-		Object.each(this.options.values, function eachValue(value, key) {
-			tasks.push(function makeOption(next) {
-				var item = this._makeOption(key, value, next);
-				that.addToDropdown(item);
-			});
-		});
-	}
-
-	if (this.delay_for_elements) {
-		this.delay_for_elements.forEach(function eachPledge(pledge) {
-			tasks.push(function waitForPledge(next) {
-				pledge.handleCallback(next);
-			});
-		});
-	}
-
-	this.get_content_pledge = Function.parallel(tasks, callback);
-
-	if (this.waiting_for_pledge) {
-		while (this.waiting_for_pledge.length) {
-			this.get_content_pledge.handleCallback(this.waiting_for_pledge.pop());
-		}
-	}
-});
-
-/**
  * Handle an arrow keydown
  *
  * @author   Jelle De Loecker   <jelle@kipdola.be>
@@ -1771,8 +1778,6 @@ AlchemySelect.setMethod(function emitChangeEvent() {
  */
 AlchemySelect.setMethod(async function _selectByValue(value) {
 
-	var i;
-
 	if (!this.multiple) {
 		// Remove the current option, since only 1 is allowed
 		if (this.current_option) {
@@ -1784,6 +1789,8 @@ AlchemySelect.setMethod(async function _selectByValue(value) {
 		if (!this.multiple) {
 			value = value[0];
 		} else {
+			let i;
+
 			for (i = 0; i < value.length; i++) {
 				this._selectByValue(value[i]);
 			}
@@ -1793,6 +1800,10 @@ AlchemySelect.setMethod(async function _selectByValue(value) {
 
 	if (value != null) {
 		value = String(value);
+	}
+
+	if (this.dropdown_content && this.values && !this.dropdown_content.children.length) {
+		this._processPreloadedValues();
 	}
 
 	console.log('»» Ensuring value of ...', value, '««')

@@ -131,6 +131,10 @@ Field.enforceProperty(function schema(new_value, old_value) {
 
 			if (model) {
 				new_value = model.schema;
+
+				if (Blast.isNode) {
+					new_value = JSON.clone(new_value, 'toHawkejs');
+				}
 			}
 		}
 	}

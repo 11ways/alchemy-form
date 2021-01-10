@@ -25,7 +25,7 @@ Table.setTemplate(`<header class="aft-header"></header>
 		<tfoot></tfoot>
 	</table>
 </div>
-<footer class="aft-footer"></footer>`, true);
+<footer class="aft-footer"></footer>`);
 
 /**
  * The stylesheet to load for this element
