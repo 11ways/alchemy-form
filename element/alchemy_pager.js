@@ -16,17 +16,25 @@ const Pager = Function.inherits('Alchemy.Element.Form.Base', 'Pager');
  */
 Pager.setTemplate(`<ul>
 	<li class="afp-first">
-		<a href="#"><al-ico type="arrow-left-double"></al-ico></a>
+		<a href="#" aria-label="First page">
+			<al-ico type="arrow-left-double"></al-ico>
+		</a>
 	</li>
 	<li class="afp-prev">
-		<a href="#"><al-ico type="arrow-left"></al-ico></a>
+		<a href="#" aria-label="Previous page">
+			<al-ico type="arrow-left"></al-ico>
+		</a>
 	</li>
 
 	<li class="afp-next">
-		<a href="#"><al-ico type="arrow-right"></al-ico></a>
+		<a href="#" aria-label="Next page">
+			<al-ico type="arrow-right"></al-ico>
+		</a>
 	</li>
 	<li class="afp-last">
-		<a href="#"><al-ico type="arrow-right-double"></al-ico></a>
+		<a href="#" aria-label="Last page">
+			<al-ico type="arrow-right-double"></al-ico>
+		</a>
 	</li>
 </ul>`, true);
 
@@ -79,6 +87,15 @@ Pager.setAttribute('page', {number: true});
  * @version  0.1.0
  */
 Pager.setAttribute('max-page', {number: true});
+
+/**
+ * The page-size
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Pager.setAttribute('page-size', {number: true});
 
 /**
  * The src attribute: which url to target
@@ -174,11 +191,7 @@ Pager.setMethod(function showPage(page, amount_of_pages) {
 		end = 5;
 	}
 
-	console.log(start, end, page);
-
 	let url = this.getCurrentUrl();
-
-	console.log('URL:', url)
 
 	if (end > amount_of_pages) {
 		end = amount_of_pages;
@@ -258,7 +271,14 @@ Pager.setMethod(function showPage(page, amount_of_pages) {
 		li.hidden = false;
 		li.dataset.page = nr;
 		anchor = li.children[0];
-		anchor.textContent = nr;
+
+		// Show regular pagenrs when no page size is known
+		if (!this.page_size) {
+			anchor.textContent = nr;
+		} else {
+			let range = ((nr - 1) * this.page_size);
+			anchor.textContent = (1 + range) + ' - ' + (range + this.page_size);
+		}
 
 		if (nr == page) {
 			li.classList.add('afp-active');

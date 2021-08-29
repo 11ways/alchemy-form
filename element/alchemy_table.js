@@ -574,6 +574,7 @@ Table.setMethod(function showPagination() {
 
 	pager.src = this.getCurrentUrl();
 	pager.url_param = this.getBaseUrlParam();
+	pager.page_size = records.page_size;
 
 	pager.showPage(records.page, Math.ceil(records.available / records.page_size));
 });
