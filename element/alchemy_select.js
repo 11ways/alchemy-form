@@ -19,6 +19,15 @@ var AlchemySelect = Function.inherits('Alchemy.Element.Form.Base', function Sele
 AlchemySelect.setAttribute('src');
 
 /**
+ * The value clear count
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setProperty('_clear_count', 0);
+
+/**
  * The maximum amount of items
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -46,39 +55,58 @@ AlchemySelect.setTemplateFile('form/elements/alchemy_select');
 AlchemySelect.setStylesheetFile('form/alchemy_select');
 
 /**
- * The value property
+ * Getter for the value-wrapper div
  *
- * @author   Jelle De Loecker <jelle@develry.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-AlchemySelect.setAssignedProperty('value', function getValue(value) {
-
-	if (this.multiple && !Array.isArray(value)) {
-		value = Array.cast(value);
-		this.value = value;
-	}
-
-	return value;
-});
+AlchemySelect.addElementGetter('wrapper', '.value-wrapper');
 
 /**
- * Listen for value changes
+ * Getter for the text input
  *
- * @author   Jelle De Loecker <jelle@develry.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-AlchemySelect.addObservedAttribute('value', function onValueChange(value) {
+AlchemySelect.addElementGetter('type_area', '.type-area');
 
-	if (this.multiple && !Array.isArray(value)) {
-		value = Array.cast(value);
-	}
+/**
+ * Getter for the dropdown wrapper
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.addElementGetter('dropdown', '.dropdown');
 
-	if (!Object.alike(this.value, value)) {
-		this.value = value;
-	}
-});
+/**
+ * Getter for the dropdown content
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.addElementGetter('dropdown_content', '.dropdown-content');
+
+/**
+ * Getter for the dropdown pager
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.addElementGetter('dropdown_pager', '.dropdown-pager');
+
+/**
+ * Getter for the result-info element
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.addElementGetter('result_info', '.result-info');
 
 /**
  * The sortable property
@@ -98,6 +126,25 @@ AlchemySelect.setAssignedProperty('sortable');
  * @version  0.1.0
  */
 AlchemySelect.setAssignedProperty('dataprovider');
+
+/**
+ * The value property
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setAssignedProperty('value', function getValue(value) {
+
+	if (this.multiple && !Array.isArray(value)) {
+		value = Array.cast(value);
+
+		// This triggers the assignment setter
+		this.value = value;
+	}
+
+	return value;
+});
 
 /**
  * The options property (will be stored in assigned_data)
@@ -216,13 +263,17 @@ AlchemySelect.setProperty(function loaded_item_count() {
  */
 AlchemySelect.setProperty(function current_option() {
 
-	var entry,
-	    i;
+	if (this._current_option && !this._current_option.parentElement) {
+		this._current_option = null;
+	}
 
 	if (!this._current_option && this.wrapper) {
 
-		for (i = this.wrapper.childNodes.length - 1; i >= 0; i--) {
-			entry = this.wrapper.childNodes[i];
+		let entry,
+		    i;
+
+		for (i = this.wrapper.children.length - 1; i >= 0; i--) {
+			entry = this.wrapper.children[i];
 
 			if (entry == this.type_area) {
 				continue;
@@ -325,71 +376,18 @@ AlchemySelect.setProperty(function search_value() {
 });
 
 /**
- * Getter for the value-wrapper div
+ * This element rendered its contents
  *
- * @author   Jelle De Loecker   <jelle@develry.be>
+ * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-AlchemySelect.addElementGetter('wrapper', '.value-wrapper');
+AlchemySelect.setMethod(function rendered() {
 
-/**
- * Getter for the text input
- *
- * @author   Jelle De Loecker   <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.addElementGetter('type_area', '.type-area');
+	let value = this.value;
 
-/**
- * Getter for the dropdown wrapper
- *
- * @author   Jelle De Loecker   <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.addElementGetter('dropdown', '.dropdown');
-
-/**
- * Getter for the dropdown content
- *
- * @author   Jelle De Loecker   <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.addElementGetter('dropdown_content', '.dropdown-content');
-
-/**
- * Getter for the dropdown pager
- *
- * @author   Jelle De Loecker   <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.addElementGetter('dropdown_pager', '.dropdown-pager');
-
-/**
- * Getter for the result-info element
- *
- * @author   Jelle De Loecker   <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.addElementGetter('result_info', '.result-info');
-
-/**
- * This element has been retained by hawkejs
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.setMethod(function retained() {
-	console.log('Retained!', this, this.children);
-
-	if (this.value) {
-		this.selectByValue(this.value);
+	if (value) {
+		this._overwriteValue(value);
 	}
 });
 
@@ -493,12 +491,6 @@ AlchemySelect.setMethod(function introduced() {
 			that.onClickOption(e, element);
 		}
 	});
-
-	console.log('Has value?', this.value);
-
-	if (this.value) {
-		this._selectByValue(this.value);
-	}
 });
 
 /**
@@ -550,6 +542,53 @@ AlchemySelect.setMethod(function onOriginalValueAssignment(value, old_value) {
 });
 
 /**
+ * Remove the selected value elements
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setMethod(function _clearSelectedValue() {
+
+	let option;
+
+	this._clear_count++;
+
+	// Clear the value without triggering anything
+	this.assigned_data.value = null;
+
+	// Make sure to remove all the visible selected option elements
+	while (option = this.current_option) {
+		option.remove();
+	}
+});
+
+/**
+ * Overwrite the current value
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setMethod(function _overwriteValue(value) {
+
+	if (!this.has_rendered) {
+		throw new Error('Unable to overwrite value when element has not been rendered');
+	}
+
+	// Silently remove the current value
+	this._clearSelectedValue();
+
+	if (this.multiple) {
+		value = Array.cast(value);
+	}
+
+	this.assigned_data.value = value;
+
+	this._selectByValue(value);
+});
+
+/**
  * On new value
  *
  * @author   Jelle De Loecker <jelle@develry.be>
@@ -558,15 +597,17 @@ AlchemySelect.setMethod(function onOriginalValueAssignment(value, old_value) {
  */
 AlchemySelect.setMethod(function onValueAssignment(value, old_value) {
 
-	if (Object.alike(value, old_value)) {
-		return;
-	}
-
 	if (this.multiple) {
 		value = Array.cast(value);
 	}
 
-	this._selectByValue(value);
+	if (Object.alike(value, old_value)) {
+		return;
+	}
+
+	if (this.has_rendered) {
+		this._overwriteValue(value);
+	}
 
 	return value;
 });
@@ -885,15 +926,19 @@ AlchemySelect.setMethod(function _markSelectedItems() {
 	}
 
 	let element,
+	    values = Array.cast(this.value),
 	    i;
 
-	for (i = 0; i < this.dropdown_content.children.length; i++) {
-		element = this.dropdown_content.children[i];
+	for (let value of values) {
 
-		if (element.value != null && element.value == this.value) {
-			element.selected = true;
-		} else {
-			element.selected = false;
+		for (i = 0; i < this.dropdown_content.children.length; i++) {
+			element = this.dropdown_content.children[i];
+
+			if (element.value != null && Object.alike(element.value, value)) {
+				element.selected = true;
+			} else {
+				element.selected = false;
+			}
 		}
 	}
 
@@ -1098,6 +1143,10 @@ AlchemySelect.setMethod(function close(event) {
  */
 AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 
+	if (type == 'value') {
+		console.log('Creating value item:', value);
+	}
+
 	let item = this.createElement('alchemy-select-item');
 
 	// Set the type ("value" or "option")
@@ -1147,109 +1196,6 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 	}
 
 	return item;
-
-	var that = this,
-	    placeholder,
-	    variables,
-	    view_name,
-	    options,
-	    result = Hawkejs.Hawkejs.createElement('div'),
-	    pledge;
-
-	// Set the value
-	result.dataset.value = value;
-
-	// Get the optional view name
-	// eg: "view_option" or "view_value"
-	view_name = this.options['view_' + type];
-
-	if (!view_name) {
-		view_name = 'form/selements/alchemy_select_item_' + type;
-	}
-
-	console.log('Value item view:', view_name, 'for', type);
-
-	if (!data && this.options.values && this.options.values[value]) {
-		data = this.options.values[value];
-	}
-
-	if (!callback) {
-		callback = Function.thrower;
-	}
-
-	pledge = Function.series(function getData(next) {
-
-		var field,
-		    model;
-
-		// If we already have a data object,
-		// or there is no form so we can't get one,
-		// go to the next
-		if (data || !that.form) {
-			return next();
-		}
-
-		field = that.form.getModelField(that.options.name);
-
-		if (!field) {
-			return next();
-		}
-
-		// Get the model name
-		model = that.form.getModel(field.modelName);
-
-		model.find('first', {conditions: {_id: value}}, function gotResult(err, result) {
-
-			if (err) {
-				return next(err);
-			}
-
-			data = result;
-
-			next();
-		});
-	}, function doView(next) {
-
-		if (!view_name) {
-			if (data != null) {
-				result.textContent = data.title || data.name || data._id || data.id || data;
-			} else {
-				result.textContent = value;
-			}
-
-			return next();
-		}
-
-		options = {
-			wrap  : false,
-			print : false
-		};
-
-		variables = {
-			value   : value,
-			data    : data
-		};
-
-		placeholder = that.view.print_element(view_name, variables, options);
-
-		placeholder.getContent(function gotResult(err, html) {
-
-			if (err) {
-				return next(err);
-			}
-
-			result.innerHTML = html;
-			next();
-		});
-
-	}, function done(err) {
-		callback(err);
-	});
-
-	// Delay getContent for this element
-	//this.delayGetContentFor(pledge);
-
-	return result;
 });
 
 /**
@@ -1510,8 +1456,6 @@ AlchemySelect.setMethod(function advanceSelection(direction) {
 	tail = direction > 0 ? 'last' : 'first';
 
 	selection = this._getSelection(this.type_area);
-
-	console.log('Selection is now', selection, 'focus is', this.is_focused);
 
 	if (this.is_focused) {
 		value_length = this.type_area.value.length;
@@ -1780,9 +1724,11 @@ AlchemySelect.setMethod(async function _selectByValue(value) {
 
 	if (!this.multiple) {
 		// Remove the current option, since only 1 is allowed
-		if (this.current_option) {
-			this.current_option.remove();
-		}
+		this._clearSelectedValue();
+	}
+
+	if (value == null) {
+		return;
 	}
 
 	if (Array.isArray(value)) {
@@ -1798,6 +1744,8 @@ AlchemySelect.setMethod(async function _selectByValue(value) {
 		}
 	}
 
+	let clear_count = this._clear_count;
+
 	if (value != null) {
 		value = String(value);
 	}
@@ -1806,24 +1754,34 @@ AlchemySelect.setMethod(async function _selectByValue(value) {
 		this._processPreloadedValues();
 	}
 
-	console.log('»» Ensuring value of ...', value, '««')
+	let promise = this._ensureValueData(value),
+	    pledge;
 
-	await this._ensureValueData(value);
+	if (promise && Blast.Classes.Pledge.hasPromiseInterface(promise)) {
 
-	console.log('Ensured?', this.childNodes)
+		pledge = new Blast.Classes.Pledge();
 
-	if (!this.childNodes.length) {
-		return;
+		this.delayAssemble(pledge);
+
+		await promise;
 	}
 
-	this.current_option = this._makeValue(value);
+	// Make sure no values were cleared while waiting for the promise
+	if (this.childNodes.length && this._clear_count === clear_count) {
 
-	this.current_option.setAttribute('aria-selected', 'true');
+		let option = this._makeValue(value);
 
-	this.type_area.parentElement.insertBefore(this.current_option, this.type_area);
-	this.type_area.value = '';
+		option.setAttribute('aria-selected', 'true');
 
-	this.close(true);
+		this.type_area.parentElement.insertBefore(option, this.type_area);
+		this.type_area.value = '';
+
+		this.close(true);
+	}
+
+	if (pledge) {
+		pledge.resolve();
+	}
 });
 
 /**
@@ -2182,8 +2140,12 @@ AlchemySelect.setMethod(function syncValueOrderWithElements() {
 		this.value.splice(index, 0, this.value.splice(current_index, 1)[0]);
 	}
 
-	// Make sure entries are unique
-	this.value = this.value.unique();
+	let unique_values = this.value.unique();
+
+	if (!Object.alike(unique_values, this.values)) {
+		// Make sure entries are unique
+		this.value = unique_values;
+	}
 });
 
 /**

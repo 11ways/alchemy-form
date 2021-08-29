@@ -25,7 +25,9 @@ variables = {
 			#alchemy_field=<% self %>
 		></alchemy-field-array>
 	<% } else if (view_files && view_files.length) { %>
-		<% include(view_files, variables); %>
+		<div class="field">
+			<% include(view_files, variables); %>
+		</div>
 	<% } else { %>
 		<!-- No view files were defined -->
 	<% } %>

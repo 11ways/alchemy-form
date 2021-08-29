@@ -19,13 +19,13 @@ Table.setTemplate(`<header class="aft-header"></header>
 	<table class="aft-table">
 		<thead>
 			<tr class="aft-column-names"></tr>
-			<tr class="aft-column-filters"></tr>
+			<tr class="aft-column-filters" hidden></tr>
 		</thead>
 		<tbody></tbody>
 		<tfoot></tfoot>
 	</table>
 </div>
-<footer class="aft-footer"></footer>`);
+<footer class="aft-footer"></footer>`, {plain_html: true, render_immediate: true});
 
 /**
  * The stylesheet to load for this element
@@ -118,6 +118,29 @@ Table.setAttribute('page', {number: true});
 Table.setAttribute('page-size', {number: true});
 
 /**
+ * Should filters be shown?
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Table.setAttribute('show-filters', {boolean: true});
+
+/**
+ * Look for changes to the show-filters attribute
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Table.addObservedAttribute('show-filters', function onSF(val) {
+
+	let filters = this.column_filters_row;
+
+	filters.hidden = !val;
+});
+
+/**
  * Does this table have actions?
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -199,6 +222,15 @@ Table.setAssignedProperty('fieldset');
  * @version  0.1.0
  */
 Table.setAssignedProperty('records');
+
+/**
+ * The filters property
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Table.setAssignedProperty('filters');
 
 /**
  * The records property
@@ -379,6 +411,55 @@ Table.setMethod(function getWantedSort() {
 });
 
 /**
+ * Get the wanted filters
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @return   {Object}
+ */
+Table.setMethod(function getWantedFilters() {
+
+	if (!this.filters) {
+
+		let url = this.getCurrentUrl();
+		let data = url.param('aft');
+		let filters;
+
+		if (data && data[this.id]) {
+			filters = data[this.id].filters;
+		}
+
+		if (filters) {
+			this.filters = filters;
+		} else {
+			return null;
+		}
+	}
+
+	let result = {},
+	    has_filters = false,
+	    key,
+	    val;
+
+	for (key in this.filters) {
+		val = this.filters[key];
+
+		if (val !== '') {
+			has_filters = true;
+			result[key] = val;
+		}
+	}
+
+	if (!has_filters) {
+		return null;
+	}
+
+	return result;
+});
+
+/**
  * Get the url param identifier
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -412,6 +493,9 @@ Table.setMethod(function getCurrentStateUrl() {
 
 	url.param(url_param + '[sort]', sort);
 
+	let filters = this.getWantedFilters();
+	url.param(url_param + '[filters]', filters);
+
 	return url;
 });
 
@@ -437,6 +521,33 @@ Table.setMethod(function setRecords(records) {
 	}
 
 	this.showPagination();
+});
+
+/**
+ * Set a filter
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ *
+ * @param    {string}  field
+ * @param    {*}       value
+ */
+Table.setMethod(function setFilter(field, value) {
+
+	if (!this.filters) {
+		this.filters = {};
+	} else if (this.filters[field] === value) {
+		// Ignore same values
+		return;
+	} else if (this.filters[field] == null && value === '') {
+		// Ignore filters when tabbing into them
+		return;
+	}
+
+	this.filters[field] = value;
+
+	this.loadRemoteData();
 });
 
 /**
@@ -472,7 +583,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.1
  *
  * @param    {Object}   entry
  *
@@ -487,7 +598,8 @@ Table.setMethod(function createDataRow(entry) {
 
 	for (field of this.fieldset) {
 		td = this.createElement('td');
-		value = field.getValueIn(entry);
+
+		value = field.getDisplayValueIn(entry);
 
 		if (value != null) {
 			td.textContent = value;
@@ -519,7 +631,7 @@ Table.setMethod(function createDataRow(entry) {
 
 				if (action.icon) {
 					let alico = this.createElement('al-ico');
-					alico.classList.add(action.icon);
+					alico.setAttribute('type', action.icon);
 					anchor.append(alico);
 				} else {
 					anchor.textContent = action.title || action.name;
@@ -545,8 +657,10 @@ Table.setMethod(function createDataRow(entry) {
  */
 Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
-	let names_row = this.column_names_row,
+	let filter_row = this.column_filters_row,
+	    names_row = this.column_names_row,
 	    anchor,
+	    input,
 	    field,
 	    span,
 	    icon,
@@ -570,7 +684,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		if (field.options.sortable !== false) {
 			col.classList.add('sortable');
 			icon = this.createElement('al-ico');
-			icon.classList.add('sorting-arrow');
+			icon.setAttribute('type', 'sorting-arrow');
 
 			// Wrap it in an anchor
 			anchor = this.createElement('a');
@@ -586,11 +700,23 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		}
 
 		names_row.append(col);
+
+		col = this.createElement('th');
+		input = this.createElement('input');
+		input.dataset.field = field.path;
+		input.classList.add('filter');
+		input.setAttribute('type', 'search');
+		input.setAttribute('aria-label', 'Filter ' + field.title);
+		col.append(input);
+		filter_row.append(col);
 	}
 
 	if (this.has_actions) {
 		col = this.createElement('td');
 		names_row.append(col);
+
+		col = this.createElement('td');
+		filter_row.append(col);
 	}
 
 	this.updateAnchors();
@@ -714,6 +840,7 @@ Table.setMethod(function loadRemoteData() {
 	}
 
 	body.sort = this.getWantedSort();
+	body.filters = this.getWantedFilters();
 
 	let options = {
 		href : this.src,
@@ -743,6 +870,36 @@ Table.setMethod(function loadRemoteData() {
 });
 
 /**
+ * Sort the data
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.1
+ * @version  0.1.1
+ */
+Table.setMethod(function sortData() {
+
+	// If a datasource is set,
+	// let that handle the sorting
+	if (this.src) {
+		return this.loadRemoteData();
+	}
+
+	let records = this.records,
+	    sort = this.getWantedSort();
+
+	let direction = sort.dir == 'asc' ? 1 : -1;
+
+	console.log('Wanted sort:', sort);
+
+	records.sortByPath(direction, sort.field);
+
+	this.records = records;
+
+	this.updateAnchors();
+
+});
+
+/**
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -764,15 +921,44 @@ Table.setMethod(function introduced() {
 			that.sort_field = sorting_anchor.dataset.field;
 			that.sort_dir = sorting_anchor.dataset.sortDir;
 
-			that.loadRemoteData();
+			that.sortData();
 
 			return;
 		}
 
 		if (that.table_body.contains(target)) {
 			that.selectRow(target.queryParents('tr'));
+			return;
 		}
 	});
+
+	this.column_filters_row.addEventListener('change', e => {
+
+		let input = e.target;
+
+		if (input && input.dataset.field) {
+			this.setFilter(input.dataset.field, input.value);
+		}
+	});
+
+	this.column_filters_row.addEventListener('keyup', Function.throttle(e => {
+
+		let input = e.target;
+
+		if (!input) {
+			return;
+		}
+
+		let value = input.value;
+
+		if (value == null || (value.length == 1)) {
+			return;
+		}
+
+		if (input && input.dataset.field) {
+			this.setFilter(input.dataset.field, input.value);
+		}
+	}, 300, false, true));
 
 	let pager = this.querySelector('alchemy-pager');
 

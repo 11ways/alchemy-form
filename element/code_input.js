@@ -60,6 +60,9 @@ CodeInput.setMethod(async function introduced() {
 
 	let editor = ace.edit(editor_el);
 
+	editor.session.setUseWrapMode(true);
+	editor.setFontSize(16);
+
 	this._editor = editor;
 
 	console.log(editor_el, 'EDITOR:', editor);

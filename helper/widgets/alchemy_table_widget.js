@@ -38,6 +38,10 @@ AlchemyTable.setMethod(function populateWidget() {
 		table.page_size = config.page_size;
 	}
 
+	if (config.show_filters) {
+		table.show_filters = config.show_filters;
+	}
+
 	if (config.recordsource) {
 		table.recordsource = config.recordsource;
 	}

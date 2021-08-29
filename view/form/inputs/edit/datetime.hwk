@@ -1,0 +1,13 @@
+<%
+if (value) {
+	value = value.format('Y-m-d H:i:s');
+}
+%>
+<input
+	value=<% value %>
+	class="alchemy-field-value"
+	type="datetime-local"
+	form=<% form_id %>
+	name=<% path %>
+	pattern="\d{4}-\d{2}-\d{2} \d{1,2}:\d{1,2}(?::\d{1,2})?"
+>

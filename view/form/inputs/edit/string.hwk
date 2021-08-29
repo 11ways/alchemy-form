@@ -1,7 +1,13 @@
+{% if alchemy_field.config.options.type %}
+	{% set type = alchemy_field.config.options.type %}
+{% else %}
+	{% set type = "text" %}
+{% /if %}
+
 <input
 	value=<% value %>
 	class="alchemy-field-value"
-	type="text"
+	type={% type %}
 	form=<% form_id %>
 	name=<% path %>
 >

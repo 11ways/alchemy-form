@@ -16,17 +16,17 @@ const Pager = Function.inherits('Alchemy.Element.Form.Base', 'Pager');
  */
 Pager.setTemplate(`<ul>
 	<li class="afp-first">
-		<a href="#"><al-ico class="arrow-left-double"></al-ico></a>
+		<a href="#"><al-ico type="arrow-left-double"></al-ico></a>
 	</li>
 	<li class="afp-prev">
-		<a href="#"><al-ico class="arrow-left"></al-ico></a>
+		<a href="#"><al-ico type="arrow-left"></al-ico></a>
 	</li>
 
 	<li class="afp-next">
-		<a href="#"><al-ico class="arrow-right"></al-ico></a>
+		<a href="#"><al-ico type="arrow-right"></al-ico></a>
 	</li>
 	<li class="afp-last">
-		<a href="#"><al-ico class="arrow-right-double"></al-ico></a>
+		<a href="#"><al-ico type="arrow-right-double"></al-ico></a>
 	</li>
 </ul>`, true);
 
@@ -130,8 +130,6 @@ Pager.setMethod(function getVisiblePagesElements() {
 	}
 
 	this._visible_page_elements = result;
-
-	console.log('There should be', count, 'page links but there are', result.length);
 
 	if (count < result.length) {
 		while (count < result.length) {
