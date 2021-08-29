@@ -676,6 +676,10 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		}
 	}
 
+	if (!this.filters) {
+		this.getWantedFilters();
+	}
+
 	for (field of value) {
 		col = this.createElement('td');
 		span = this.createElement('span');
@@ -707,6 +711,12 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		input.classList.add('filter');
 		input.setAttribute('type', 'search');
 		input.setAttribute('aria-label', 'Filter ' + field.title);
+
+		// If filters have been defined already, put it in the value
+		if (this.filters && this.filters[field.path]) {
+			input.setAttribute('value', this.filters[field.path]);
+		}
+
 		col.append(input);
 		filter_row.append(col);
 	}
