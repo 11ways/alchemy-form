@@ -1,3 +1,5 @@
+## 0.1.2 (WIP)
+
 ## 0.1.1 (2021-09-12)
 
 * `alchemy-table` will now use the `FieldConfig#getDisplayValueIn(data)` method
