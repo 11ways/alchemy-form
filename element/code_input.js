@@ -81,7 +81,4 @@ CodeInput.setMethod(async function introduced() {
 	editor.setFontSize(16);
 
 	this._editor = editor;
-
-	console.log(editor_el, 'EDITOR:', editor);
-
 });

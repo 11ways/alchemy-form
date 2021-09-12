@@ -900,14 +900,11 @@ Table.setMethod(function sortData() {
 
 	let direction = sort.dir == 'asc' ? 1 : -1;
 
-	console.log('Wanted sort:', sort);
-
 	records.sortByPath(direction, sort.field);
 
 	this.records = records;
 
 	this.updateAnchors();
-
 });
 
 /**

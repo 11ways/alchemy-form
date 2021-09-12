@@ -25,8 +25,6 @@ FormApi.setAction(async function related(conduit) {
 
 	const body = conduit.body;
 
-	console.log('Getting related for:', body);
-
 	const model = this.getModel(body.assoc_model);
 
 	let records = await model.find('all');
@@ -35,8 +33,6 @@ FormApi.setAction(async function related(conduit) {
 		available : records.available,
 		records   : records
 	};
-
-	console.log('Responding with:', result);
 
 	conduit.end(result);
 });

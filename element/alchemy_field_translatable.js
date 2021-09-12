@@ -102,7 +102,6 @@ FieldTranslatable.setMethod(function introduced() {
 
 	this.onEventSelector('click', '.prefix-buttons button[data-prefix]', function onClick(e) {
 		e.preventDefault();
-		console.log('Clicked', this.dataset.prefix, this)
 		that.showPrefix(this.dataset.prefix);
 	});
 
