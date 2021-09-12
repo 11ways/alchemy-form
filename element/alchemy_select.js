@@ -387,7 +387,7 @@ AlchemySelect.setMethod(function rendered() {
 	let value = this.value;
 
 	if (value) {
-		this._overwriteValue(value);
+		this._ensureVisualSelection(value);
 	}
 });
 
@@ -586,6 +586,19 @@ AlchemySelect.setMethod(function _overwriteValue(value) {
 	this.assigned_data.value = value;
 
 	this._selectByValue(value);
+});
+
+/**
+ * Ensure visual selection
+ * (This is just a hack around clear_count issues)
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+AlchemySelect.setMethod(function _ensureVisualSelection(value) {
+	this._overwriteValue(value);
+	this.assigned_data.value = value;
 });
 
 /**
@@ -1142,10 +1155,6 @@ AlchemySelect.setMethod(function close(event) {
  * @return   {Alchemy.Element.Form.SelectItem}
  */
 AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
-
-	if (type == 'value') {
-		console.log('Creating value item:', value);
-	}
 
 	let item = this.createElement('alchemy-select-item');
 

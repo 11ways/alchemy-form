@@ -42,6 +42,10 @@ AlchemyField.setMethod(function populateWidget() {
 	let field_el = this.createElement('alchemy-field');
 	field_el.field_name = config.field;
 
+	if (config.view) {
+		field_el.field_view = config.view;
+	}
+
 	this.element.append(field_el);
 });
 

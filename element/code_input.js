@@ -43,6 +43,23 @@ CodeInput.setProperty(function value(value) {
 	if (editor_el) {
 		return editor_el.textContent;
 	}
+}, function setValue(value) {
+
+	if (this._editor) {
+		this._editor.setValue(value);
+
+		// Go to the last line
+		this._editor.gotoLine(this._editor.session.getLength());
+
+		return value;
+	}
+
+	let editor_el = this.querySelector('.code-editor');
+
+	if (editor_el) {
+		return editor_el.textContent = value;
+	}
+
 });
 
 /**

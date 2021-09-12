@@ -46,6 +46,15 @@ Field.setStatic('use_new_renderer_scope', true);
 Field.setAttribute('field-name');
 
 /**
+ * The view override
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.0
+ */
+Field.setAttribute('field-view');
+
+/**
  * Get the parent alchemy-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -257,8 +266,16 @@ Field.enforceProperty(function view_file(new_value, old_value) {
 		    view_type = this.view_type;
 
 		if (config) {
-			let field_type = config.constructor.type_name;
-			return 'form/inputs/' + view_type + '/' + field_type;
+
+			let field_view;
+
+			if (this.field_view) {
+				field_view = this.field_view;
+			} else {
+				field_view = config.constructor.type_name;
+			}
+
+			new_value = 'form/inputs/' + view_type + '/' + field_view;
 		}
 	}
 
