@@ -33,7 +33,7 @@ AlchemyField.constitute(function prepareSchema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.2
  */
 AlchemyField.setMethod(function populateWidget() {
 
@@ -44,6 +44,10 @@ AlchemyField.setMethod(function populateWidget() {
 
 	if (config.view) {
 		field_el.field_view = config.view;
+	}
+
+	if (config.readonly) {
+		field_el.readonly = true;
 	}
 
 	this.element.append(field_el);

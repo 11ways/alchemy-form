@@ -55,6 +55,15 @@ Field.setAttribute('field-name');
 Field.setAttribute('field-view');
 
 /**
+ * Is this a read only field?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.2
+ * @version  0.1.2
+ */
+Field.setAttribute('readonly', {boolean: true});
+
+/**
  * Get the parent alchemy-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>

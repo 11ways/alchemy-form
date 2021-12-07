@@ -108,7 +108,7 @@ Form.setProperty(function main_error_area() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.2
  */
 Form.setProperty(function value() {
 
@@ -124,6 +124,10 @@ Form.setProperty(function value() {
 
 	for (i = 0; i < fields.length; i++) {
 		field = fields[i];
+
+		if (field && field.readonly) {
+			continue;
+		}
 
 		result[field.field_name] = field.value;
 	}
