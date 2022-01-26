@@ -3,6 +3,9 @@ alchemy-select {
 	position: relative;
 	display: block;
 
+	--active-item-bg: #31317a;
+	--active-item-fg: #f5f5f5;
+
 	.dropdown-content,
 	.value-wrapper,
 	.dropdown {
@@ -10,8 +13,6 @@ alchemy-select {
 	}
 
 	&:focus {
-		outline: 0 !important;
-
 		.value-wrapper {
 			border-color: rgba(82, 168, 236, 0.8) !important;
 		}

@@ -403,6 +403,7 @@ AlchemySelect.setMethod(function introduced() {
 	const that = this;
 
 	this._initAttributes();
+	this.enableFocusWithinEvent();
 
 	if (this.sortable) {
 		this.makeSortable();
@@ -416,6 +417,13 @@ AlchemySelect.setMethod(function introduced() {
 			ais.loadOptions(++ais.loaded_page);
 		});
 	}
+
+	this.addEventListener('focus-without', function onFocusOut(e) {
+		that.type_area.value = '';
+		that.refitTypeArea(e);
+		that.applyLocalFilter();
+		that.close();
+	});
 
 	// Give the type area focus when clicking on the wrapper
 	this.wrapper.addEventListener('click', function onClick(e) {
