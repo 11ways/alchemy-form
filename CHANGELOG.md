@@ -1,4 +1,9 @@
-## 0.1.2 (WIP)
+## 0.1.2 (2022-01-28)
+
+* Add readonly attribute to fields
+* Clear text input on focus out + improve accessibility of alchemy-select
+* Add widget settings to alchemy-field
+* Enable setting the language mode of ace editor
 
 ## 0.1.1 (2021-09-12)
 
