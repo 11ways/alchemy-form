@@ -80,5 +80,20 @@ CodeInput.setMethod(async function introduced() {
 	editor.session.setUseWrapMode(true);
 	editor.setFontSize(16);
 
+	let parent_field = this.queryParents('alchemy-field');
+
+	if (parent_field && parent_field.widget_settings && parent_field.widget_settings.language_mode) {
+
+		let mode = parent_field.widget_settings.language_mode;
+
+		// Even though it correctly downloads the language mode file without it,
+		// it still requires the `ace/mode/` prefix
+		if (mode.indexOf('/') == -1) {
+			mode = 'ace/mode/' + mode;
+		}
+
+		editor.session.setMode(mode);
+	}
+
 	this._editor = editor;
 });

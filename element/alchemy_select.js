@@ -438,24 +438,26 @@ AlchemySelect.setMethod(function introduced() {
 
 	this.addEventListener('keydown', function onKeydown(e) {
 
+		console.log('keydown:', e);
+
 		// Only listen for keydowns on the alchemy-select itself
 		if (e.target != that) {
 			return;
 		}
 
-		if (e.key == 'Space' || e.key == 'Enter') {
+		if (e.code == 'Space' || e.code == 'Enter') {
 			that.open(e);
-		} else if (e.key == 'Escape') {
+		} else if (e.code == 'Escape') {
 			that.close(e);
 		}
 	});
 
 	this.dropdown_content.addEventListener('keydown', function onKeydown(e) {
-		if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
+		if (e.code == 'ArrowUp' || e.code == 'ArrowDown') {
 			that.handleArrowKey(e);
-		} else if (e.key == 'Escape') {
+		} else if (e.code == 'Escape') {
 			that.close(e);
-		} else if (e.key == 'Enter') {
+		} else if (e.code == 'Enter') {
 			that.selectFocusedElement(e);
 		}
 	});
@@ -1131,6 +1133,7 @@ AlchemySelect.setMethod(function open(event) {
  * @param    {Event}   event   The optional event
  */
 AlchemySelect.setMethod(function close(event) {
+	this.removeAttribute('aria-activedescendant');
 	this.setAttribute('aria-expanded', 'false');
 	this.type_area.setAttribute('aria-expanded', 'false');
 	this.type_area.setAttribute('tabindex', '-1');
@@ -1138,7 +1141,7 @@ AlchemySelect.setMethod(function close(event) {
 	this.classList.remove('open');
 	this.emit('close');
 
-	if (event === true || (event && event.key == 'Escape')) {
+	if (event === true || (event && event.code == 'Escape')) {
 		this.focus();
 		this.result_info.textContent = 'Gesloten';
 	}
@@ -1311,7 +1314,7 @@ AlchemySelect.setMethod(function handleArrowKey(event) {
 		this.open();
 	}
 
-	if (event.key == 'ArrowUp') {
+	if (event.code == 'ArrowUp') {
 		direction = -1;
 	} else {
 		// Down
@@ -1399,18 +1402,27 @@ AlchemySelect.setMethod(function _focusOnOption(option_element) {
 		option_element = this.dropdown_content.children[option_element];
 	}
 
+	this.setAttribute('aria-activedescendant', null);
+
 	for (i = 0; i < this.dropdown_content.children.length; i++) {
 		element = this.dropdown_content.children[i];
 
 		if (element == option_element) {
 			element.classList.add('focused');
-			element.setAttribute('tabindex', 0);
+			//element.setAttribute('tabindex', 0);
 			this._selected_entry = element._entry;
 			selected_index = i;
-			element.focus();
+
+			//element.focus();
+
+			if (!element.id) {
+				element.id = this.hawkejs_view.getId();
+			}
+
+			this.setAttribute('aria-activedescendant', element.id);
 		} else {
 			element.classList.remove('focused');
-			element.setAttribute('tabindex', '-1');
+			//element.setAttribute('tabindex', '-1');
 		}
 	}
 
@@ -1515,7 +1527,7 @@ AlchemySelect.setMethod(function advanceCaret(direction) {
  */
 AlchemySelect.setMethod(function onTypeAreaKeydown(e, is_input) {
 
-	switch (e.key) {
+	switch (e.code) {
 		case 'ArrowUp':
 		case 'ArrowDown':
 			this.handleArrowKey(e);
@@ -1535,6 +1547,10 @@ AlchemySelect.setMethod(function onTypeAreaKeydown(e, is_input) {
 			}
 
 			this.removeItem(this.type_area.previousSibling);
+			break;
+
+		case 'Enter':
+			this.selectFocusedElement(e);
 			break;
 
 		case 'Delete':
@@ -1557,7 +1573,7 @@ AlchemySelect.setMethod(function onTypeAreaKeydown(e, is_input) {
  */
 AlchemySelect.setMethod(function onTypeAreaKeyup(e, is_input) {
 
-	switch (e.key) {
+	switch (e.code) {
 		case 'ArrowUp':
 		case 'ArrowDown':
 		case 'ArrowLeft':
@@ -1826,13 +1842,13 @@ AlchemySelect.setMethod(function measureString(str, element, event) {
 			code === 32 // space
 		);
 
-		if (event.key == 'Delete' || event.key == 'Backspace') {
+		if (event.code == 'Delete' || event.code == 'Backspace') {
 			selection = this._getSelection(this.type_area);
 			if (selection.length) {
 				str = str.substring(0, selection.start) + str.substring(selection.start + selection.length);
-			} else if (event.key == 'Backspace' && selection.start) {
+			} else if (event.code == 'Backspace' && selection.start) {
 				str = str.substring(0, selection.start - 1) + str.substring(selection.start);
-			} else if (event.key == 'Delete' && typeof selection.start !== 'undefined') {
+			} else if (event.code == 'Delete' && typeof selection.start !== 'undefined') {
 				str = str.substring(0, selection.start) + str.substring(selection.start + 1);
 			}
 		} else if (printable) {

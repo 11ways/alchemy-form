@@ -50,6 +50,10 @@ AlchemyField.setMethod(function populateWidget() {
 		field_el.readonly = true;
 	}
 
+	if (config.widget_settings) {
+		field_el.widget_settings = config.widget_settings;
+	}
+
 	this.element.append(field_el);
 });
 

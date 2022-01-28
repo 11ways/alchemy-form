@@ -64,6 +64,15 @@ Field.setAttribute('field-view');
 Field.setAttribute('readonly', {boolean: true});
 
 /**
+ * Widget settings for use in the views
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.2
+ * @version  0.1.2
+ */
+Field.setAssignedProperty('widget_settings');
+
+/**
  * Get the parent alchemy-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
