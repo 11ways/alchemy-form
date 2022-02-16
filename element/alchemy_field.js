@@ -188,6 +188,24 @@ Field.setProperty(function is_array() {
 });
 
 /**
+ * Is this a schema field?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+ Field.setProperty(function contains_schema() {
+
+	let config = this.config;
+
+	if (config) {
+		return config instanceof Classes.Alchemy.Field.Schema;
+	}
+
+	return false;
+});
+
+/**
  * Is this a translatable field?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -245,6 +263,35 @@ Field.setProperty(function field_description() {
 	}
 
 	return result;
+});
+
+/**
+ * Get the path of this field in the schema
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+Field.setProperty(function field_path_in_schema() {
+	return this.config && this.config.getPath();
+});
+
+/**
+ * Get the name of this entry for use in a record path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ *
+ * @return   {String}
+ */
+ Field.setMethod(function getPathEntryName() {
+
+	if (this.config && this.config.name) {
+		return this.config.name;
+	}
+
+	return '';
 });
 
 /**
@@ -439,7 +486,6 @@ Field.setProperty(function original_value() {
 	if (form && form.document) {
 		return form.document[this.field_name];
 	}
-
 });
 
 /**
@@ -447,7 +493,7 @@ Field.setProperty(function original_value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 Field.setProperty(function value_element() {
 
@@ -458,6 +504,8 @@ Field.setProperty(function value_element() {
 		input = this.querySelector('alchemy-field-translatable');
 	} else if (this.is_array) {
 		input = this.querySelector('alchemy-field-array');
+	} else if (this.contains_schema) {
+		input = this.querySelector('alchemy-field-schema');
 	} else {
 		input = this.querySelector('.alchemy-field-value');
 	}
@@ -470,7 +518,7 @@ Field.setProperty(function value_element() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 Field.setProperty(function value() {
 
@@ -478,6 +526,8 @@ Field.setProperty(function value() {
 
 	if (element) {
 		return element.value;
+	} else {
+		return this.original_value;
 	}
 
 }, function setValue(value) {

@@ -89,3 +89,16 @@ FieldArrayEntry.setProperty(function original_value() {
 		return context_value[this.index];
 	}
 });
+
+/**
+ * Get the name of this entry for use in a record path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ *
+ * @return   {String}
+ */
+FieldArrayEntry.setMethod(function getPathEntryName() {
+	return '' + this.index;
+});

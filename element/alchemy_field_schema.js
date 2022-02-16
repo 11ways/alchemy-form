@@ -23,12 +23,33 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 FieldSchema.setProperty(function schema() {
 
 	if (this.alchemy_field && this.alchemy_field.config.options) {
-		return this.alchemy_field.config.options.schema;
+		let schema = this.alchemy_field.config.options.schema;
+
+		if (typeof schema == 'string') {
+			let other_field = this.getSchemaSupplierField();
+			schema = null;
+
+			console.log('Other field:', other_field, 'of', this)
+
+			if (other_field && other_field.value && other_field.config && other_field.config.options) {
+				let values = other_field.config.options.values;
+
+				if (values) {
+					schema = values[other_field.value];
+
+					if (schema && schema.schema) {
+						schema = schema.schema;
+					}
+				}
+			}
+		}
+
+		return schema;
 	}
 });
 
@@ -37,12 +58,21 @@ FieldSchema.setProperty(function schema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 FieldSchema.setProperty(function sub_fields() {
 
-	if (this.schema) {
-		return this.schema.getSorted();
+	let schema = this.schema;
+
+	if (schema) {
+
+		if (typeof schema != 'object') {
+			throw new Error('Expected a schema object, but found "' + typeof schema + '" instead');
+		}
+
+		if (schema) {
+			return schema.getSorted();
+		}
 	}
 
 	return [];
@@ -73,56 +103,56 @@ FieldSchema.setProperty(function value() {
 	throw new Error('Unable to set value of schema field');
 });
 
-return;
+/**
+ * Get the optional field that is supplying the schema
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+FieldSchema.setMethod(function getSchemaSupplierField() {
 
+	if (!this.alchemy_field || !this.alchemy_field.config || !this.alchemy_field.config.options) {
+		console.log('--no config found?')
+		return;
+	}
 
+	let schema = this.alchemy_field.config.options.schema;
 
+	console.log('Schema is...', schema);
 
+	if (typeof schema == 'string') {
+		let other_field_path = this.resolvePath(schema);
 
+		schema = null;
+	
+		let form = this.alchemy_field.alchemy_form;
+
+		console.log(' -- Got form:', form);
+
+		if (form) {
+			console.log(' -- Looking for path:', other_field_path)
+			return form.findFieldByPath(other_field_path);
+		}
+	}
+});
 
 /**
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @since    0.1.3
+ * @version  0.1.3
  */
-FieldArray.setMethod(function introduced() {
+FieldSchema.setMethod(function introduced() {
 
-	const that = this;
+	let supplier_field = this.getSchemaSupplierField();
 
-	this.onEventSelector('click', '.remove', function onClick(e) {
-
-		e.preventDefault();
-
-		let entry = e.target.queryUp('alchemy-field-array-entry');
-
-		entry.remove();
-	});
-
-	let add_entry = this.querySelector('.add-entry');
-
-	if (add_entry) {
-		add_entry.addEventListener('click', function onClick(e) {
-
-			let field_context = that.field_context,
-			    alchemy_field = that.alchemy_field;
-
-			e.preventDefault();
-
-			let view_files = alchemy_field.view_files;
-
-			if (!view_files || !view_files.length) {
-				throw new Error('Unable to add new entry for ' + alchemy_field.field_title);
-			}
-
-			let new_entry = that.createElement('alchemy-field-array-entry');
-
-			new_entry.alchemy_field_array = that;
-
-			that.entries_element.append(new_entry);
+	if (supplier_field) {
+		supplier_field.addEventListener('change', e => {
+			this.rerender();
 		});
+
+		this.rerender();
 	}
-
 });
-

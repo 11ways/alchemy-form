@@ -124,3 +124,137 @@ Base.setProperty(function wrapper_type() {
 	}
 
 });
+
+/**
+ * Get the path of this field value in the current record
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+Base.setProperty(function field_path_in_record() {
+
+	let result = [],
+	    parent = this.getParentField(),
+		name;
+
+	name = this.getPathEntryName();
+
+	if (name) {
+		result.push(name);
+	}
+
+	while (parent) {
+		name = parent.getPathEntryName();
+
+		if (name) {
+			result.unshift(name);
+		}
+
+		parent = parent.getParentField();
+	}
+
+	return result.join('.');
+});
+
+/**
+ * Get the parent field/field-entry element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ *
+ * @return   {Alchemy.Element.Form.Base}
+ */
+Base.setMethod(function getParentField() {
+
+	let parent = this.parentElement;
+
+	while (parent) {
+
+		if (parent instanceof Classes.Alchemy.Element.Form.Base) {
+			return parent;
+		}
+
+		parent = parent.parentElement;
+	}
+
+	return false;
+});
+
+/**
+ * Get the name of this thing in a record path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ *
+ * @return   {String}
+ */
+Base.setMethod(function getPathEntryName() {
+	return '';
+});
+
+/**
+ * Get this entry's path origin
+ * (The path to the container it's in)
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ *
+ * @return   {String}
+ */
+Base.setMethod(function getPathOrigin() {
+
+	let current = this,
+	    origin;
+
+	while (current) {
+		origin = current.field_path_in_record;
+
+		if (origin) {
+			return origin;
+		}
+
+		current = current.getParentField();
+	}
+});
+
+/**
+ * Resolve the given path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ * 
+ * @param    {String}   name   The name to resolve
+ * @param    {String}   origin The origin to use (optional)
+ *
+ * @return   {String}
+ */
+Base.setMethod(function resolvePath(name, origin) {
+
+	if (origin == null) {
+		origin = this.getPathOrigin();
+	}
+
+	if (!origin) {
+		return name;
+	}
+
+	if (!Array.isArray(origin)) {
+		origin = origin.split('.');
+	} else {
+		origin = origin.slice(0);
+	}
+
+	if (!origin.length) {
+		return name;
+	}
+
+	origin.pop();
+	origin.push(name);
+	
+	return origin.join('.');
+});
