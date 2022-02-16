@@ -1,6 +1,9 @@
 <%
+
 if (value) {
-	value = value.format('Y-m-d H:i:s');
+	// According to MDN `toISOString()` should work,
+	// but neither Chrome or Firefox allow that format (it still contains timezone info)
+	value = value.format('Y-m-d\\TH:i:s');
 }
 %>
 <input

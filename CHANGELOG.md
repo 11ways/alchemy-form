@@ -1,3 +1,7 @@
+## 0.1.3 (WIP)
+
+* Fix datetime fields never showing their value
+
 ## 0.1.2 (2022-01-28)
 
 * Add readonly attribute to fields
