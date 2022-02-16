@@ -4,6 +4,7 @@
 * `alchemy-table` elements will now ignore old loadRemote responses
 * The `index` property of a `alchemy-field-array-entry` element will now return the current, actual index
 * Fix `schema` fields breaking when their schema depends on another field
+* Populate `alchemy-form` with violations from the widget context
 
 ## 0.1.2 (2022-01-28)
 
