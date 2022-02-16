@@ -19,15 +19,6 @@ var FieldArrayEntry = Function.inherits('Alchemy.Element.Form.FieldEntry', funct
 FieldArrayEntry.setTemplateFile('form/elements/alchemy_field_array_entry');
 
 /**
- * The prefix of this translation
- *
- * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-FieldArrayEntry.setAttribute('index');
-
-/**
  * Get a reference to the alchemy-field-array parent
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -41,6 +32,46 @@ FieldArrayEntry.enforceProperty(function alchemy_field_array(new_value, old_valu
 	}
 
 	return new_value;
+});
+
+/**
+ * Get the index of this entry
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+FieldArrayEntry.setProperty(function index() {
+
+	let defined_index = this.getAttribute('index'),
+	    index;
+
+	let container = this.alchemy_field_array;
+
+	if (!container || !container.entries_element) {
+		if (defined_index) {
+			index = +defined_index;
+		}
+	} else {
+		let counter = -1,
+		    child;
+
+		for (let i = 0; i < container.entries_element.children.length; i++) {
+			child = container.entries_element.children[i];
+
+			if (child.tagName == 'ALCHEMY-FIELD-ARRAY-ENTRY') {
+				counter++;
+			}
+
+			if (child == this) {
+				break;
+			}
+		}
+
+		index = counter;
+	}
+
+	return index;
 });
 
 /**

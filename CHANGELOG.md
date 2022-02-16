@@ -2,6 +2,7 @@
 
 * Fix datetime fields never showing their value
 * `alchemy-table` elements will now ignore old loadRemote responses
+* The `index` property of a `alchemy-field-array-entry` element will now return the current, actual index
 
 ## 0.1.2 (2022-01-28)
 
