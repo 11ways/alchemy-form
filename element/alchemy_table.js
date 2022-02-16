@@ -127,6 +127,15 @@ Table.setAttribute('page-size', {number: true});
 Table.setAttribute('show-filters', {boolean: true});
 
 /**
+ * Keep track of the loadRemote calls
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.1.3
+ */
+Table.setProperty('load_remote_counter', 0);
+
+/**
  * Look for changes to the show-filters attribute
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -834,7 +843,7 @@ Table.setMethod(function selectRow(row) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 Table.setMethod(function loadRemoteData() {
 
@@ -859,11 +868,21 @@ Table.setMethod(function loadRemoteData() {
 		body : body
 	};
 
+	let load_remote_id = ++this.load_remote_counter;
+
 	this.delayAssemble(async function() {
+
+		if (load_remote_id != that.load_remote_counter) {
+			return;
+		}
 
 		let result = await that.getResource(options);
 
 		if (!result) {
+			return;
+		}
+
+		if (load_remote_id != that.load_remote_counter) {
 			return;
 		}
 
