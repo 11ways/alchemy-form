@@ -1,6 +1,10 @@
 <%
 
 if (value) {
+
+	// Make sure it's a date
+	value = Date.create(value);
+
 	// According to MDN `toISOString()` should work,
 	// but neither Chrome or Firefox allow that format (it still contains timezone info)
 	value = value.format('Y-m-d\\TH:i:s');
