@@ -30,7 +30,7 @@ AlchemyLabel.setAttribute('for');
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 AlchemyLabel.setMethod(function introduced() {
 
@@ -46,8 +46,16 @@ AlchemyLabel.setMethod(function introduced() {
 			return;
 		}
 
-		element.click();
+		console.log('Clicking', element);
 
+		try {
+			// Trigger a click (for buttons & checkboxes)
+			element.click();
+
+			// Focus on the element (for inputs)
+			element.focus();
+		} catch (err) {
+			console.error('Failed to focus element:', err);
+		}
 	});
-
 });

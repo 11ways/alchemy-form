@@ -5,6 +5,7 @@
 * The `index` property of a `alchemy-field-array-entry` element will now return the current, actual index
 * Fix `schema` fields breaking when their schema depends on another field
 * Populate `alchemy-form` with violations from the widget context
+* Fix `alchemy-label` not always focusing on input after clicking on it
 
 ## 0.1.2 (2022-01-28)
 
