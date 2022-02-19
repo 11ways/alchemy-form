@@ -188,9 +188,13 @@ StringInput.setMethod(async function revalidate(trigger, force) {
 			}
 
 			if (entry.when) {
-				if (entry.when == 'onblur' && (!trigger || trigger.type != 'blur')) {
-					skip_count++;
-					continue;
+
+				// Always check when it's being submitted
+				if (trigger != 'submit') {
+					if (entry.when == 'onblur' && (!trigger || trigger.type != 'blur')) {
+						skip_count++;
+						continue;
+					}
 				}
 			}
 
