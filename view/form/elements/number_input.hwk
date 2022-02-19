@@ -1,0 +1,36 @@
+<label
+	for="nr_input_<% self.getAttribute('input-name') || '' %>"
+>
+	<div class="inputlabel">
+		<span class="label" data-he-slot="label"></span>
+		<span class="description" data-he-slot="description"></span>
+		<hr class="spacer">
+	</div>
+</label>
+
+<div class="row">
+
+	<button
+		class="control minus"
+		tabindex="-1"
+		aria-hidden="true"
+	></button>
+
+	<input
+		class="input"
+		value="<% self.getAttribute('start') %>"
+		min="<% self.getAttribute('min') %>"
+		max="<% self.getAttribute('max') %>"
+		type="number"
+		id="nr_input_<% self.getAttribute('input-name') || '' %>"
+		name=<% self.getAttribute('input-name') || '' %>
+
+		<% if (self.hasAttribute('disabled')) print('disabled="disabled"'); %>
+	>
+
+	<button
+		class="control plus"
+		tabindex="-1"
+		aria-hidden="true"
+	></button>
+</div>

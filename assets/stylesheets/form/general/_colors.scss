@@ -1,0 +1,114 @@
+$color-dark: #000000;
+$color-light: #ffffff;
+
+$color-scorpion: #585858;
+$color-mineshaft: #383838;
+$color-silverchalice: #a8a8a8;
+$color-mercury: #e8e8e8;
+$color-gray: #888888;
+$color-alto: #dddddd;
+$color-mineshaft: #282828;
+$color-alabaster: #f7f7f7;
+$color-dustygray: #989898;
+$color-concrete: #f2f2f2;
+
+$color-light-gray: #e3e3e3;
+$color-light-dark: #1c1c1c;
+
+$color-red: #e5002d;
+$color-guardsman: #cc0000;
+$color-green: #87dd0e;
+$color-jungle-green: #31c063;
+$color-science: #0066cc;
+$color-sunglow: #ffc132;
+$color-bittersweet: #ff6b6b;
+
+$color-facebook: #3a579a;
+$color-messenger: #007fff;
+$color-whatsapp: #57bb63;
+$color-sms: #40c088;
+
+$color-selectlistitem-background: $color-light;
+$color-selectlistitem-background-hover: $color-concrete;
+$color-selectlistitem-heading: $color-dark;
+$color-selectlistitem-title: $color-gray;
+$color-selectlistitem-subtitle: $color-gray;
+$color-selectlistitem-description: $color-scorpion;
+$color-selectlistitem-title-selected: $color-dark;
+$color-selectlistitem-value: $color-dustygray;
+$color-selectlistitem-value-selected: $color-dark;
+$color-selectlistitem-checkmark-fill: $color-green;
+
+$color-meta: $color-dark;
+$color-meta-facebook: $color-facebook;
+$color-meta-success: $color-green;
+$color-meta-error: $color-red;
+$color-meta-info: $color-science;
+$color-meta-extra: $color-scorpion;
+
+$color-button-hover: $color-dark;
+$color-button-hover-dark: $color-light;
+$color-button-color: $color-dark;
+$color-button-light-color: $color-light;
+$color-button-shadow: rgba($color-dark, 0.15);
+$color-button-background: $color-light;
+$color-button-black-background: $color-dark;
+$color-button-green-background: $color-green;
+$color-button-gray-background: $color-gray;
+$color-button-positive-background: $color-green;
+$color-button-negative-background: $color-red;
+$color-button-border: $color-mercury;
+$color-button-mark: $color-green;
+$color-button-light-gray-background: $color-light-gray;
+$color-button-light-gray-color: $color-alabaster;
+
+$color-inputfield-meta: $color-scorpion;
+
+$color-numberinput-background: $color-light;
+$color-numberinput-label: $color-dark;
+$color-numberinput-input: $color-dark;
+
+$color-numberselector-number-border: linear-gradient(
+  0deg,
+  $color-alto,
+  $color-light
+);
+$color-numberselector-number-background: $color-light;
+$color-numberselector-number-color: $color-dustygray;
+$color-numberselector-number-color-hover: $color-dark;
+$color-numberselector-number-background-hover: $color-alabaster;
+$color-numberselector-number-active-color: $color-green;
+
+$color-input-input: $color-dark;
+$color-input-border: linear-gradient(0deg, $color-alto, $color-light);
+$color-input-cross: $color-guardsman;
+$color-input-checkmark: $color-green;
+$color-input-input-background: $color-light;
+$color-input-placeholder: $color-gray;
+$color-input-border-error: linear-gradient(
+  0deg,
+  $color-guardsman,
+  $color-alto 0.1rem,
+  $color-light
+);
+$color-input-border-filled: linear-gradient(
+  0deg,
+  $color-dark,
+  $color-alto 0.1rem,
+  $color-light
+);
+$color-input-border-success: linear-gradient(
+  0deg,
+  $color-green,
+  $color-alto 0.1rem,
+  $color-light
+);
+
+$color-inputlabel-label: $color-dark;
+$color-inputlabel-description: $color-dark;
+
+$color-errorlabel: $color-scorpion;
+$color-errorlabel-accent: $color-guardsman;
+
+$color-successlabel: $color-green;
+$color-successlabel-accent: $color-green;

@@ -6,6 +6,7 @@
 * Fix `schema` fields breaking when their schema depends on another field
 * Populate `alchemy-form` with violations from the widget context
 * Fix `alchemy-label` not always focusing on input after clicking on it
+* Fix `alchemy-string-input` element and add `alchemy-number-input`
 
 ## 0.1.2 (2022-01-28)
 

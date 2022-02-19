@@ -1,0 +1,336 @@
+@import "./general/index.scss";
+
+.textareabox,
+.inputbox {
+	$inputbox: &;
+	position: relative;
+	display: flex;
+	flex-grow: 1;
+
+	background: var(--color-input-border, $color-input-border);
+
+	.input {
+		display: block;
+		flex-grow: 1;
+		margin: 0.1rem;
+		border: 1px solid transparent;
+		outline: none;
+		padding: 1.2rem 2.2rem;
+		min-width: 0;
+
+		background-color: var(--color-input-background, $color-input-input-background);
+
+		font-size: $text-size-input-input;
+		color: var(--color-input-input, $color-input-input);
+		transition: border-color 0.2s ease-in;
+
+		&:focus {
+			border-color: var(--color-input-focus);
+		}
+	}
+
+	&.error {
+		background: var(--color-input-border-error, $color-input-border-error);
+	}
+
+	&.valid {
+		background: var(--color-input-border-filled, $color-input-border-filled);
+
+		&.focus {
+			background: var(--color-input-border-success, $color-input-border-success);
+		}
+	}
+}
+
+.inputfield,
+alchemy-string-input {
+	$inputfield: &;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+
+	& +.rest-fields > string-input:first-of-type {
+		margin-top: 3rem;
+	}
+
+	.inputgrid + &,
+	&:not(.column) + &:not(.column) {
+		margin-top: 3rem;
+	}
+
+	&.closer {
+		margin-top: 1.5rem;
+	}
+
+	.connect {
+		&:not(:first-of-type) {
+			margin-top: 3rem;
+		}
+	}
+
+	&.valid {
+		.icon {
+			&.cross {
+				display: none;
+			}
+
+			&.checkmark {
+				display: block;
+			}
+		}
+	}
+
+	&.error {
+		.icon {
+			&.cross {
+				display: block;
+			}
+
+			&.checkmark {
+				display: none;
+			}
+		}
+	}
+
+	.icon {
+		display: none;
+		position: absolute;
+		height: auto;
+		top: 50%;
+		right: 1rem;
+
+		transform: translateY(-50%) scale(0) rotate(10deg);
+		animation: icon--show 200ms ease-out forwards;
+
+		&.cross {
+			//@extend .customicon, .customicon-cross;
+			font-size: 1rem;
+			color: var(--color-input-cross, $color-input-cross);
+
+			&:before {
+				content: "❌";
+			}
+		}
+
+		&.checkmark {
+			//@extend .customicon, .customicon-checkmark;
+			font-size: 1.2rem;
+			color: var(--color-input-checkmark, $color-input-checkmark);
+
+			&:before {
+				content: "✔";
+			}
+		}
+
+		&.locked {
+			color: var(--color-input-checkmark, $color-input-checkmark);
+		}
+	}
+
+	&[readonly],
+	&[readonly].valid {
+		.checkmark,
+		.cross {
+			display: none;
+		}
+
+		.locked {
+			display: block;
+		}
+
+		&,
+		input {
+			cursor: default;
+		}
+	}
+
+	.meta,
+	.errors,
+	.success {
+		margin-top: 1.8rem;
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	.meta {
+		font-weight: 600;
+		font-size: $text-size-inputfield-meta;
+		color: var(--color-inputfield-meta, $color-inputfield-meta);
+	}
+
+	.inputlabel {
+
+		.spacer {
+			display: none;
+		}
+
+		.label:not(:empty) ~ .spacer,
+		.description:not(:empty) ~ .spacer {
+			display: block;
+			margin-bottom: 0.5rem;
+		}
+	}
+}
+
+alchemy-string-input {
+	.inputlabel {
+		.label {
+			margin-bottom: 0 !important;
+		}
+	}
+}
+
+alchemy-password-input {
+	@extend alchemy-string-input;
+
+	& > label:first-of-type {
+		margin-bottom: 2rem;
+	}
+}
+
+@keyframes icon--show {
+	0% {
+		transform: translateY(-50%) scale(0) rotate(-30deg);
+	}
+
+	100% {
+		transform: translateY(-50%) scale(1) rotate(0deg);
+	}
+}
+
+.inputlabel {
+	display: flex;
+	flex-direction: column;
+
+	.label {
+		color: var(--color-inputlabel-label);
+		font-weight: 700;
+		font-size: $text-size-inputlabel-label;
+		margin-bottom: 0.5rem;
+	}
+
+	.description {
+		margin-top: .4em;
+
+		color: var(--color-inputlabel-description);
+		font-size: $text-size-inputlabel-description;
+	}
+}
+
+.errorlabel {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	font-size: $text-size-errorlabel;
+	color: var(--color--errorlabel, $color-errorlabel);
+
+	.erroricon {
+		font-style: normal;
+
+		&:before {
+			content: "❌";
+		}
+		
+		margin-right: 1rem;
+	}
+
+	strong {
+		color: var(--color-errorlabel-accent, $color-errorlabel-accent);
+	}
+}
+
+.successlabel {
+	font-size: $text-size-successlabel;
+	color: var(--color-successlabel, $color-successlabel);
+	font-weight: initial;
+
+	strong {
+		color: var(--color-successlabel-accent, $color-successlabel-accent);
+	}
+}
+
+alchemy-number-input {
+	$numberinput: &;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	align-items: center;
+
+	.label {
+		margin-bottom: 0 !important;
+		width: 100%;
+
+		color: var(--color-numberinput-label, $color-numberinput-label);
+		font-size: $text-size-numberinput-label;
+		text-align: center;
+	}
+
+	.control {
+		cursor: pointer;
+		border: 0;
+		outline: 0;
+		padding: 0;
+		background: transparent;
+		min-width: 3.5rem;
+
+		font-size: $text-size-numberinput-control;
+		line-height: 0.8;
+
+		&:disabled {
+			cursor: default;
+			opacity: 0.5;
+		}
+
+		&.minus {
+			&:before {
+				content: "-";
+			}
+			//@extend .iconpack, .iconpack-less;
+		}
+
+		&.plus {
+			&:before {
+				content: "+";
+			}
+			//@extend .iconpack, .iconpack-plus;
+		}
+	}
+
+	.input {
+		margin: 0 2rem;
+		border: 0;
+		appearance: none;
+		-moz-appearance: textfield;
+		padding: 2rem 1rem;
+		width: 12rem;
+
+		color: var(--color-numberinput-input, $color-numberinput-input);
+		font-size: $text-size-numberinput-input;
+		font-weight: 800;
+		text-align: center;
+
+		background-color: var(--color-numberinput-background, $color-numberinput-background);
+
+		&::-webkit-inner-spin-button,
+		&::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+	}
+
+	.label {
+		#{ $numberinput }__label {
+			display: block;
+		}
+	}
+
+	.inputlabel {
+		.description:empty {
+			display: none;
+		}
+	}
+}
