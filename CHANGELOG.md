@@ -7,6 +7,7 @@
 * Populate `alchemy-form` with violations from the widget context
 * Fix `alchemy-label` not always focusing on input after clicking on it
 * Fix `alchemy-string-input` element and add `alchemy-number-input`
+* Fix `alchemy-field` not setting the `for` attribute of its label
 
 ## 0.1.2 (2022-01-28)
 

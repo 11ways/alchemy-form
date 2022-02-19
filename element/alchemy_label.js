@@ -46,8 +46,6 @@ AlchemyLabel.setMethod(function introduced() {
 			return;
 		}
 
-		console.log('Clicking', element);
-
 		try {
 			// Trigger a click (for buttons & checkboxes)
 			element.click();

@@ -643,7 +643,7 @@ Field.setMethod(function removeErrors() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.3
  */
 Field.setMethod(function retained() {
 
@@ -657,15 +657,15 @@ Field.setMethod(function retained() {
 		id += this.field_name.slug();
 
 		this.id = id;
+	}
 
-		let label = this.querySelector('.form-field-info alchemy-label');
+	let label = this.querySelector('.form-field-info alchemy-label');
 
-		if (label && this.value_element) {
-			let v_id = id + '_fv';
+	if (label && this.value_element) {
+		let v_id = this.id + '_fv';
 
-			label.setAttribute('for', v_id);
-			this.value_element.setAttribute('id', v_id);
-		}
+		label.setAttribute('for', v_id);
+		this.value_element.setAttribute('id', v_id);
 	}
 
 });
