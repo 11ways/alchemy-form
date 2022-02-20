@@ -1,4 +1,4 @@
-## 0.1.3 (WIP)
+## 0.1.3 (2022-02-20)
 
 * Fix datetime fields never showing their value
 * `alchemy-table` elements will now ignore old loadRemote responses
