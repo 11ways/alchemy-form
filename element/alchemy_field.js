@@ -77,9 +77,24 @@ Field.setAssignedProperty('widget_settings');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
-Field.addParentTypeGetter('alchemy_form', 'alchemy-form');
+Field.enforceProperty(function alchemy_form(new_value) {
+
+	if (new_value == null) {
+		new_value = this.queryUp('alchemy-form');
+
+		if (!new_value && this.field_context) {
+			new_value = this.field_context.queryUp('alchemy-form');
+		}
+
+		if (!new_value && this.alchemy_field_schema && this.alchemy_field_schema.alchemy_field) {
+			new_value = this.alchemy_field_schema.alchemy_field.alchemy_form;
+		}
+	}
+	
+	return new_value;
+});
 
 /**
  * Get the error area

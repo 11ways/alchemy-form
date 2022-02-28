@@ -29,17 +29,64 @@ AlchemyField.constitute(function prepareSchema() {
 });
 
 /**
+ * Find the alchemy-form parent
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.4
+ * @version  0.1.4
+ */
+AlchemyField.enforceProperty(function alchemy_form(new_value) {
+
+	if (!new_value && this.config && this.config.alchemy_form) {
+		new_value = this.config.alchemy_form;
+	}
+
+	if (!new_value) {
+
+		let parent = this.parent_instance;
+		
+		while (parent) {
+
+			new_value = parent.alchemy_form;
+
+			if (new_value) {
+				break;
+			}
+
+			if (parent.element) {
+				new_value = parent.element.querySelector('alchemy-form');
+
+				if (new_value) {
+					break;
+				}
+			}
+			
+			parent = parent.parent_instance;
+		}
+	}
+
+	return new_value;
+});
+
+/**
  * Populate the widget
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.2
+ * @version  0.1.4
  */
 AlchemyField.setMethod(function populateWidget() {
 
 	let config = this.config;
 
+	let alchemy_form = this.alchemy_form;
+
 	let field_el = this.createElement('alchemy-field');
+
+	if (alchemy_form) {
+		field_el.alchemy_form = alchemy_form;
+	}
+
 	field_el.field_name = config.field;
 
 	if (config.view) {

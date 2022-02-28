@@ -116,13 +116,10 @@ FieldSchema.setProperty(function value() {
 FieldSchema.setMethod(function getSchemaSupplierField() {
 
 	if (!this.alchemy_field || !this.alchemy_field.config || !this.alchemy_field.config.options) {
-		console.log('--no config found?')
 		return;
 	}
 
 	let schema = this.alchemy_field.config.options.schema;
-
-	console.log('Schema is...', schema);
 
 	if (typeof schema == 'string') {
 		let other_field_path = this.resolvePath(schema);
@@ -131,10 +128,7 @@ FieldSchema.setMethod(function getSchemaSupplierField() {
 	
 		let form = this.alchemy_field.alchemy_form;
 
-		console.log(' -- Got form:', form);
-
 		if (form) {
-			console.log(' -- Looking for path:', other_field_path)
 			return form.findFieldByPath(other_field_path);
 		}
 	}

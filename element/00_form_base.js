@@ -194,7 +194,7 @@ Base.setProperty(function field_path_in_record() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.1.4
  *
  * @return   {Alchemy.Element.Form.Base}
  */
@@ -209,6 +209,10 @@ Base.setMethod(function getParentField() {
 		}
 
 		parent = parent.parentElement;
+	}
+
+	if (this.field_context) {
+		return this.field_context;
 	}
 
 	return false;

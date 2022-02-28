@@ -2,6 +2,7 @@
 
 * Make fields work with the new `Alchemy.Map.Backed` and `Alchemy.Map.Enum` class
 * Add the `field_path_in_current_schema` property
+* Make sure `alchemy-fields` know which `alchemy-form` they belong to
 
 ## 0.1.3 (2022-02-20)
 
