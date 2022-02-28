@@ -42,7 +42,7 @@ FieldSchema.setProperty(function schema() {
 					if (values instanceof Classes.Alchemy.Map.Backed) {
 						schema = values.get(other_field.value);
 					} else {
-					schema = values[other_field.value];
+						schema = values[other_field.value];
 					}
 
 					if (schema && schema.schema) {
@@ -152,4 +152,41 @@ FieldSchema.setMethod(function introduced() {
 
 		this.rerender();
 	}
+});
+
+/**
+ * Get the original value
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.4
+ * @version  0.1.4
+ */
+FieldSchema.setProperty(function original_value() {
+
+	let field = this.alchemy_field,
+	    path = this.field_path_in_record;
+
+	if (field && path) {
+		let form = field.alchemy_form || this.alchemy_form || this.field_context.alchemy_form;
+
+		if (form) {
+			return Object.path(form.document, path);
+		}
+	}
+
+	let context = this.field_context.alchemy_field_schema,
+	    data;
+
+	if (context) {
+		data = context.original_value;
+	} else {
+		context = this.field_context.alchemy_form || this.alchemy_field.alchemy_form;
+		data = context.document;
+	}
+
+	path = this.field_path_in_current_schema;
+
+	let result = Object.path(data, path);
+
+	return result;
 });

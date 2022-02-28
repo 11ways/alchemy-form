@@ -480,17 +480,20 @@ Field.setProperty(function wrapper_files() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
 Field.setProperty(function original_value() {
 
-	let alchemy_field_schema = this.alchemy_field_schema;
+	let alchemy_field_schema = this.alchemy_field_schema,
+	    path = this.field_path_in_current_schema;
 
 	if (alchemy_field_schema) {
 		let original_schema_value = alchemy_field_schema.original_value;
 
 		if (original_schema_value) {
-			return original_schema_value[this.field_name];
+			if (path) {
+				return Object.path(original_schema_value, path);
+			}
 		}
 
 		return;
@@ -499,7 +502,7 @@ Field.setProperty(function original_value() {
 	let form = this.alchemy_form;
 
 	if (form && form.document) {
-		return form.document[this.field_name];
+		return Object.path(form.document, path);
 	}
 });
 
