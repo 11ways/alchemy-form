@@ -23,7 +23,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.3
+ * @version  0.1.4
  */
 FieldSchema.setProperty(function schema() {
 
@@ -34,13 +34,16 @@ FieldSchema.setProperty(function schema() {
 			let other_field = this.getSchemaSupplierField();
 			schema = null;
 
-			console.log('Other field:', other_field, 'of', this)
-
 			if (other_field && other_field.value && other_field.config && other_field.config.options) {
 				let values = other_field.config.options.values;
 
 				if (values) {
+
+					if (values instanceof Classes.Alchemy.Map.Backed) {
+						schema = values.get(other_field.value);
+					} else {
 					schema = values[other_field.value];
+					}
 
 					if (schema && schema.schema) {
 						schema = schema.schema;

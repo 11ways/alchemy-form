@@ -244,12 +244,16 @@ AlchemySelect.setProperty(function loaded_items() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  *
  * @type     {Number}
  */
 AlchemySelect.setProperty(function loaded_item_count() {
-	return Object.size(this.options.values);
+	if (this.options.values) {
+		return this.options.values.size;
+	} else {
+		return 0;
+	}
 });
 
 /**
@@ -766,7 +770,7 @@ AlchemySelect.setMethod(function _ensureValueData(value) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
 AlchemySelect.setMethod(function _processPreloadedValues() {
 
@@ -784,9 +788,14 @@ AlchemySelect.setMethod(function _processPreloadedValues() {
 	let item,
 	    key;
 
-	for (key in values) {
+	let enum_values = new Classes.Alchemy.Map.Enum(values),
+	    value;
+
+	for (let key of enum_values.keys()) {
+		value = enum_values.get(key);
+
 		response.available++;
-		item = Object.assign({}, values[key]);
+		item = Object.assign({}, value);
 		item.id = key;
 
 		response.items.push(item);
@@ -915,7 +924,7 @@ AlchemySelect.setMethod(function _loadRemote(config) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
 AlchemySelect.setMethod(function recreateDropdownElements() {
 
@@ -925,8 +934,8 @@ AlchemySelect.setMethod(function recreateDropdownElements() {
 
 	Hawkejs.removeChildren(this.dropdown_content);
 
-	for (key in items) {
-		item = items[key];
+	for (let key of items.keys()) {
+		item = items.get(key);
 		item = this._makeOption(item.id, item);
 		this.addToDropdown(item);
 	}
@@ -1157,7 +1166,7 @@ AlchemySelect.setMethod(function close(event) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  *
  * @param    {String}   type    "value" or "option"
  * @param    {Mixed}    value   The actual value of this item
@@ -1188,7 +1197,11 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 			this.options.values = {};
 		}
 
-		this.options.values[value] = data;
+		if (this.options.values instanceof Classes.Alchemy.Map.Enum) {
+			this.options.values.set(value, data);
+		} else {
+			this.options.values[value] = data;
+		}
 	}
 
 	// And the associated data
@@ -1207,8 +1220,12 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 				return
 			}
 
-			if (that.options.values && that.options.values[value]) {
-				data = that.options.values[value];
+			if (that.options.values) {
+				if (that.options.values instanceof Classes.Alchemy.Map.Enum) {
+					data = that.options.values.get(value);
+				} else if (that.options.values[value]) {
+					data = that.options.values[value];
+				}
 			}
 
 			this.data = data;
