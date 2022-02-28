@@ -126,6 +126,38 @@ Base.setProperty(function wrapper_type() {
 });
 
 /**
+ * Get the path of this field value in the current (sub)schema
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.4
+ * @version  0.1.4
+ */
+Base.setProperty(function field_path_in_current_schema() {
+
+	let result = [],
+	    parent = this.getParentField(),
+		name;
+
+	name = this.getPathEntryName();
+
+	if (name) {
+		result.push(name);
+	}
+
+	while (parent && !(parent instanceof Classes.Alchemy.Element.Form.FieldSchema)) {
+		name = parent.getPathEntryName();
+
+		if (name) {
+			result.unshift(name);
+		}
+
+		parent = parent.getParentField();
+	}
+
+	return result.join('.');
+});
+
+/**
  * Get the path of this field value in the current record
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
