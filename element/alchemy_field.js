@@ -3,11 +3,9 @@
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
-var Field = Function.inherits('Alchemy.Element.Form.Base', function Field() {
-	Field.super.call(this);
-});
+const Field = Function.inherits('Alchemy.Element.Form.Base', 'Field');
 
 /**
  * The template to use for the content of this element
@@ -44,6 +42,15 @@ Field.setStatic('use_new_renderer_scope', true);
  * @version  0.1.0
  */
 Field.setAttribute('field-name');
+
+/**
+ * The type of the field
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.4
+ * @version  0.1.4
+ */
+Field.setAttribute('field-type');
 
 /**
  * The view override
@@ -126,7 +133,7 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.4
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
@@ -137,6 +144,12 @@ Field.enforceProperty(function config(new_value, old_value) {
 		if (schema) {
 			new_value = schema.getField(this.field_name);
 		}
+	}
+
+	if (new_value && new_value.constructor && new_value.constructor.type_name) {
+		this.field_type = new_value.constructor.type_name;
+	} else {
+		this.field_type = null;
 	}
 
 	return new_value;
