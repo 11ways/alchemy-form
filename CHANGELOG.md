@@ -5,6 +5,7 @@
 * Make sure `alchemy-fields` know which `alchemy-form` they belong to
 * Improve the `original_value` getters
 * Set the `field-type` attribute of `alchemy-field` elements
+* Fix `alchemy-field` elements sometimes not getting their value elements
 
 ## 0.1.3 (2022-02-20)
 

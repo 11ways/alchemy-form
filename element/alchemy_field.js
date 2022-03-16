@@ -524,7 +524,7 @@ Field.setProperty(function original_value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.3
+ * @version  0.1.4
  */
 Field.setProperty(function value_element() {
 
@@ -537,7 +537,9 @@ Field.setProperty(function value_element() {
 		input = this.querySelector('alchemy-field-array');
 	} else if (this.contains_schema) {
 		input = this.querySelector('alchemy-field-schema');
-	} else {
+	}
+
+	if (!input) {
 		input = this.querySelector('.alchemy-field-value');
 	}
 
