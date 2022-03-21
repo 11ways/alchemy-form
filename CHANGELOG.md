@@ -1,4 +1,4 @@
-## 0.1.5
+## 0.1.5 (2022-03-21)
 
 * Print `alchemy-select-item` contents as text, not html
 * Only get a maximum of 50 related items
