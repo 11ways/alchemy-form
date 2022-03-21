@@ -54,3 +54,35 @@ Item.setAssignedProperty('value');
  * @version  0.1.0
  */
 Item.setAssignedProperty('data');
+
+/**
+ * The parent alchemy-select item
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.5
+ * @version  0.1.5
+ */
+Item.enforceProperty(function alchemy_select(new_value) {
+
+	if (new_value == null) {
+		new_value = this.closest('alchemy-select');
+	}
+
+	return new_value;
+});
+
+/**
+ * The display item
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.5
+ * @version  0.1.5
+ */
+Item.setProperty(function display_title() {
+
+	if (!this.data) {
+		return '';
+	}
+
+	return this.data.title || this.data.name || this.data.username || this.data.$pk || this.value;
+});

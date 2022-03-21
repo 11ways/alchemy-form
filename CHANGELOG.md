@@ -2,6 +2,7 @@
 
 * Print `alchemy-select-item` contents as text, not html
 * Only get a maximum of 50 related items
+* Set the parent `alchemy-select` element when creating `alchemy-select-item` element
 
 ## 0.1.4 (2022-03-16)
 

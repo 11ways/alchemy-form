@@ -1166,7 +1166,7 @@ AlchemySelect.setMethod(function close(event) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.1.5
  *
  * @param    {String}   type    "value" or "option"
  * @param    {Mixed}    value   The actual value of this item
@@ -1183,6 +1183,9 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 
 	// Assign the value
 	item.value = value;
+
+	// Add a reference to this element
+	item.alchemy_select = this;
 
 	if (!data) {
 		data = this.getValueData(value);
