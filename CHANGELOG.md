@@ -1,3 +1,7 @@
+## 0.1.5
+
+* Print `alchemy-select-item` contents as text, not html
+
 ## 0.1.4 (2022-03-16)
 
 * Make fields work with the new `Alchemy.Map.Backed` and `Alchemy.Map.Enum` class
