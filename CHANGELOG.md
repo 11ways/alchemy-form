@@ -1,3 +1,7 @@
+## 0.1.6 (WIP)
+
+* Fix `FormApi#related` action searching through multiple fields in an `and` group
+
 ## 0.1.5 (2022-03-21)
 
 * Print `alchemy-select-item` contents as text, not html
