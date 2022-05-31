@@ -1,4 +1,4 @@
-## 0.1.6 (WIP)
+## 0.1.6 (2022-05-31)
 
 * Fix `FormApi#related` action searching through multiple fields in an `and` group
 * Use microcopy translations in buttons
