@@ -1,2 +1,7 @@
 <% data = self.data %>
-{{ data.title or data.name or data.$pk or self.value }}
+
+{% if self.custom_template %}
+	{% include self.custom_template %}
+{% else %}
+	{{ data.title or data.name or data.$pk or self.value }}
+{% /if %}

@@ -38,6 +38,15 @@ Item.setAttribute('type');
 Item.setAttribute('selected', {boolean: true});
 
 /**
+ * Should a custom template be used?
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ */
+Item.setAttribute('custom-template');
+
+/**
  * The value of this item
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>

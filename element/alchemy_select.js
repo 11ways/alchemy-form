@@ -37,6 +37,26 @@ AlchemySelect.setProperty('_clear_count', 0);
 AlchemySelect.setAttribute('total-item-count', {number: true});
 
 /**
+ * The optional template to use for value items
+ * (The chosen value)
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ */
+AlchemySelect.setAttribute('value-item-template');
+
+/**
+ * The optional template to use for option items
+ * (The items visible in the dropdown)
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ */
+AlchemySelect.setAttribute('option-item-template');
+
+/**
  * The hawkejs template to use
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
@@ -809,11 +829,15 @@ AlchemySelect.setMethod(function _processPreloadedValues() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.6
  *
  * @param    {Object}   response
  */
 AlchemySelect.setMethod(function _processResponseData(response) {
+
+	if (!response) {
+		response = {};
+	}
 
 	if (response.available) {
 		this.total_item_count = response.available;
@@ -822,6 +846,10 @@ AlchemySelect.setMethod(function _processResponseData(response) {
 	let records = response.items || response.records,
 	    record,
 	    item;
+
+	if (!records) {
+		records = [];
+	}
 
 	for (record of records) {
 		item = this._makeOption(record._id || record.id, record);
@@ -1166,7 +1194,7 @@ AlchemySelect.setMethod(function close(event) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.5
+ * @version  0.1.6
  *
  * @param    {String}   type    "value" or "option"
  * @param    {Mixed}    value   The actual value of this item
@@ -1180,6 +1208,13 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 
 	// Set the type ("value" or "option")
 	item.type = type;
+
+	// Set the custom template to use, if any
+	let custom_template = this[type + '-item-template'];
+
+	if (custom_template) {
+		item.custom_template = custom_template;
+	}
 
 	// Assign the value
 	item.value = value;
