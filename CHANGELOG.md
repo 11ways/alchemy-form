@@ -1,6 +1,8 @@
 ## 0.1.6 (WIP)
 
 * Fix `FormApi#related` action searching through multiple fields in an `and` group
+* Use microcopy translations in buttons
+* Add `Action` class for user interaction
 
 ## 0.1.5 (2022-03-21)
 
