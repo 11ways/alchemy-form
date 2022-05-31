@@ -709,7 +709,7 @@ Table.setMethod(function getEntryActions(record, filter) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.7
  *
  * @param    {Object}   entry
  */
@@ -728,7 +728,7 @@ Table.setMethod(function attachContextMenus() {
 		let context_actions = this.getEntryActions(record, 'context');
 
 		if (!context_actions || !context_actions.length) {
-			contintue;
+			continue;
 		}
 
 		let pk = record.$pk || record._id || record.id;

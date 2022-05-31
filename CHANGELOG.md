@@ -1,3 +1,7 @@
+## 0.1.7 (WIP)
+
+* Fix `<alchemy-table>` code typo
+
 ## 0.1.6 (2022-05-31)
 
 * Fix `FormApi#related` action searching through multiple fields in an `and` group
