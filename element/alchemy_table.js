@@ -513,7 +513,7 @@ Table.setMethod(function getCurrentStateUrl() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.6
  *
  * @param    {Array}   records
  */
@@ -530,6 +530,7 @@ Table.setMethod(function setRecords(records) {
 	}
 
 	this.showPagination();
+	this.attachContextMenus();
 });
 
 /**
@@ -593,7 +594,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.1
+ * @version  0.1.6
  *
  * @param    {Object}   entry
  *
@@ -604,7 +605,10 @@ Table.setMethod(function createDataRow(entry) {
 	let field,
 	    value,
 	    tr = this.createElement('tr'),
-	    td;
+	    td,
+		id = entry.$pk || entry._id || entry.id;
+	
+	tr.dataset.pk = id;
 
 	for (field of this.fieldset) {
 		td = this.createElement('td');
@@ -623,31 +627,22 @@ Table.setMethod(function createDataRow(entry) {
 		td.classList.add('aft-actions');
 		tr.append(td);
 
-		let actions;
-
-		if (entry.$hold && entry.$hold.actions) {
-			actions = entry.$hold.actions;
-		} else {
-			actions = entry.$actions;
-		}
+		let actions = this.getEntryActions(entry, 'row');
 
 		if (actions && actions.length) {
+
 			let action,
 			    anchor;
 
+			// Iterate over all the defined actions
 			for (action of actions) {
-				anchor = this.createElement('a');
-				anchor.dataset.name = action.name;
 
-				if (action.icon) {
-					let alico = this.createElement('al-ico');
-					alico.setAttribute('type', action.icon);
-					anchor.append(alico);
-				} else {
-					anchor.textContent = action.title || action.name;
+				anchor = action.constructElement(this);
+
+				if (!anchor) {
+					continue;
 				}
 
-				anchor.setAttribute('href', action.url);
 				td.append(anchor);
 			}
 		}
@@ -656,6 +651,111 @@ Table.setMethod(function createDataRow(entry) {
 	}
 
 	return tr;
+});
+
+/**
+ * Get a list of actions
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ *
+ * @param    {Object}   record
+ * @param    {Stirng}   filter
+ * 
+ * @return   {Alchemy.Form.Action.Action[]}
+ */
+Table.setMethod(function getEntryActions(record, filter) {
+
+	let result = [];
+
+	if (!record) {
+		return result;
+	}
+
+	let actions;
+
+	if (record.$hold && record.$hold.actions) {
+		actions = record.$hold.actions;
+	} else {
+		actions = record.$actions;
+	}
+
+	if(!actions || !actions.length) {
+		return result;
+	}
+
+	for (let action of actions) {
+
+		if (!action.type) {
+			action.type = 'url';
+		}
+
+		// Make sure it's an action instance
+		action = Classes.Alchemy.Form.Action.Action.cast(action);
+
+		if (!action || (filter && !action.isAllowedIn(filter))) {
+			continue;
+		}
+
+		result.push(action);
+	}
+
+	return result;
+});
+
+/**
+ * Add context menus to rows
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ *
+ * @param    {Object}   entry
+ */
+Table.setMethod(function attachContextMenus() {
+
+	if (!Blast.isBrowser) {
+		return;
+	}
+
+	if (!this.assigned_data.records || !this.assigned_data.records.length) {
+		return;
+	}
+
+	for (let record of this.assigned_data.records) {
+
+		let context_actions = this.getEntryActions(record, 'context');
+
+		if (!context_actions || !context_actions.length) {
+			contintue;
+		}
+
+		let pk = record.$pk || record._id || record.id;
+
+		if (!pk) {
+			continue;
+		}
+
+		let tr = this.querySelector('[data-pk="' + pk + '"]');
+
+		if (!tr) {
+			continue;
+		}
+
+		tr.addEventListener('contextmenu', e => {
+
+			this.selectRow(tr);
+
+			let menu = this.createElement('he-context-menu');
+
+			for (let action of context_actions) {
+				action.addToContextMenu(menu);
+			}
+
+			menu.show(e);
+		});
+	}
 });
 
 /**
@@ -931,11 +1031,13 @@ Table.setMethod(function sortData() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.6
  */
 Table.setMethod(function introduced() {
 
 	const that = this;
+
+	this.attachContextMenus();
 
 	this.addEventListener('click', function onClick(e) {
 

@@ -3,6 +3,7 @@
 * Fix `FormApi#related` action searching through multiple fields in an `and` group
 * Use microcopy translations in buttons
 * Add `Action` class for user interaction
+* Add context-menu support to `alchemy-table`
 
 ## 0.1.5 (2022-03-21)
 
