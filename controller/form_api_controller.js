@@ -28,6 +28,7 @@ FormApi.setAction(async function related(conduit) {
 	const model = this.getModel(body.assoc_model);
 	let crit = model.find();
 	crit.limit(50);
+	crit.setOption('scenario', 'related_data');
 
 	if (body.config && body.config.search) {
 		let display_fields = Array.cast(model.displayField);
