@@ -1,0 +1,5 @@
+<alchemy-query-builder
+	class="alchemy-field-value"
+	#value={% value %}
+	#dataprovider={% alchemy_field %}
+></alchemy-query-builder>

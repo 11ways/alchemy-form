@@ -54,3 +54,34 @@ FormApi.setAction(async function related(conduit) {
 
 	conduit.end(result);
 });
+
+
+/**
+ * The related action
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.6
+ * @version  0.1.6
+ *
+ * @param    {Conduit}   conduit
+ */
+FormApi.setAction(async function queryBuilderData(conduit) {
+
+	const body = conduit.body;
+	const config = body.config || {};
+	let result;
+
+	if (body && body.model) {
+		const model = this.getModel(body.model);
+
+		if (body.$pk) {
+			const doc = await model.findByPk(body.$pk);
+
+			if (doc) {
+				result = await doc.loadQueryBuilderData(config);
+			}
+		}
+	}
+
+	conduit.end(result);
+});

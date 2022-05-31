@@ -5,6 +5,7 @@
 * Add `Action` class for user interaction
 * Add context-menu support to `alchemy-table`
 * Add support for using custom templates for `alchemy-select` options
+* Add QueryBuilder
 
 ## 0.1.5 (2022-03-21)
 

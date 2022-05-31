@@ -1,0 +1,7 @@
+<div class="qb-select-item qb-select-type-{% self.type %}">
+	<div class="type-and-name">
+		<span class="option-type" data-type={% data.type_name %}></span>
+		<span class="option-title">{{ data.title or data.name }}</span>
+	</div>
+	<span class="option-description">{{ data.description }}</span>
+</div>

@@ -1,0 +1,6 @@
+<alchemy-query-builder-entry
+	class="alchemy-field-value"
+	type="assignment"
+	#value={% value %}
+	#dataprovider={% alchemy_field %}
+></alchemy-query-builder-entry>

@@ -1,0 +1,64 @@
+<% radio_name = getId('qb') %>
+<% invert_name = getId('qb') %>
+
+<div class="qb-group-header">
+	<div class="qb-group-type">
+		<input
+			id="{% radio_name %}_and"
+			type="radio"
+			name={% radio_name %}
+			value="and"
+		>
+		<label
+			for="{% radio_name %}_and"
+			class="qb-btn"
+		>
+			AND
+		</label>
+
+		<input
+			id="{% radio_name %}_or"
+			type="radio"
+			name={% radio_name %}
+			value="or"
+		>
+		<label
+			for="{% radio_name %}_or"
+			class="qb-btn"
+		>
+			OR
+		</label>
+	</div>
+
+	<div class="qb-group-invert">
+		<input
+			id={% invert_name %}
+			class="group-invert-chk"
+			type="checkbox"
+		>
+		<label
+			for={% invert_name %}
+			class="qb-btn"
+		>
+			NOT
+		</label>
+	</div>
+
+	<div class="qb-group-actions">
+		<button class="qb-add-rule qb-btn qb-primary">
+			Add rule
+		</button>
+		<button class="qb-add-group qb-btn qb-primary">
+			Add group
+		</button>
+		<button class="qb-delete-group qb-btn qb-primary">
+			Delete group
+			<% if (self.is_root_group) $0.hidden = true %>
+		</button>
+	</div>
+</div>
+<div class="qb-group-body">
+	<div class="qb-rules-list">
+
+	</div>
+</div>

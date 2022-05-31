@@ -1,0 +1,10 @@
+<alchemy-select
+	class="qb-source-type"
+	#dataprovider={% self %}
+	value-item-template="form/select/qb_item"
+	option-item-template="form/select/qb_item"
+></alchemy-select>
+
+<div class="qb-value-input-wrapper">
+
+</div>

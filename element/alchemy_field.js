@@ -708,16 +708,33 @@ Field.setMethod(function retained() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.6
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element
  */
-Field.setMethod(function loadData(config, element) {
+Field.setMethod(async function loadData(config, element) {
 
 	let field = this.config;
 
 	if (field) {
+
+		let result;
+
+		if (typeof field.loadData == 'function') {
+
+			try {
+				result = await field.loadData(config, element);
+			} catch (err) {
+				// Ignore
+				console.error('Error loading field data:', err);
+			}
+
+			if (result) {
+				return result;
+			}
+		}
+
 		return this.hawkejs_helpers.Alchemy.getResource({
 			name  : 'FormApi#related',
 			post  : true,
