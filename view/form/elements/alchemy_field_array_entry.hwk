@@ -11,5 +11,7 @@
 	<% include(view_files, variables) %>
 </div>
 <div class="button">
-	<button class="remove">Remove</button>
+	<button class="remove">
+		{%t "remove-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
+	</button>
 </div>

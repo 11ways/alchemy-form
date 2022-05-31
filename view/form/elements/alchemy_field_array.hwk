@@ -2,7 +2,9 @@
 <% view_files = alchemy_field.view_files %>
 <% values = self.original_value %>
 
-<button class="add-entry">Add entry</button>
+<button class="add-entry">
+	{%t "add-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
+</button>
 
 <div class="entries">
 	{% with values as value %}

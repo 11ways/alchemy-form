@@ -10,4 +10,8 @@ alchemy-field-array-entry {
 		align-content: center;
 		padding-left: 0.5rem;
 	}
+
+	.button .remove > * {
+		writing-mode: vertical-rl;
+	}
 }

@@ -34,6 +34,7 @@ alchemy-toggle {
 		height: 36px;
 		flex: 0 0 134px;
 		border-radius: 4px;
+		min-width: 134px;
 
 		transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
 		background: #848484;
@@ -43,6 +44,7 @@ alchemy-toggle {
 		&:after {
 			text-transform: uppercase;
 			text-align: center;
+			box-sizing: inherit;
 		}
 
 		&:before {
