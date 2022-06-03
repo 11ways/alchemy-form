@@ -1,6 +1,7 @@
 ## 0.1.7 (WIP)
 
 * Fix `<alchemy-table>` code typo
+* Fix QueryBuilderGroup value being set incorrectly
 
 ## 0.1.6 (2022-05-31)
 

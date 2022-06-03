@@ -104,7 +104,7 @@ QueryBuilderGroup.setProperty(function group_type() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.7
  */
 QueryBuilderGroup.setProperty(function inverted() {
 
@@ -116,8 +116,17 @@ QueryBuilderGroup.setProperty(function inverted() {
 
 	return false;
 }, function setInverted(value) {
-	let input = this.header.querySelector('.qb-group-invert input');
-	input.checked = value;
+
+	if (!this.assigned_data.value) {
+		this.assigned_data.value = {};
+	}
+
+	this.assigned_data.value.inverted = value;
+
+	if (this.header) {
+		let input = this.header.querySelector('.qb-group-invert input');
+		input.checked = value;
+	}
 });
 
 /**
@@ -125,7 +134,7 @@ QueryBuilderGroup.setProperty(function inverted() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.7
  */
 QueryBuilderGroup.setProperty(function value() {
 
@@ -148,6 +157,13 @@ QueryBuilderGroup.setProperty(function value() {
 	}
 
 	return result;
+}, function setValue(value) {
+
+	this.assigned_data.value = value;
+
+	if (this.has_rendered) {
+		this.applyValue(value);
+	}
 });
 
 /**
@@ -155,7 +171,7 @@ QueryBuilderGroup.setProperty(function value() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.7
  */
 QueryBuilderGroup.setMethod(function applyValue(value) {
 
@@ -163,15 +179,25 @@ QueryBuilderGroup.setMethod(function applyValue(value) {
 		return;
 	}
 
+	// Keep track of how many time a value has been applied
+	// (needed for the initial value setter)
+	if (!this.applied_value_counter) {
+		this.applied_value_counter = 0;
+	}
+
+	this.applied_value_counter++;
+
 	this.inverted = value.inverted;
 	this.group_type = value.condition;
+
+	Hawkejs.removeChildren(this.rules_list);
 
 	if (value.rules && value.rules.length) {
 		let element,
 		    rule;
 
 		for (rule of value.rules) {
-			if (rule.type == 'field') {
+			if (rule.type == 'qb_entry') {
 				element = this.createElement('alchemy-query-builder-entry');
 			} else {
 				element = this.createElement('alchemy-query-builder-group');
@@ -188,7 +214,7 @@ QueryBuilderGroup.setMethod(function applyValue(value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.7
  */
 QueryBuilderGroup.setMethod(function introduced() {
 
@@ -215,7 +241,8 @@ QueryBuilderGroup.setMethod(function introduced() {
 		this.remove();
 	});
 
-	if (this.assigned_data.value) {
+	// Apply the value if it hasn't been done already
+	if (this.assigned_data.value && !this.applied_value_counter) {
 		this.applyValue(this.assigned_data.value);
 	}
 });
