@@ -154,8 +154,18 @@ VariableDefinition.setStatic(function addLogicalOperator(name, config) {
 		config = {};
 	}
 
-	if(!config.title) {
+	if (!config.title) {
 		config.title = name.titleize();
+	}
+
+	// By default logical operators have a binary arity:
+	// they take 2 operands. The value of the variable + another value.
+	if (!config.arity) {
+		config.arity = 'binary';
+	}
+
+	if (config.arity != 'unary' && config.arity != 'binary' && config.arity != 'ternary') {
+		throw new Error('Unable to add Logical operator "' + name + '" to ' + this.name + ', unknown arity: "' + config.arity);
 	}
 
 	config.id = name;
@@ -185,8 +195,18 @@ VariableDefinition.setStatic(function addAssignmentOperator(name, config) {
 		config = {};
 	}
 
-	if(!config.title) {
+	if (!config.title) {
 		config.title = name.titleize();
+	}
+
+	// By default assignment operators have a binary arity:
+	// they take 2 operands. The value of the variable + another value
+	if (!config.arity) {
+		config.arity = 'binary';
+	}
+
+	if (config.arity != 'unary' && config.arity != 'binary' && config.arity != 'ternary') {
+		throw new Error('Unable to add Assignment operator "' + name + '" to ' + this.name + ', unknown arity: "' + config.arity);
 	}
 
 	config.id = name;
@@ -330,7 +350,7 @@ VariableDefinition.addLogicalOperator('not_equals');
  * @since    0.1.6
  * @version  0.1.6
  */
-VariableDefinition.addLogicalOperator('is_empty');
+VariableDefinition.addLogicalOperator('is_empty', {arity: 'unary'});
 
 /**
  * The `is_null` operator
@@ -339,7 +359,7 @@ VariableDefinition.addLogicalOperator('is_empty');
  * @since    0.1.6
  * @version  0.1.6
  */
-VariableDefinition.addLogicalOperator('is_null');
+VariableDefinition.addLogicalOperator('is_null', {arity: 'unary'});
 
 /**
  * The `set` operator sets a value

@@ -1,0 +1,6 @@
+<alchemy-select
+	class="qb-variable"
+	#dataprovider={% self %}
+	value-item-template="form/select/qb_item"
+	option-item-template="form/select/qb_item"
+></alchemy-select>

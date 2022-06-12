@@ -2,6 +2,9 @@
 
 * Fix `<alchemy-table>` code typo
 * Fix QueryBuilderGroup value being set incorrectly
+* Add `<alchemy-query-builder-value>` element
+* Add `<alchemy-query-builder-variable>` element
+* Add List variable definition, which can contain other variables
 
 ## 0.1.6 (2022-05-31)
 

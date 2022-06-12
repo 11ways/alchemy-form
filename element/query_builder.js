@@ -73,7 +73,7 @@ QueryBuilder.setMethod(function applyValue(value) {
 		return;
 	}
 
-	this.root_group.applyValue(value);
+	this.root_group.value = value;
 });
 
 /**
