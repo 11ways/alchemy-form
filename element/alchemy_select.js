@@ -404,7 +404,7 @@ AlchemySelect.setProperty(function search_value() {
 
 	// If the search value changed, nullify the last page result
 	if (this.previous_search_value != result) {
-		this.last_page_result = null;
+		this.setLastSuccessfulLoadedPage(null);
 	}
 
 	this.previous_search_value = result;
@@ -494,8 +494,6 @@ AlchemySelect.setMethod(function introduced() {
 	});
 
 	this.addEventListener('keydown', function onKeydown(e) {
-
-		console.log('keydown:', e);
 
 		// Only listen for keydowns on the alchemy-select itself
 		if (e.target != that) {
@@ -916,9 +914,9 @@ AlchemySelect.setMethod(function _processResponseList(list, page) {
 	// If there were values & they come from a page, record this as a succesful page
 	if (page != null && list.length) {
 		if (!this.last_page_result) {
-			this.last_page_result = page;
+			this.setLastSuccessfulLoadedPage(page);
 		} else if (page > this.last_page_result) {
-			this.last_page_result = page;
+			this.setLastSuccessfulLoadedPage(page);
 		}
 	}
 });
@@ -949,6 +947,10 @@ AlchemySelect.setMethod(function loadRemote(page) {
 		return pledge;
 	}
 
+	if (page == null) {
+		page = 1;
+	}
+
 	const that = this;
 
 	this.loading_dropdown = true;
@@ -968,7 +970,7 @@ AlchemySelect.setMethod(function loadRemote(page) {
 			throw err;
 		}
 
-		if (page == null) {
+		if (page == null || page == 1) {
 			Hawkejs.removeChildren(that.dropdown_content);
 		}
 
@@ -1063,7 +1065,19 @@ AlchemySelect.setMethod(function _markSelectedItems() {
 			}
 		}
 	}
+});
 
+/**
+ * Set the last successful loaded page
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.1.8
+ * @version  0.1.8
+ *
+ * @param    {Number}   page
+ */
+AlchemySelect.setMethod(function setLastSuccessfulLoadedPage(page) {
+	this.last_page_result = page;
 });
 
 /**
@@ -1089,12 +1103,18 @@ AlchemySelect.setMethod(function loadOptions(page) {
 		return;
 	}
 
-	if (this.last_page_result) {
+	if (page && this.last_page_result) {
 		let next_allowed_page = this.last_page_result + 1;
 
 		if (page > next_allowed_page) {
 			return;
 		}
+	}
+
+	// If stuff has already been loaded and this is just re-opening the dropdown,
+	// don't do anything yet
+	if (page == null && this.last_page_result > 0) {
+		return;
 	}
 
 	// If an URL is provided, use that
@@ -1762,9 +1782,10 @@ AlchemySelect.setMethod(function applyLocalFilter(query) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  */
 AlchemySelect.setMethod('refreshRemote', Fn.throttle(function refreshRemote() {
+	this.loaded_page = 0;
 	this.loadRemote();
 }, {
 	minimum_wait  : 350,
