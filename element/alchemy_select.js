@@ -904,6 +904,12 @@ AlchemySelect.setMethod(function _processResponseList(list, page) {
 	let record,
 	    item;
 
+	if (page == 1 && this.current_option && this.current_option.data) {
+		record = this.current_option.data;
+		item = this._makeOption(record._id || record.id, record);
+		this.addToDropdown(item);
+	}
+
 	for (record of list) {
 		item = this._makeOption(record._id || record.id, record);
 		this.addToDropdown(item);

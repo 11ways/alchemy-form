@@ -2,6 +2,6 @@
 	class="alchemy-field-value"
 ><%
 $0.dataprovider = alchemy_field;
-$0.value = value;
 $0.name = path;
+$0.value = value;
 %></alchemy-select>

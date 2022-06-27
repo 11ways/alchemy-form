@@ -17,20 +17,23 @@ const FormApi = Function.inherits('Alchemy.Controller', 'FormApi');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.1.8
  *
  * @param    {Conduit}   conduit
  */
 FormApi.setAction(async function related(conduit) {
 
-	const body = conduit.body;
+	const body = conduit.body || {},
+	      config = body.config || {};
 
 	const model = this.getModel(body.assoc_model);
 	let crit = model.find();
 	crit.limit(50);
 	crit.setOption('scenario', 'related_data');
 
-	if (body.config && body.config.search) {
+	if (config.value) {
+		crit.where(model.primary_key).equals(config.value);
+	} else if (config.search) {
 		let display_fields = Array.cast(model.displayField);
 
 		let or = crit.or();
@@ -43,6 +46,10 @@ FormApi.setAction(async function related(conduit) {
 
 			or.where(field).equals(rx);
 		}
+	}
+
+	if (config.page) {
+		crit.page(config.page);
 	}
 
 	let records = await model.find('all', crit);
