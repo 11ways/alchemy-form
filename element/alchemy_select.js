@@ -5,9 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var AlchemySelect = Function.inherits('Alchemy.Element.Form.Base', function Select() {
-	Select.super.call(this);
-});
+const AlchemySelect = Function.inherits('Alchemy.Element.Form.Base', 'Select');
 
 /**
  * The remote url attribute
@@ -400,6 +398,33 @@ AlchemySelect.setProperty(function search_value() {
 });
 
 /**
+ * Make sure the pagination watcher exists
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.8
+ */
+AlchemySelect.setStatic(function ensurePaginationChecker() {
+
+	if (AlchemySelect.has_paginator_viewer) {
+		return;
+	}
+
+	// Only ever add 1 viewer per page
+	AlchemySelect.has_paginator_viewer = true;
+
+	hawkejs.scene.appears('js-he-ais-pager', {live: true, padding: 10, throttle: 200}, function onInfinity(el) {
+
+		if (!el.parentElement || !el.parentElement.parentElement) {
+			return;
+		}
+
+		const alchemy_select_instance = el.parentElement.parentElement;
+		alchemy_select_instance.loadOptions(++alchemy_select_instance.loaded_page);
+	});
+});
+
+/**
  * This element rendered its contents
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -420,7 +445,7 @@ AlchemySelect.setMethod(function rendered() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  */
 AlchemySelect.setMethod(function introduced() {
 
@@ -433,14 +458,7 @@ AlchemySelect.setMethod(function introduced() {
 		this.makeSortable();
 	}
 
-	if (!AlchemySelect.has_paginator_viewer) {
-		AlchemySelect.has_paginator_viewer = true;
-
-		hawkejs.scene.appears('js-he-ais-pager', {live: true, padding: 10, throttle: 200}, function onInfinity(el) {
-			var ais = el.parentElement.parentElement;
-			ais.loadOptions(++ais.loaded_page);
-		});
-	}
+	AlchemySelect.ensurePaginationChecker();
 
 	this.addEventListener('focus-without', function onFocusOut(e) {
 		that.type_area.value = '';

@@ -1,3 +1,7 @@
+## 0.1.8 (WIP)
+
+* Move the `alchemy-select` pagination checker initializer to a static function
+
 ## 0.1.7 (2022-06-12)
 
 * Fix `<alchemy-table>` code typo
