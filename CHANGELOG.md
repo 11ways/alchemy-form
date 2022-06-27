@@ -1,6 +1,7 @@
 ## 0.1.8 (WIP)
 
 * Move the `alchemy-select` pagination checker initializer to a static function
+* Prevent `alchemy-select` from keeping on loading remote data when last few results were empty
 
 ## 0.1.7 (2022-06-12)
 

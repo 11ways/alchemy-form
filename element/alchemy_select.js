@@ -387,14 +387,29 @@ AlchemySelect.setProperty(function loading_dropdown() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  */
 AlchemySelect.setProperty(function search_value() {
-	var type_area = this.type_area;
+
+	let type_area = this.type_area,
+	    result = '';
 
 	if (type_area) {
-		return type_area.value;
+		result = type_area.value;
 	}
+
+	if (this.previous_search_value == null) {
+		this.previous_search_value = '';
+	}
+
+	// If the search value changed, nullify the last page result
+	if (this.previous_search_value != result) {
+		this.last_page_result = null;
+	}
+
+	this.previous_search_value = result;
+
+	return result;
 });
 
 /**
@@ -847,11 +862,12 @@ AlchemySelect.setMethod(function _processPreloadedValues() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.1.8
  *
  * @param    {Object}   response
+ * @param    {Number}   page       The page, if it's via pagination
  */
-AlchemySelect.setMethod(function _processResponseData(response) {
+AlchemySelect.setMethod(function _processResponseData(response, page) {
 
 	if (!response) {
 		response = {};
@@ -869,14 +885,42 @@ AlchemySelect.setMethod(function _processResponseData(response) {
 		records = [];
 	}
 
-	for (record of records) {
+	this._processResponseList(records, page);
+
+	this.refreshResultAmount();
+	this._markSelectedItems();
+});
+
+/**
+ * Process the response list of a certain paige
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.8
+ * @version  0.1.8
+ *
+ * @param    {Array}   list
+ * @param    {Number}  page
+ */
+AlchemySelect.setMethod(function _processResponseList(list, page) {
+
+	let record,
+	    item;
+
+	for (record of list) {
 		item = this._makeOption(record._id || record.id, record);
 		this.addToDropdown(item);
 	}
 
 	this.loading_dropdown = false;
-	this.refreshResultAmount();
-	this._markSelectedItems();
+
+	// If there were values & they come from a page, record this as a succesful page
+	if (page != null && list.length) {
+		if (!this.last_page_result) {
+			this.last_page_result = page;
+		} else if (page > this.last_page_result) {
+			this.last_page_result = page;
+		}
+	}
 });
 
 /**
@@ -884,7 +928,7 @@ AlchemySelect.setMethod(function _processResponseData(response) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  *
  * @param    {Number}   page
  *
@@ -928,7 +972,7 @@ AlchemySelect.setMethod(function loadRemote(page) {
 			Hawkejs.removeChildren(that.dropdown_content);
 		}
 
-		that._processResponseData(data);
+		that._processResponseData(data, page);
 
 		pledge.resolve(true);
 	};
@@ -1027,15 +1071,13 @@ AlchemySelect.setMethod(function _markSelectedItems() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  *
  * @param    {Number}   page
  */
 AlchemySelect.setMethod(function loadOptions(page) {
 
-	var that = this,
-	    model,
-	    field;
+	const that = this;
 
 	if (this.total_item_count >= this.loaded_item_count) {
 		if (this.dropdown_content.children.length == 0) {
@@ -1047,12 +1089,20 @@ AlchemySelect.setMethod(function loadOptions(page) {
 		return;
 	}
 
+	if (this.last_page_result) {
+		let next_allowed_page = this.last_page_result + 1;
+
+		if (page > next_allowed_page) {
+			return;
+		}
+	}
+
 	// If an URL is provided, use that
 	if (this.src || this.dataprovider) {
 		return this.loadRemote(page);
 	}
 
-	field = this.model_field;
+	let field = this.model_field;
 
 	if (!field) {
 		return;
@@ -1060,7 +1110,7 @@ AlchemySelect.setMethod(function loadOptions(page) {
 
 	this.loading_dropdown = true;
 
-	model = this.form.getModel(field.modelName);
+	let model = this.form.getModel(field.modelName);
 
 	model.find('all', {
 		limit : 20,
@@ -1071,12 +1121,7 @@ AlchemySelect.setMethod(function loadOptions(page) {
 			throw err;
 		}
 
-		records.forEach(function eachRecord(record) {
-			var item = that._makeOption(record._id || record.id, record);
-			that.addToDropdown(item);
-		});
-
-		that.loading_dropdown = false;
+		that._processResponseList(records, page);
 	});
 });
 
