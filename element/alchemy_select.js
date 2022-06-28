@@ -1109,12 +1109,20 @@ AlchemySelect.setMethod(function loadOptions(page) {
 		return;
 	}
 
+	// Prevent it from keeping on loading empty pages if the previous page was empty
 	if (page && this.last_page_result) {
 		let next_allowed_page = this.last_page_result + 1;
 
 		if (page > next_allowed_page) {
 			return;
 		}
+	}
+
+	// Previous page will only be set to the last page that had items.
+	// So if there are 0 results overall, it won't ever be set.
+	// In that case: ignore any page load over 1.
+	if (page > 1 && !this.last_page_result) {
+		return;
 	}
 
 	// If stuff has already been loaded and this is just re-opening the dropdown,
