@@ -102,7 +102,6 @@ alchemy-select {
 		font-family: inherit;
 		font-size: 13px;
 		line-height: 18px;
-		-webkit-font-smoothing: inherit;
 		display: inline-block !important;
 		padding: 0 !important;
 		min-height: 0 !important;
@@ -113,11 +112,10 @@ alchemy-select {
 		border: 0 none !important;
 		background: none !important;
 		line-height: inherit !important;
-		-webkit-user-select: auto !important;
-		-webkit-box-shadow: none !important;
 		box-shadow: none !important;
 		outline: none !important;
 		flex: 0 1 auto;
+		margin-right: 20px !important;
 	}
 
 	.dropdown {
