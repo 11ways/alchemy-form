@@ -133,7 +133,7 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.1.8
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
@@ -148,7 +148,7 @@ Field.enforceProperty(function config(new_value, old_value) {
 
 	if (new_value && new_value.constructor && new_value.constructor.type_name) {
 		this.field_type = new_value.constructor.type_name;
-	} else {
+	} else if (new_value) {
 		this.field_type = null;
 	}
 
@@ -493,9 +493,13 @@ Field.setProperty(function wrapper_files() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.1.8
  */
 Field.setProperty(function original_value() {
+
+	if (this.assigned_data.original_value != null) {
+		return this.assigned_data.original_value;
+	}
 
 	let alchemy_field_schema = this.alchemy_field_schema,
 	    path = this.field_path_in_current_schema;
@@ -517,6 +521,8 @@ Field.setProperty(function original_value() {
 	if (form && form.document) {
 		return Object.path(form.document, path);
 	}
+}, function setOriginalValue(value) {
+	return this.assigned_data.original_value = value;
 });
 
 /**
@@ -551,7 +557,7 @@ Field.setProperty(function value_element() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.3
+ * @version  0.1.8
  */
 Field.setProperty(function value() {
 
@@ -569,8 +575,9 @@ Field.setProperty(function value() {
 
 	if (element) {
 		element.value = value;
+	} else if (this.original_value == null) {
+		this.original_value = value;
 	}
-
 });
 
 /**

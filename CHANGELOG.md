@@ -5,7 +5,8 @@
 * Fix pagination breaking re-opening of `alchemy-select` dropdown
 * Fix initial value of a `BelongsTo` `alchemy-select` element not loading
 * Fix `alchemy-select` downward-arrow-icon being rendered over value content
-* Use `alchemy-code-input` for HTML fields 
+* Use `alchemy-code-input` for HTML fields
+* Allow manually setting a value on `alchemy-field` elements
 
 ## 0.1.7 (2022-06-12)
 
