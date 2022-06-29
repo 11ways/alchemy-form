@@ -7,6 +7,7 @@
 * Fix `alchemy-select` downward-arrow-icon being rendered over value content
 * Use `alchemy-code-input` for HTML fields
 * Allow manually setting a value on `alchemy-field` elements
+* Try to let `Field` instances decide the representation of values in `alchemy-table` elements
 
 ## 0.1.7 (2022-06-12)
 

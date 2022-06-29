@@ -590,11 +590,48 @@ Table.setMethod(function showPagination() {
 });
 
 /**
+ * Get a fieldset's preferred content view
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.8
+ * @version  0.1.8
+ *
+ * @param    {FieldConfig}   field_config   The config on how to display the field
+ * @param    {Object}        container      The container where the field should be in
+ *
+ * @return   
+ */
+Table.setMethod(function getFieldConfigView(field_config, container) {
+
+	let value = field_config.getValueIn(container),
+	    field = field_config.getFieldDefinition();
+	
+	if (value == null && !field) {
+		return null;
+	}
+
+	// Fallback to simple text view
+	if (!field) {
+		let text = field_config.getDisplayValueIn(container);
+
+		return Hawkejs.createText(text);
+	}
+
+	let alchemy_field = this.createElement('alchemy-field');
+	alchemy_field.view_type = 'view_inline';
+	alchemy_field.field_name = field.name;
+	alchemy_field.config = field;
+	alchemy_field.original_value = value;
+
+	return alchemy_field;
+});
+
+/**
  * Create a datarow
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.1.8
  *
  * @param    {Object}   entry
  *
@@ -602,7 +639,7 @@ Table.setMethod(function showPagination() {
  */
 Table.setMethod(function createDataRow(entry) {
 
-	let field,
+	let field_set_config,
 	    value,
 	    tr = this.createElement('tr'),
 	    td,
@@ -610,13 +647,13 @@ Table.setMethod(function createDataRow(entry) {
 	
 	tr.dataset.pk = id;
 
-	for (field of this.fieldset) {
+	for (field_set_config of this.fieldset) {
 		td = this.createElement('td');
 
-		value = field.getDisplayValueIn(entry);
+		let element = this.getFieldConfigView(field_set_config, entry);
 
-		if (value != null) {
-			td.textContent = value;
+		if (element) {
+			td.append(element);
 		}
 
 		tr.append(td);
