@@ -8,6 +8,7 @@
 * Use `alchemy-code-input` for HTML fields
 * Allow manually setting a value on `alchemy-field` elements
 * Try to let `Field` instances decide the representation of values in `alchemy-table` elements
+* Don't open the `alchemy-table` contextmenu when clicking on anchors
 
 ## 0.1.7 (2022-06-12)
 

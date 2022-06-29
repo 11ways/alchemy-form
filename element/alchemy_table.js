@@ -746,7 +746,7 @@ Table.setMethod(function getEntryActions(record, filter) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.7
+ * @version  0.1.8
  *
  * @param    {Object}   entry
  */
@@ -781,6 +781,13 @@ Table.setMethod(function attachContextMenus() {
 		}
 
 		tr.addEventListener('contextmenu', e => {
+
+			// Ignore right clicks on certain elements
+			if (e && e.target) {
+				if (e.target.closest('a')) {
+					return;
+				}
+			}
 
 			this.selectRow(tr);
 
