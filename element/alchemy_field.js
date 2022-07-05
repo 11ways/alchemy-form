@@ -35,6 +35,15 @@ Field.setStylesheetFile('form/alchemy_field');
 Field.setStatic('use_new_renderer_scope', true);
 
 /**
+ * The data source url/route to use
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.9
+ * @version  0.1.9
+ */
+Field.setAttribute('data-src');
+
+/**
  * The name of the field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -715,7 +724,7 @@ Field.setMethod(function retained() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.1.9
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element
@@ -742,7 +751,7 @@ Field.setMethod(async function loadData(config, element) {
 			}
 		}
 
-		return this.hawkejs_helpers.Alchemy.getResource({
+		let resource_options = {
 			name  : 'FormApi#related',
 			post  : true,
 			body  : {
@@ -751,7 +760,13 @@ Field.setMethod(async function loadData(config, element) {
 				assoc_model  : field.options.modelName,
 				config       : config,
 			}
-		});
+		};
+
+		if (this.data_src) {
+			resource_options.name = this.data_src;
+		}
+
+		return this.hawkejs_helpers.Alchemy.getResource(resource_options);
 	}
 
 });

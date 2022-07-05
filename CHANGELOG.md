@@ -1,3 +1,7 @@
+## 0.1.9 (WIP)
+
+* Allow supplying a custom `data-src` to `alchemy-field` elements
+
 ## 0.1.8 (2022-06-29)
 
 * Move the `alchemy-select` pagination checker initializer to a static function
