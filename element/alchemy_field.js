@@ -169,7 +169,7 @@ Field.enforceProperty(function config(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.9
  */
 Field.enforceProperty(function schema(new_value, old_value) {
 
@@ -190,15 +190,10 @@ Field.enforceProperty(function schema(new_value, old_value) {
 		let model_name = this.model;
 
 		if (model_name) {
-			// @TODO: Always get the Client-side model here
-			let model = alchemy.getModel(model_name);
+			let model = alchemy.getClientModel(model_name);
 
 			if (model) {
 				new_value = model.schema;
-
-				if (Blast.isNode) {
-					new_value = JSON.clone(new_value, 'toHawkejs');
-				}
 			}
 		}
 	}
