@@ -3,6 +3,7 @@
 * Allow supplying a custom `data-src` to `alchemy-field` elements
 * Add `view` templates for File & Datetime fields
 * Use the new `alchemy.getClientModel()` method in `alchemy-field` element
+* Add `alchemy-password-input` element
 
 ## 0.1.8 (2022-06-29)
 
