@@ -1,6 +1,7 @@
 ## 0.1.9 (WIP)
 
 * Allow supplying a custom `data-src` to `alchemy-field` elements
+* Add `view` templates for File & Datetime fields
 
 ## 0.1.8 (2022-06-29)
 
