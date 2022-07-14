@@ -86,7 +86,7 @@ FieldArray.setMethod(function introduced() {
 			let view_files = alchemy_field.view_files;
 
 			if (!view_files || !view_files.length) {
-				throw new Error('Unable to add new entry for ' + alchemy_field.field_title);
+				throw new Error('Unable to add new entry for field "' + alchemy_field.field_title + '", no view files found');
 			}
 
 			let new_entry = that.createElement('alchemy-field-array-entry');

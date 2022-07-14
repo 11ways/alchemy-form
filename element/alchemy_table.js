@@ -594,7 +594,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.8
- * @version  0.1.8
+ * @version  0.1.10
  *
  * @param    {FieldConfig}   field_config   The config on how to display the field
  * @param    {Object}        container      The container where the field should be in
@@ -604,7 +604,13 @@ Table.setMethod(function showPagination() {
 Table.setMethod(function getFieldConfigView(field_config, container) {
 
 	let value = field_config.getValueIn(container),
-	    field = field_config.getFieldDefinition();
+	    field;
+	
+	try {
+		field = field_config.getFieldDefinition();
+	} catch (err) {
+		console.error('Failed to get field definition:', err);
+	}
 	
 	if (value == null && !field) {
 		return null;
