@@ -1,4 +1,4 @@
-## 0.1.10 (WIP)
+## 0.1.10 (2022-07-14)
 
 * Hide `code-input` contents until it's fully loaded
 * Don't crash when failing to get a field definition in a table
