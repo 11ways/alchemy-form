@@ -67,13 +67,15 @@ CodeInput.setProperty(function value(value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.10
  */
 CodeInput.setMethod(async function introduced() {
 
 	await hawkejs.require('ace1.4/ace');
 
 	let editor_el = this.querySelector('.code-editor');
+
+	editor_el.hidden = false;
 
 	let editor = ace.edit(editor_el);
 

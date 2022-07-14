@@ -1,3 +1,7 @@
+## 0.1.10 (WIP)
+
+* Hide `code-input` contents until it's fully loaded
+
 ## 0.1.9 (2022-07-06)
 
 * Allow supplying a custom `data-src` to `alchemy-field` elements

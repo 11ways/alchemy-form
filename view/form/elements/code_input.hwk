@@ -1,1 +1,1 @@
-<div class="code-editor"><% Blast.Classes.Hawkejs.replaceChildren($0, child_nodes) %></div>
+<div class="code-editor" hidden><% Blast.Classes.Hawkejs.replaceChildren($0, child_nodes) %></div>
