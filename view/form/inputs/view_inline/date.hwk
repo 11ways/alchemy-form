@@ -1,0 +1,4 @@
+<time
+	class="alchemy-field-value"
+	datetime={% value.toISOString() %}
+>{{ value.format('Y‑m‑d') }}</time>

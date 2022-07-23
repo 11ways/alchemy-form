@@ -1,0 +1,19 @@
+<span
+	class="alchemy-field-value boolean-wrapper"
+>
+	<%
+		new_class = '';
+
+		if (value) {
+			new_class = 'boolean-true';
+		} else if (value === false) {
+			new_class = 'boolean-false';
+		} else {
+			new_class = 'boolean-null';
+			value = 'empty';
+		}
+
+		$0.classList.add(new_class);
+	%>
+	{{ value }}
+</span>

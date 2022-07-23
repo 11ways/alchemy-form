@@ -1,0 +1,4 @@
+<alchemy-toggle
+	class="alchemy-field-value"
+	#value=<% value %>
+></alchemy-toggle>

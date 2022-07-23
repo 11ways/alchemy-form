@@ -2,6 +2,7 @@
 
 * Upgrade to `alchemy-media` v0.6.3
 * Add `purpose` and `mode` attributes to AlchemyForm-based elements for improved field-template getting
+* Add first few `edit_inline` and `view_inline` field templates
 
 ## 0.1.10 (2022-07-14)
 
