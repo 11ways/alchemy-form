@@ -1,4 +1,4 @@
-## 0.1.11 (WIP)
+## 0.1.11 (2022-07-23)
 
 * Upgrade to `alchemy-media` v0.6.3
 * Add `purpose` and `mode` attributes to AlchemyForm-based elements for improved field-template getting
