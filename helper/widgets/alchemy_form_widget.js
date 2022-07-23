@@ -16,7 +16,7 @@ const AlchemyForm = Function.inherits('Alchemy.Widget', 'AlchemyForm');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.1.11
  */
 AlchemyForm.setMethod(function populateWidget() {
 
@@ -29,6 +29,14 @@ AlchemyForm.setMethod(function populateWidget() {
 	col.parent_instance = this;
 
 	form.classList.add('alchemy-widgets-container');
+
+	if (config.purpose) {
+		form.purpose = config.purpose;
+	}
+
+	if (config.mode) {
+		form.mode = config.mode;
+	}
 
 	if (this.config && this.config.widgets) {
 		let widgets = this.config.widgets.slice(0),
@@ -59,7 +67,9 @@ AlchemyForm.setMethod(function populateWidget() {
 		form.model = config.model;
 	}
 
-	form.view_type = config.view_type || 'edit';
+	if (config.view_type) {
+		form.view_type = config.view_type;
+	}
 
 	form.append(col.widget);
 

@@ -5,9 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', function Base() {
-	Base.super.call(this);
-});
+var Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', 'Base');
 
 /**
  * Set the custom element prefix
@@ -59,27 +57,67 @@ Base.setStatic(function addParentTypeGetter(name, type) {
 });
 
 /**
- * The view-type determines which type of wrapper/field to use,
- * e.g.: view, list, edit, ...
+ * The purpose determines what the goal of the field is.
+ * Is it for editing or viewing?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @since    0.1.11
+ * @version  0.1.11
  */
-Base.setProperty(function view_type() {
+Base.setAttribute('purpose', function getPurpose(value) {
 
-	var value = this.getAttribute('view-type');
+	if (value) {
+		return value;
+	}
+
+	value = this.getAttribute('view-type');
 
 	if (!value && this.alchemy_form) {
 		value = this.alchemy_form.view_type;
 	}
 
+	// Fallback to the "edit" type
 	if (!value) {
 		value = 'edit';
 	}
 
 	return value;
+});
 
+/**
+ * The mode is used as a hint to how this element should be rendered.
+ * Could be "inline", "standalone", ...
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.11
+ * @version  0.1.11
+ */
+Base.setAttribute('mode');
+
+/**
+ * The view-type determines which type of wrapper/field to use,
+ * e.g.: view, list, edit, ...
+ * 
+ * @deprecated   You should use `purpose` for this
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.1.11
+ */
+Base.setProperty(function view_type() {
+
+	if (this.hasAttribute('view-type')) {
+		return this.getAttribute('view-type');
+	}
+
+	let purpose = this.purpose,
+	    mode = this.mode;
+	
+	if (mode) {
+		purpose += '_' + mode;
+	}
+
+	return purpose;
 }, function setViewType(value) {
 
 	if (value == null) {
@@ -88,6 +126,7 @@ Base.setProperty(function view_type() {
 		this.setAttribute('view-type', value);
 	}
 
+	return value;
 });
 
 /**

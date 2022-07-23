@@ -25,7 +25,7 @@ Table.setTemplate(`<header class="aft-header"></header>
 		<tfoot></tfoot>
 	</table>
 </div>
-<footer class="aft-footer"></footer>`, {plain_html: true, render_immediate: true});
+<footer data-he-slot="footer" class="aft-footer"></footer>`, {plain_html: true, render_immediate: true});
 
 /**
  * The stylesheet to load for this element
@@ -125,6 +125,15 @@ Table.setAttribute('page-size', {number: true});
  * @version  0.1.0
  */
 Table.setAttribute('show-filters', {boolean: true});
+
+/**
+ * Which optional view-type to use for field values
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.11
+ * @version  0.1.11
+ */
+Table.setAttribute('view-type');
 
 /**
  * Keep track of the loadRemote calls
@@ -287,7 +296,7 @@ Table.addObservedAttribute('src', function onSource(src) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @param    {*}   config
  */
@@ -302,7 +311,11 @@ Table.setMethod(function setRecordsource(config) {
 	}
 
 	if (url == '#') {
-		url = ''+this.getCurrentUrl();
+		let current_url = this.getCurrentUrl();
+
+		if (current_url) {
+			url = ''+current_url;
+		}
 	}
 
 	this.src = url;
@@ -350,7 +363,7 @@ Table.setMethod(function clearBody() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @return   {Number}
  */
@@ -365,14 +378,17 @@ Table.setMethod(function getWantedPage() {
 	if (this.id) {
 		let url = this.getCurrentUrl();
 
-		let data = url.param('aft');
+		if (url) {
 
-		if (data && data[this.id]) {
-			page = parseInt(data[this.id].page);
-		}
+			let data = url.param('aft');
 
-		if (isFinite(page) && page > 0) {
-			return page;
+			if (data && data[this.id]) {
+				page = parseInt(data[this.id].page);
+			}
+
+			if (isFinite(page) && page > 0) {
+				return page;
+			}
 		}
 	}
 
@@ -384,7 +400,7 @@ Table.setMethod(function getWantedPage() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @return   {Number}
  */
@@ -405,11 +421,11 @@ Table.setMethod(function getWantedSort() {
 	let url_param = this.getBaseUrlParam() + '[sort]',
 	    url = this.getCurrentUrl();
 
-	if (!result.field) {
+	if (!result.field && url) {
 		result.field = url.param(url_param + '[field]');
 	}
 
-	if (!result.dir) {
+	if (!result.dir && url) {
 		result.dir = url.param(url_param + '[dir]');
 	}
 
@@ -424,7 +440,7 @@ Table.setMethod(function getWantedSort() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @return   {Object}
  */
@@ -433,6 +449,11 @@ Table.setMethod(function getWantedFilters() {
 	if (!this.filters) {
 
 		let url = this.getCurrentUrl();
+
+		if (!url) {
+			return null;
+		}
+
 		let data = url.param('aft');
 		let filters;
 
@@ -486,15 +507,20 @@ Table.setMethod(function getBaseUrlParam() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @return   {RURL}
  */
 Table.setMethod(function getCurrentStateUrl() {
 
+	let url = this.getCurrentUrl();
+
+	if (!url) {
+		return null;
+	}
+
 	let url_param = this.getBaseUrlParam(),
-	    page = this.getWantedPage(),
-	    url = this.getCurrentUrl();
+	    page = this.getWantedPage();
 
 	url.param(url_param + '[page]', page);
 
@@ -513,7 +539,7 @@ Table.setMethod(function getCurrentStateUrl() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.1.11
  *
  * @param    {Array}   records
  */
@@ -526,7 +552,7 @@ Table.setMethod(function setRecords(records) {
 	let record;
 
 	for (record of records) {
-		this.table_body.append(this.createDataRow(record));
+		this.addDataRow(record);
 	}
 
 	this.showPagination();
@@ -565,13 +591,19 @@ Table.setMethod(function setFilter(field, value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  */
 Table.setMethod(function showPagination() {
 
 	let records = this.assigned_data.records;
 
 	if (!records || !records.page) {
+		return;
+	}
+
+	let url = this.getCurrentUrl();
+
+	if (!url) {
 		return;
 	}
 
@@ -582,7 +614,7 @@ Table.setMethod(function showPagination() {
 		this.footer.append(pager);
 	}
 
-	pager.src = this.getCurrentUrl();
+	pager.src = url;
 	pager.url_param = this.getBaseUrlParam();
 	pager.page_size = records.page_size;
 
@@ -594,7 +626,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.8
- * @version  0.1.10
+ * @version  0.1.11
  *
  * @param    {FieldConfig}   field_config   The config on how to display the field
  * @param    {Object}        container      The container where the field should be in
@@ -602,6 +634,10 @@ Table.setMethod(function showPagination() {
  * @return   
  */
 Table.setMethod(function getFieldConfigView(field_config, container) {
+
+	if (typeof field_config == 'string') {
+		field_config = this.fieldset.get(field_config);
+	}
 
 	let value = field_config.getValueIn(container),
 	    field;
@@ -624,12 +660,43 @@ Table.setMethod(function getFieldConfigView(field_config, container) {
 	}
 
 	let alchemy_field = this.createElement('alchemy-field');
-	alchemy_field.view_type = 'view_inline';
+	alchemy_field.purpose = this.purpose || 'view';
+	alchemy_field.mode = this.mode || 'inline';
+
+	//alchemy_field.view_type = this.view_type || 'view_inline';
 	alchemy_field.field_name = field.name;
 	alchemy_field.config = field;
 	alchemy_field.original_value = value;
 
 	return alchemy_field;
+});
+
+/**
+ * Create and add a datarow
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.11
+ * @version  0.1.11
+ *
+ * @param    {Object}   entry
+ *
+ * @return   <TR>
+ */
+Table.setMethod(function addDataRow(entry) {
+
+	if (!entry) {
+		entry = {};
+	}
+
+	let tr = this.createDataRow(entry);
+
+	if (!tr) {
+		return;
+	}
+
+	this.table_body.append(tr);
+
+	return tr;
 });
 
 /**
@@ -645,13 +712,19 @@ Table.setMethod(function getFieldConfigView(field_config, container) {
  */
 Table.setMethod(function createDataRow(entry) {
 
+	if (!entry) {
+		throw new Error('Unable to create datarow without data');
+	}
+
 	let field_set_config,
 	    value,
 	    tr = this.createElement('tr'),
 	    td,
 		id = entry.$pk || entry._id || entry.id;
 	
-	tr.dataset.pk = id;
+	if (id) {
+		tr.dataset.pk = id;
+	}
 
 	for (field_set_config of this.fieldset) {
 		td = this.createElement('td');
@@ -899,7 +972,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @param    {String|RURL}   base_url
  */
@@ -909,6 +982,10 @@ Table.setMethod(function updateAnchors(base_url) {
 		base_url = this.getCurrentStateUrl();
 	} else {
 		base_url = RURL.parse(base_url);
+	}
+
+	if (!base_url) {
+		return;
 	}
 
 	let anchors = this.querySelectorAll('a.sorting-anchor'),
@@ -969,7 +1046,7 @@ Table.setMethod(function onRecordsAssignment(value, old_value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  *
  * @param    <TR>
  */
@@ -985,7 +1062,9 @@ Table.setMethod(function selectRow(row) {
 		child.classList.remove('aft-selected');
 	}
 
-	row.classList.add('aft-selected');
+	if (row) {
+		row.classList.add('aft-selected');
+	}
 });
 
 /**

@@ -16,7 +16,7 @@ const AlchemyTable = Function.inherits('Alchemy.Widget', 'AlchemyTable');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.8
  */
 AlchemyTable.setMethod(function populateWidget() {
 
@@ -45,6 +45,9 @@ AlchemyTable.setMethod(function populateWidget() {
 	if (config.recordsource) {
 		table.recordsource = config.recordsource;
 	}
+
+	table.purpose = config.purpose || 'view';
+	table.mode = config.mode || 'inline';
 
 	this.element.append(table);
 });

@@ -349,50 +349,43 @@ Field.setProperty(function model() {
 });
 
 /**
- * Get the view to use for this field
+ * Get the preferred view file to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  */
 Field.enforceProperty(function view_file(new_value, old_value) {
 
 	if (!new_value) {
 
-		let config = this.config,
-		    view_type = this.view_type;
+		let view_type = this.view_type,
+			field_view = this.field_view || this.field_type;
+		
+		if (!field_view) {
+			let config = this.config;
 
-		if (config) {
-
-			let field_view;
-
-			if (this.field_view) {
-				field_view = this.field_view;
-			} else {
+			if (config) {
 				field_view = config.constructor.type_name;
 			}
-
-			new_value = 'form/inputs/' + view_type + '/' + field_view;
 		}
+
+		new_value = this.generateTemplatePath('inputs', view_type, field_view);
 	}
 
 	return new_value;
 });
 
-
 /**
- * Get the wrapper to use for this field
+ * Get the preferred wrapper to use for this field
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  */
 Field.enforceProperty(function wrapper_file(new_value, old_value) {
 
 	if (!new_value) {
-
-		let config = this.config,
-		    view_type = this.view_type;
 
 		let wrapper_type = this.wrapper_type;
 
@@ -400,9 +393,11 @@ Field.enforceProperty(function wrapper_file(new_value, old_value) {
 			return false;
 		}
 
-		if (config) {
-			let field_type = config.constructor.type_name;
-			return 'form/wrappers/' + view_type + '/' + field_type;
+		let field_type = this.getFieldType(),
+		     view_type = this.view_type;
+
+		if (field_type) {
+			return this.generateTemplatePath('wrappers', view_type, field_type);
 		}
 	}
 
@@ -414,7 +409,7 @@ Field.enforceProperty(function wrapper_file(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  */
 Field.setProperty(function view_files() {
 
@@ -425,14 +420,20 @@ Field.setProperty(function view_files() {
 		result.push(view_file);
 	}
 
-	let config = this.config,
+	let field_type = this.getFieldType(),
 	    view_type = this.view_type;
 
-	if (config) {
-		let field_type = config.constructor.type_name,
-		    view = 'form/inputs/' + view_type + '/' + field_type;
-
+	if (field_type) {
+		let view = this.generateTemplatePath('inputs', view_type, field_type);
+		
 		result.push(view);
+
+		let purpose = this.purpose;
+
+		if (purpose) {	
+			view = this.generateTemplatePath('inputs', purpose, field_type);
+			result.push(view);
+		}
 	}
 
 	if (result.length == 0) {
@@ -440,7 +441,7 @@ Field.setProperty(function view_files() {
 	}
 
 	// Fallback to a simple string input
-	result.push('form/inputs/' + view_type + '/string');
+	result.push(this.generateTemplatePath('inputs', view_type, 'string'));
 
 	return result;
 });
@@ -450,7 +451,7 @@ Field.setProperty(function view_files() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.11
  */
 Field.setProperty(function wrapper_files() {
 
@@ -466,22 +467,21 @@ Field.setProperty(function wrapper_files() {
 		result.push(wrapper_file);
 	}
 
-	let config = this.config,
+	let field_type = this.getFieldType(),
 	    view_type = this.view_type;
 
-	if (config) {
-		let field_type = config.constructor.type_name,
-		    view = 'form/wrappers/' + view_type + '/' + field_type;
+	if (field_type) {
+		let view = this.generateTemplatePath('wrappers', view_type, field_type);
 
 		result.push(view);
 
-		view = 'form/wrappers/' + view_type + '/default';
+		view = this.generateTemplatePath('wrappers', view_type, 'default');
 		result.push(view);
 
-		view = 'form/wrappers/default/' + field_type;
+		view = this.generateTemplatePath('wrappers', 'default', field_type);
 		result.push(view);
 
-		view = 'form/wrappers/default/default';
+		view = this.generateTemplatePath('wrappers', 'default', 'default');
 		result.push(view);
 	}
 
@@ -582,6 +582,48 @@ Field.setProperty(function value() {
 	} else if (this.original_value == null) {
 		this.original_value = value;
 	}
+});
+
+/**
+ * Get the field type
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.11
+ * @version  0.1.11
+ *
+ * @return   {String}
+ */
+Field.setMethod(function getFieldType() {
+
+	let result = this.field_type;
+
+	if (!result) {
+		let config = this.config;
+
+		if (config) {
+			result = config.constructor.type_name;
+		}
+	}
+
+	return result;
+});
+
+/**
+ * Generate a template path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.11
+ * @version  0.1.11
+ *
+ * @param    {String}   container_type   The container (inputs/wrappers)
+ * @param    {String}   view_type        The view (edit/view/edit_inline/...)
+ * @param    {String}   field_type       The name of the field (and thus the view)
+ *
+ * @return   {String}
+ */
+Field.setMethod(function generateTemplatePath(container_type, view_type, field_type) {
+	let result = 'form/' + container_type + '/' + view_type + '/' + field_type;
+	return result;
 });
 
 /**

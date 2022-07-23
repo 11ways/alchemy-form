@@ -1,3 +1,36 @@
 alchemy-field {
 	display: block;
+
+	&[field-type="boolean"] {
+		
+		.field {
+			display: flex;
+			justify-content: center;
+		}
+
+		.boolean-wrapper {
+			&.boolean-true {
+				--boolean-color: green;
+				--text-color: white;
+			}
+
+			&.boolean-false {
+				--boolean-color: red;
+				--text-color: white;
+			}
+
+			&.boolean-null {
+				--boolean-color: #f3f3f3;
+				--text-color: #666;
+				font-style: italic;
+			}
+
+			background-color: var(--boolean-color);
+			border-radius: 5px;
+			padding: 4px 8px;
+			min-width: 1rem;
+			color: var(--text-color, white);
+			display: inline-flex;
+		}
+	}
 }

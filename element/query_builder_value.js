@@ -121,7 +121,7 @@ QueryBuilderValue.setProperty(function value() {
 
 	return result;
 }, function setValue(value) {
-	this.assigned_data.value = value;
+	this.assignData('value', value);
 });
 
 /**
