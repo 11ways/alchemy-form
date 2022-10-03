@@ -1,3 +1,7 @@
+## 0.1.12 (WIP)
+
+* Don't let users manually add form widgets
+
 ## 0.1.11 (2022-07-23)
 
 * Upgrade to `alchemy-media` v0.6.3

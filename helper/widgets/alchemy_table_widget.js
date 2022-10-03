@@ -12,6 +12,20 @@
 const AlchemyTable = Function.inherits('Alchemy.Widget', 'AlchemyTable');
 
 /**
+ * Prepare the schema
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ */
+AlchemyTable.constitute(function prepareSchema() {
+
+	this.setAddChecker(function(widget_element) {
+		return false;
+	});
+});
+
+/**
  * Populate the widget
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
