@@ -86,33 +86,7 @@ AlchemyField.setMethod(function populateWidget() {
 
 	field_el.field_name = config.field;
 
-	if (config.purpose) {
-		field_el.purpose = config.purpose;
-	}
-
-	if (config.mode) {
-		field_el.mode = config.mode;
-	}
-
-	if (config.view) {
-		field_el.field_view = config.view;
-	}
-
-	if (config.wrapper) {
-		field_el.wrapper_view = config.wrapper;
-	}
-
-	if (config.readonly) {
-		field_el.readonly = true;
-	}
-
-	if (config.widget_settings) {
-		field_el.widget_settings = config.widget_settings;
-	}
-
-	if (config.data_src) {
-		field_el.data_src = config.data_src;
-	}
+	field_el.applyOptions(config);
 
 	this.element.append(field_el);
 });

@@ -584,6 +584,55 @@ Field.setProperty(function value() {
 });
 
 /**
+ * Apply options
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ *
+ * @param    {Object}   options
+ */
+Field.setMethod(function applyOptions(options) {
+
+	if (!options || typeof options != 'object') {
+		return;
+	}
+
+	if (options.purpose) {
+		this.purpose = options.purpose;
+	}
+
+	if (options.mode) {
+		this.mode = options.mode;
+	}
+
+	if (options.view) {
+		this.field_view = options.view;
+	}
+
+	if (options.wrapper) {
+		this.wrapper_view = options.wrapper;
+	}
+
+	if (options.readonly) {
+		this.readonly = true;
+	}
+
+	if (options.widget_settings) {
+		this.widget_settings = options.widget_settings;
+	}
+
+	if (options.data_src) {
+		this.data_src = options.data_src;
+	}
+
+	if (options.title) {
+		this.field_title = options.title;
+	}
+
+});
+
+/**
  * Get the field type
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>

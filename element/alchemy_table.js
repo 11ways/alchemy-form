@@ -626,7 +626,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.8
- * @version  0.1.11
+ * @version  0.1.12
  *
  * @param    {FieldConfig}   field_config   The config on how to display the field
  * @param    {Object}        container      The container where the field should be in
@@ -662,6 +662,8 @@ Table.setMethod(function getFieldConfigView(field_config, container) {
 	let alchemy_field = this.createElement('alchemy-field');
 	alchemy_field.purpose = this.purpose || 'view';
 	alchemy_field.mode = this.mode || 'inline';
+
+	alchemy_field.applyOptions(field_config.options);
 
 	//alchemy_field.view_type = this.view_type || 'view_inline';
 	alchemy_field.field_name = field.name;

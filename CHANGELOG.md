@@ -3,6 +3,7 @@
 * Don't let users manually add form widgets
 * Allow overriding alchemy-field title & description in extra widget settings
 * Allow overriding an alchemy-field's used wrapper-view
+* Add `AlchemyField#applyOptions(options)` method
 
 ## 0.1.11 (2022-07-23)
 
