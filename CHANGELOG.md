@@ -8,6 +8,7 @@
 * Allow turning off specific column filters in alchemy-table
 * Add inline enum field view
 * Fix alchemy-pager icons
+* Use `Model#getDisplayTitle()` to get the display title of records for alchemy-select-items
 
 ## 0.1.11 (2022-07-23)
 

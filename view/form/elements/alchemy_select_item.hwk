@@ -1,7 +1,5 @@
-<% data = self.data %>
-
 {% if self.custom_template %}
 	{% include self.custom_template %}
 {% else %}
-	{{ data.title or data.name or data.$pk or self.value }}
+	{{ self.display_title }}
 {% /if %}

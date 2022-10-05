@@ -85,13 +85,23 @@ Item.enforceProperty(function alchemy_select(new_value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.5
- * @version  0.1.5
+ * @version  0.1.12
  */
 Item.setProperty(function display_title() {
 
-	if (!this.data) {
-		return '';
+	let result;
+
+	if (this.data) {
+		const model = this.data.$model;
+
+		if (model) {
+			result = model.getDisplayTitle(this.data, ['title', 'name']);
+		}
 	}
 
-	return this.data.title || this.data.name || this.data.username || this.data.$pk || this.value;
+	if (!result) {
+		result = this.data.title || this.data.name || this.data.$pk || this.value;
+	}
+
+	return result || '';
 });
