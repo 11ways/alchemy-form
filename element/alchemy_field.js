@@ -273,13 +273,15 @@ Field.setProperty(function is_translatable() {
  */
 Field.setProperty(function field_title() {
 
-	let result = this.widget_settings?.title || this.config?.title;
+	let result = this._title || this.widget_settings?.title || this.config?.title;
 
 	if (!result && this.field_name) {
 		result = this.field_name.titleize();
 	}
 
 	return result;
+}, function setTitle(value) {
+	this._title = value;
 });
 
 /**
