@@ -71,6 +71,15 @@ Field.setAttribute('field-type');
 Field.setAttribute('field-view');
 
 /**
+ * The wrapper view override
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ */
+Field.setAttribute('wrapper-view');
+
+/**
  * Is this a read only field?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -383,11 +392,11 @@ Field.enforceProperty(function wrapper_file(new_value, old_value) {
 			return false;
 		}
 
-		let field_type = this.getFieldType(),
+		let wrapper_view = this.wrapper_view || this.getFieldType(),
 		     view_type = this.view_type;
 
-		if (field_type) {
-			return this.generateTemplatePath('wrappers', view_type, field_type);
+		if (wrapper_view) {
+			return this.generateTemplatePath('wrappers', view_type, wrapper_view);
 		}
 	}
 

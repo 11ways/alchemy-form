@@ -70,7 +70,7 @@ AlchemyField.enforceProperty(function alchemy_form(new_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.1.12
  */
 AlchemyField.setMethod(function populateWidget() {
 
@@ -96,6 +96,10 @@ AlchemyField.setMethod(function populateWidget() {
 
 	if (config.view) {
 		field_el.field_view = config.view;
+	}
+
+	if (config.wrapper) {
+		field_el.wrapper_view = config.wrapper;
 	}
 
 	if (config.readonly) {
