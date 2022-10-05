@@ -6,6 +6,7 @@
 * Add `AlchemyField#applyOptions(options)` method
 * Allow an alchemy-field's field_title property to be set
 * Allow turning off specific column filters in alchemy-table
+* Add inline enum field view
 
 ## 0.1.11 (2022-07-23)
 
