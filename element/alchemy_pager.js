@@ -12,28 +12,28 @@ const Pager = Function.inherits('Alchemy.Element.Form.Base', 'Pager');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.12
  */
 Pager.setTemplate(`<ul>
 	<li class="afp-first">
 		<a href="#" aria-label="First page">
-			<al-ico type="arrow-left-double"></al-ico>
+			<al-ico icon-name="left-to-line"></al-ico>
 		</a>
 	</li>
 	<li class="afp-prev">
 		<a href="#" aria-label="Previous page">
-			<al-ico type="arrow-left"></al-ico>
+			<al-ico icon-name="left"></al-ico>
 		</a>
 	</li>
 
 	<li class="afp-next">
 		<a href="#" aria-label="Next page">
-			<al-ico type="arrow-right"></al-ico>
+			<al-ico icon-name="right"></al-ico>
 		</a>
 	</li>
 	<li class="afp-last">
 		<a href="#" aria-label="Last page">
-			<al-ico type="arrow-right-double"></al-ico>
+			<al-ico icon-name="right-to-line"></al-ico>
 		</a>
 	</li>
 </ul>`, true);
