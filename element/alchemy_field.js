@@ -260,16 +260,11 @@ Field.setProperty(function is_translatable() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.12
  */
 Field.setProperty(function field_title() {
 
-	let config = this.config,
-	    result;
-
-	if (config) {
-		result = config.title;
-	}
+	let result = this.widget_settings?.title || this.config?.title;
 
 	if (!result && this.field_name) {
 		result = this.field_name.titleize();
@@ -283,16 +278,11 @@ Field.setProperty(function field_title() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.12
  */
 Field.setProperty(function field_description() {
 
-	let config = this.config,
-	    result;
-
-	if (config && config.options) {
-		result = config.options.description;
-	}
+	let result = this.widget_settings?.description || this.config?.description;
 
 	return result;
 });
