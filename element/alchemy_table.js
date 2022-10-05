@@ -888,7 +888,7 @@ Table.setMethod(function attachContextMenus() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.1.12
  */
 Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
@@ -941,18 +941,22 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 		names_row.append(col);
 
 		col = this.createElement('th');
-		input = this.createElement('input');
-		input.dataset.field = field.path;
-		input.classList.add('filter');
-		input.setAttribute('type', 'search');
-		input.setAttribute('aria-label', 'Filter ' + field.title);
 
-		// If filters have been defined already, put it in the value
-		if (this.filters && this.filters[field.path]) {
-			input.setAttribute('value', this.filters[field.path]);
+		if (field.options.filter !== false) {
+			input = this.createElement('input');
+			input.dataset.field = field.path;
+			input.classList.add('filter');
+			input.setAttribute('type', 'search');
+			input.setAttribute('aria-label', 'Filter ' + field.title);
+
+			// If filters have been defined already, put it in the value
+			if (this.filters && this.filters[field.path]) {
+				input.setAttribute('value', this.filters[field.path]);
+			}
+
+			col.append(input);
 		}
 
-		col.append(input);
 		filter_row.append(col);
 	}
 
