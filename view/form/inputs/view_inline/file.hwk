@@ -1,6 +1,0 @@
-{% if value %}
-	<img
-		!Media={% value %}
-		+media-route="Media::thumb"
-	>
-{% /if %}
