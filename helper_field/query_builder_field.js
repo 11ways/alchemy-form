@@ -50,42 +50,63 @@ QueryBuilderField.setMethod(function cast(value, to_datasource) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.12
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element
  */
 QueryBuilderField.setMethod(function loadData(config, element) {
 
+	const options = this.options || {},
+	      source_type = options.variable_data || 'document',
+	      add_form_value = options.add_form_value || false;
+
+	let api_route,
+	    form;
+
+	let body = {
+		source_type,
+		config,
+	};
+
 	if (element) {
-		let form = element.queryParents('alchemy-form');
+		form = element.queryParents('alchemy-form');
 
-		if (form) {
-			let doc = form.document;
-
-			if (doc && doc.root_document) {
-				doc = doc.root_document;
-			}
-
-			let model_name,
-			    $pk;
-			
-			if (doc) {
-				model_name = doc.$model_name;
-				$pk = doc.$pk;
-			}
-
-			return element.hawkejs_helpers.Alchemy.getResource({
-				name  : 'FormApi#queryBuilderData',
-				post  : true,
-				body  : {
-					model        : model_name,
-					$pk          : $pk,
-					config       : config,
-				}
-			});
+		if (add_form_value && form) {
+			body.form_value = form.value;
 		}
 	}
 
-	return [];
+	// Use the current document data to get the variable data
+	if (form && source_type == 'document') {
+
+		let doc = form.document;
+
+		if (doc && doc.root_document) {
+			doc = doc.root_document;
+		}
+
+		let model_name,
+			$pk;
+		
+		if (doc) {
+			model_name = doc.$model_name;
+			$pk = doc.$pk;
+		}
+
+		body.model = model_name;
+		body.$pk = $pk;
+	}
+
+	if (options.route) {
+		api_route = options.route;
+	} else {
+		api_route = 'FormApi#queryBuilderData';
+	}
+
+	return element.hawkejs_helpers.Alchemy.getResource({
+		name  : api_route,
+		post  : true,
+		body,
+	});
 });

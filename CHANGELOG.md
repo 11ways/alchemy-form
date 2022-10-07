@@ -9,6 +9,7 @@
 * Add inline enum field view
 * Fix alchemy-pager icons
 * Use `Model#getDisplayTitle()` to get the display title of records for alchemy-select-items
+* Make the QueryBuilder field's source data configurable
 
 ## 0.1.11 (2022-07-23)
 
