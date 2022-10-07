@@ -127,7 +127,7 @@ QueryBuilderEntry.setProperty(function value() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.12
  */
 QueryBuilderEntry.setMethod(async function loadData(config, element) {
 
@@ -149,10 +149,11 @@ QueryBuilderEntry.setMethod(async function loadData(config, element) {
 		items = await this.loadValueTypeData(config);
 	}
 
-	console.log('Got items:', items);
-	items.clean(null);
-	items.clean(undefined);
-	items.clean(false);
+	if (items) {
+		items.clean(null);
+		items.clean(undefined);
+		items.clean(false);
+	}
 
 	return {
 		items: items,
