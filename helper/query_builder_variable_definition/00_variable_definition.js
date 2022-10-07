@@ -164,6 +164,10 @@ VariableDefinition.setStatic(function cast(entry) {
 			description : field.options.description,
 			type        : field.constructor.type_name,
 		};
+
+		if (!VariableDefinition.getMember(entry.type)) {
+			entry.type = 'string';
+		}
 	}
 
 	if (!entry.type) {
