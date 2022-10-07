@@ -1,3 +1,4 @@
+<% data = self.data %>
 <div class="qb-select-item qb-select-type-{% self.type %}">
 	<div class="type-and-name">
 		<span class="option-type" data-type={% data.type_name %}></span>
