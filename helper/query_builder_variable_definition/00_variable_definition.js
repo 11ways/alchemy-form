@@ -103,11 +103,47 @@ VariableDefinition.constitute(function prepareOperators() {
 });
 
 /**
+ * Get a list of definitions from the input
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ *
+ * @param    {*}   input
+ *
+ * @return   {VariableDefinition[]}
+ */
+VariableDefinition.setStatic(function fromMany(input) {
+
+	let result = [];
+
+	if (input) {
+
+		let schema = input.schema;
+
+		if (schema && schema instanceof Classes.Alchemy.Schema) {
+
+			for (let entry of schema) {
+
+				let instance = VariableDefinition.cast(entry);
+		
+				if (instance) {
+					result.push(instance);
+				}
+			}
+
+		}
+	}
+
+	return result;
+});
+
+/**
  * Create the correct variable definition
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.1.12
  */
 VariableDefinition.setStatic(function cast(entry) {
 
@@ -117,6 +153,17 @@ VariableDefinition.setStatic(function cast(entry) {
 
 	if (entry instanceof VariableDefinition) {
 		return entry;
+	}
+
+	if (entry instanceof Classes.Alchemy.Field) {
+		let field = entry;
+
+		entry = {
+			name        : field.name,
+			title       : field.title,
+			description : field.options.description,
+			type        : field.constructor.type_name,
+		};
 	}
 
 	if (!entry.type) {

@@ -10,6 +10,8 @@
 * Fix alchemy-pager icons
 * Use `Model#getDisplayTitle()` to get the display title of records for alchemy-select-items
 * Make the QueryBuilder field's source data configurable
+* Add `VariableDefinition.fromMany()` method
+* `VariableDefinition.cast()` now also accepts `Field` instances
 
 ## 0.1.11 (2022-07-23)
 
