@@ -12,6 +12,7 @@
 * Make the QueryBuilder field's source data configurable
 * Add `VariableDefinition.fromMany()` method
 * `VariableDefinition.cast()` now also accepts `Field` instances
+* Add `QueryBuilder.applyToCriteria()` method
 
 ## 0.1.11 (2022-07-23)
 
