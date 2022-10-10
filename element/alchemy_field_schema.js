@@ -5,9 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var FieldSchema = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldSchema() {
-	FieldSchema.super.call(this);
-});
+var FieldSchema = Function.inherits('Alchemy.Element.Form.FieldCustom', 'FieldSchema');
 
 /**
  * The template to use for the content of this element
@@ -23,7 +21,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.1.12
  */
 FieldSchema.setProperty(function schema() {
 
@@ -38,15 +36,29 @@ FieldSchema.setProperty(function schema() {
 				let values = other_field.config.options.values;
 
 				if (values) {
+					let value;
 
 					if (values instanceof Classes.Alchemy.Map.Backed) {
-						schema = values.get(other_field.value);
+						value = values.get(other_field.value);
 					} else {
-						schema = values[other_field.value];
+						value = values[other_field.value];
 					}
 
-					if (schema && schema.schema) {
-						schema = schema.schema;
+					if (value) {
+						if (value.schema) {
+							schema = value.schema;
+						} else if (value.value) {
+							// Enumified values can be wrapped on the server-side
+							value = value.value;
+
+							if (value.schema) {
+								schema = value.schema;
+							}
+						}
+					}
+
+					if (!schema) {
+						schema = value;
 					}
 				}
 			}

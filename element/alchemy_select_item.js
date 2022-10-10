@@ -100,7 +100,11 @@ Item.setProperty(function display_title() {
 	}
 
 	if (!result) {
-		result = this.data.title || this.data.name || this.data.$pk || this.value;
+		if (this.data) {
+			result = this.data.title || this.data.name || this.data.$pk || this.value;
+		} else {
+			result = this.value;
+		}
 	}
 
 	return result || '';

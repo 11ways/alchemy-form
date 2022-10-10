@@ -13,6 +13,7 @@
 * Add `VariableDefinition.fromMany()` method
 * `VariableDefinition.cast()` now also accepts `Field` instances
 * Add `QueryBuilder.applyToCriteria()` method
+* Fix schema fields sometimes getting the wrong schema from an Enum value
 
 ## 0.1.11 (2022-07-23)
 
