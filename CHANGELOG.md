@@ -1,4 +1,4 @@
-## 0.1.12 (WIP)
+## 0.1.12 (2022-10-12)
 
 * Don't let users manually add form widgets
 * Allow overriding alchemy-field title & description in extra widget settings
