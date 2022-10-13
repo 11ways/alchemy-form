@@ -1,6 +1,7 @@
 ## 0.2.0 (WIP)
 
 * Use the `al-` prefix for all custom elements instead of nothing or `alchemy-`
+* Add tab-elements & widget
 
 ## 0.1.12 (2022-10-12)
 

@@ -1,0 +1,47 @@
+al-tab-list {
+	display: flex;
+	gap: 0.75rem;
+}
+
+al-tab-button {
+	font-size: 1.1rem;
+	border: none;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-radius: 5px 5px 0 0;
+	border: 1px solid var(--alchemy-tab-button-border, gray);
+	border-bottom: 1px solid transparent;
+	z-index: 1;
+	background: var(--alchemy-tab-button-background, white);
+	user-select: none;
+
+	al-ico {
+		margin-right: 0.5rem;
+	}
+
+	&[active] {
+		font-weight: bold;
+		z-index: 3;
+		border-bottom: 1px solid var(--alchemy-tab-panel-background, white);
+	}
+}
+
+al-tab-panel {
+	display: block;
+	position: relative;
+
+	padding: 0.7rem;
+	border: 1px solid var(--alchemy-tab-panel-border, gray);
+	border-radius: 0 0 5px 5px;
+	background: var(--alchemy-tab-panel-background, white);
+	z-index: 2;
+	margin-top: -1px;
+
+	&:not([active]) {
+		display: none !important;
+	}
+}
