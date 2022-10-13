@@ -17,15 +17,6 @@ const Field = Function.inherits('Alchemy.Element.Form.Base', 'Field');
 Field.setTemplateFile('form/elements/alchemy_field');
 
 /**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Field.setStylesheetFile('form/alchemy_field');
-
-/**
  * Use a new Renderer scope for the contents
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
@@ -98,19 +89,19 @@ Field.setAttribute('readonly', {boolean: true});
 Field.setAssignedProperty('widget_settings');
 
 /**
- * Get the parent alchemy-form element
+ * Get the parent al-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.2.0
  */
 Field.enforceProperty(function alchemy_form(new_value) {
 
 	if (new_value == null) {
-		new_value = this.queryUp('alchemy-form');
+		new_value = this.queryUp('al-form');
 
 		if (!new_value && this.field_context) {
-			new_value = this.field_context.queryUp('alchemy-form');
+			new_value = this.field_context.queryUp('al-form');
 		}
 
 		if (!new_value && this.alchemy_field_schema && this.alchemy_field_schema.alchemy_field) {
@@ -135,12 +126,12 @@ Field.addElementGetter('error_area', '.error-area');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
 
 	if (!new_value) {
-		new_value = this.queryUp('alchemy-field-schema');
+		new_value = this.queryUp('al-field-schema');
 	}
 
 	return new_value;
@@ -535,7 +526,7 @@ Field.setProperty(function original_value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.2.0
  */
 Field.setProperty(function value_element() {
 
@@ -543,11 +534,11 @@ Field.setProperty(function value_element() {
 
 	// Translations always get preference
 	if (this.is_translatable) {
-		input = this.querySelector('alchemy-field-translatable');
+		input = this.querySelector('al-field-translatable');
 	} else if (this.is_array) {
-		input = this.querySelector('alchemy-field-array');
+		input = this.querySelector('al-field-array');
 	} else if (this.contains_schema) {
-		input = this.querySelector('alchemy-field-schema');
+		input = this.querySelector('al-field-schema');
 	}
 
 	if (!input) {
@@ -779,7 +770,7 @@ Field.setMethod(function removeErrors() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.3
+ * @version  0.2.0
  */
 Field.setMethod(function retained() {
 
@@ -795,7 +786,7 @@ Field.setMethod(function retained() {
 		this.id = id;
 	}
 
-	let label = this.querySelector('.form-field-info alchemy-label');
+	let label = this.querySelector('.form-field-info al-label');
 
 	if (label && this.value_element) {
 		let v_id = this.id + '_fv';

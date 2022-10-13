@@ -13,18 +13,9 @@ const QueryBuilderBase = Function.inherits('Alchemy.Element.Form.Base', 'QueryBu
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.0
  */
-QueryBuilderBase.setStatic('is_abstract_class', true, false);
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.6
- * @version  0.1.6
- */
-QueryBuilderBase.setStylesheetFile('form/query_builder');
+QueryBuilderBase.makeAbstractClass();
 
 /**
  * Get the dataprovider

@@ -5,16 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var Form = Function.inherits('Alchemy.Element.Form.Base', 'Form');
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Form.setStylesheetFile('form/alchemy_form');
+const Form = Function.inherits('Alchemy.Element.Form.Base', 'Form');
 
 /**
  * The attribute to use for the route
@@ -97,11 +88,11 @@ Form.setProperty(function main_error_area() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.2
+ * @version  0.2.0
  */
 Form.setProperty(function value() {
 
-	let fields = this.queryAllNotNested('alchemy-field'),
+	let fields = this.queryAllNotNested('al-field'),
 	    result = {},
 	    field,
 	    key,
@@ -282,7 +273,7 @@ Form.setMethod(async function showViolations(err) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  *
  * @param    {String}   path
  *
@@ -304,9 +295,9 @@ Form.setMethod(function findFieldByPath(path) {
 		}
 
 		if (current.config && current.config.is_array) {
-			query = 'alchemy-field-array-entry:nth-child(' + (Number(piece) + 1) + ') .field > *';
+			query = 'al-field-array-entry:nth-child(' + (Number(piece) + 1) + ') .field > *';
 		} else {
-			query = 'alchemy-field[field-name="' + piece + '"]';
+			query = 'al-field[field-name="' + piece + '"]';
 		}
 
 		current = current.queryAllNotNested(query)[0];

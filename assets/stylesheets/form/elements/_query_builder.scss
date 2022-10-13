@@ -12,14 +12,14 @@
 	--qb-btn-border-color: #d3d3d3;
 }
 
-alchemy-query-builder {
+al-query-builder {
 	display: block;
 	border-color: var(--qb-border-color);
 	padding: 1rem;
 	position: relative;
 }
 
-alchemy-query-builder-group {
+al-query-builder-group {
 	display: block;
 	padding: 10px;
 	padding-bottom: 6px;
@@ -85,20 +85,20 @@ alchemy-query-builder-group {
 	}
 }
 
-alchemy-query-builder-value {
+al-query-builder-value {
 	min-width: 10rem;
 }
 
-alchemy-query-builder-entry {
+al-query-builder-entry {
 	min-width: 40rem;
 }
 
-alchemy-query-builder-value,
-alchemy-query-builder-entry {
+al-query-builder-value,
+al-query-builder-entry {
 	display: flex;
 	gap: 0.7rem;
 
-	alchemy-select {
+	al-select {
 		min-width: 11rem;
 	}
 

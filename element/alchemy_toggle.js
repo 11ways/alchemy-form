@@ -1,5 +1,5 @@
 /**
- * The alchemy-toggle custom element
+ * The al-toggle custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -15,15 +15,6 @@ const AlchemyToggle = Function.inherits('Alchemy.Element.Form.Base', 'Toggle');
  * @version  0.1.0
  */
 AlchemyToggle.setTemplateFile('form/elements/alchemy_toggle');
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemyToggle.setStylesheetFile('form/alchemy_toggle');
 
 /**
  * Get/set the value

@@ -5,26 +5,34 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', 'Base');
+const Base = Function.inherits('Alchemy.Element', 'Alchemy.Element.Form', 'Base');
 
 /**
  * Set the custom element prefix
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
-Base.setStatic('custom_element_prefix', 'alchemy');
+Base.setStatic('custom_element_prefix', 'al');
 
 /**
- * Don't register this as a custom element,
- * but don't let child classes inherit this
+ * This is a static class (so it won't be registered)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
-Base.setStatic('is_abstract_class', true, false);
+Base.makeAbstractClass();
+
+/**
+ * The stylesheet to load for this element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Base.setStylesheetFile('form/alchemy_form');
 
 /**
  * Add a getter that looks for a parent of a specific type

@@ -3,12 +3,9 @@
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
-const Item = Function.inherits('Alchemy.Element.Form.Base', function SelectItem() {
-	SelectItem.super.call(this);
-	this.setAttribute('tabindex', '-1');
-});
+const Item = Function.inherits('Alchemy.Element.Form.Base', 'SelectItem');
 
 /**
  * Set the default inner template
@@ -27,6 +24,15 @@ Item.setTemplateFile('form/elements/alchemy_select_item');
  * @version  0.1.0
  */
 Item.setAttribute('type');
+
+/**
+ * The type of this item: "value" or "option"
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Item.setAttribute('tabindex', {default: -1});
 
 /**
  * Is this item selected?
@@ -65,16 +71,16 @@ Item.setAssignedProperty('value');
 Item.setAssignedProperty('data');
 
 /**
- * The parent alchemy-select item
+ * The parent al-select item
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.5
- * @version  0.1.5
+ * @version  0.2.0
  */
 Item.enforceProperty(function alchemy_select(new_value) {
 
 	if (new_value == null) {
-		new_value = this.closest('alchemy-select');
+		new_value = this.closest('al-select');
 	}
 
 	return new_value;

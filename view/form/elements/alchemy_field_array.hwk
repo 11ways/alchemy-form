@@ -9,14 +9,14 @@
 <div class="entries">
 	{% with values as value %}
 	{% each %}
-		<alchemy-field-array-entry
+		<al-field-array-entry
 			#alchemy_field_array=<% self %>
 			#field_context=<% self %>
 			#alchemy_field=<% alchemy_field %>
 
 			#value=<% value %>
 			index=<% $index %>
-		></alchemy-field-array-entry>
+		></al-field-array-entry>
 	{% /each %}
 	{% /with %}
 </div>

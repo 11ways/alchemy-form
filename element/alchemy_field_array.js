@@ -5,9 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var FieldArray = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldArray() {
-	FieldArray.super.call(this);
-});
+const FieldArray = Function.inherits('Alchemy.Element.Form.FieldCustom', 'FieldArray');
 
 /**
  * The template to use for the content of this element
@@ -19,24 +17,15 @@ var FieldArray = Function.inherits('Alchemy.Element.Form.FieldCustom', function 
 FieldArray.setTemplateFile('form/elements/alchemy_field_array');
 
 /**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-FieldArray.setStylesheetFile('form/alchemy_field_array');
-
-/**
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 FieldArray.setProperty(function value() {
 
-	let entries = this.queryAllNotNested('alchemy-field-array-entry'),
+	let entries = this.queryAllNotNested('al-field-array-entry'),
 	    result = [],
 	    entry,
 	    i;
@@ -58,7 +47,7 @@ FieldArray.setProperty(function value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 FieldArray.setMethod(function introduced() {
 
@@ -68,7 +57,7 @@ FieldArray.setMethod(function introduced() {
 
 		e.preventDefault();
 
-		let entry = e.target.queryUp('alchemy-field-array-entry');
+		let entry = e.target.queryUp('al-field-array-entry');
 
 		entry.remove();
 	});
@@ -89,7 +78,7 @@ FieldArray.setMethod(function introduced() {
 				throw new Error('Unable to add new entry for field "' + alchemy_field.field_title + '", no view files found');
 			}
 
-			let new_entry = that.createElement('alchemy-field-array-entry');
+			let new_entry = that.createElement('al-field-array-entry');
 
 			new_entry.alchemy_field_array = that;
 

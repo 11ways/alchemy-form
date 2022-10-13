@@ -30,7 +30,7 @@ AlchemyField.constitute(function prepareSchema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.4
- * @version  0.1.4
+ * @version  0.2.0
  */
 AlchemyField.enforceProperty(function alchemy_form(new_value) {
 
@@ -51,7 +51,7 @@ AlchemyField.enforceProperty(function alchemy_form(new_value) {
 			}
 
 			if (parent.element) {
-				new_value = parent.element.querySelector('alchemy-form');
+				new_value = parent.element.querySelector('al-form');
 
 				if (new_value) {
 					break;
@@ -70,7 +70,7 @@ AlchemyField.enforceProperty(function alchemy_form(new_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.12
+ * @version  0.2.0
  */
 AlchemyField.setMethod(function populateWidget() {
 
@@ -78,7 +78,7 @@ AlchemyField.setMethod(function populateWidget() {
 
 	let alchemy_form = this.alchemy_form;
 
-	let field_el = this.createElement('alchemy-field');
+	let field_el = this.createElement('al-field');
 
 	if (alchemy_form) {
 		field_el.alchemy_form = alchemy_form;

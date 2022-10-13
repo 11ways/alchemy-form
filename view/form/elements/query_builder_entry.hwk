@@ -1,26 +1,26 @@
 <div class="qb-field-wrapper">
-	<alchemy-select
+	<al-select
 		class="qb-field"
 		#dataprovider={% self %}
 		value-item-template="form/select/qb_item"
 		option-item-template="form/select/qb_item"
-	></alchemy-select>
+	></al-select>
 </div>
 <div class="qb-operator-wrapper">
-	<alchemy-select
+	<al-select
 		class="qb-operator"
 		#dataprovider={% self %}
 		value-item-template="form/select/qb_item"
 		option-item-template="form/select/qb_item"
-	></alchemy-select>
+	></al-select>
 </div>
 <div class="qb-value-wrapper">
-	<alchemy-select
+	<al-select
 		class="qb-value-type"
 		#dataprovider={% self %}
 		value-item-template="form/select/qb_item"
 		option-item-template="form/select/qb_item"
-	></alchemy-select>
+	></al-select>
 
 	<div class="qb-value-input-wrapper">
 

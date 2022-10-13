@@ -98,11 +98,11 @@ FieldSchema.setProperty(function sub_fields() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 FieldSchema.setProperty(function value() {
 
-	let entries = this.queryAllNotNested('alchemy-field'),
+	let entries = this.queryAllNotNested('al-field'),
 	    result = {},
 	    entry,
 	    i;

@@ -64,15 +64,6 @@ AlchemySelect.setAttribute('option-item-template');
 AlchemySelect.setTemplateFile('form/elements/alchemy_select');
 
 /**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.setStylesheetFile('form/alchemy_select');
-
-/**
  * Getter for the value-wrapper div
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
@@ -1291,7 +1282,7 @@ AlchemySelect.setMethod(function close(event) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.2.0
  *
  * @param    {String}   type    "value" or "option"
  * @param    {Mixed}    value   The actual value of this item
@@ -1301,7 +1292,7 @@ AlchemySelect.setMethod(function close(event) {
  */
 AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 
-	let item = this.createElement('alchemy-select-item');
+	let item = this.createElement('al-select-item');
 
 	// Set the type ("value" or "option")
 	item.type = type;

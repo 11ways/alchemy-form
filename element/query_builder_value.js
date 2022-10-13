@@ -186,7 +186,7 @@ QueryBuilderValue.setMethod(async function applySourceTypeChanges() {
 	let type = this.source_type_select.value;
 
 	if (type == 'variable') {
-		let select = this.createElement('alchemy-select');
+		let select = this.createElement('al-select');
 		select.dataprovider = this;
 		select.classList.add('qb-value-variable');
 		this.value_input_wrapper.append(select);

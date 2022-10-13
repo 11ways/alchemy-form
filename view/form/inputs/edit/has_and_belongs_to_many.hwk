@@ -1,8 +1,8 @@
-<alchemy-select
+<al-select
 	class="alchemy-field-value"
 	multiple
 ><%
 $0.dataprovider = alchemy_field;
 $0.value = value;
 $0.name = path;
-%></alchemy-select>
+%></al-select>

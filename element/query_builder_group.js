@@ -171,7 +171,7 @@ QueryBuilderGroup.setProperty(function value() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.7
+ * @version  0.2.0
  */
 QueryBuilderGroup.setMethod(function applyValue(value) {
 
@@ -198,9 +198,9 @@ QueryBuilderGroup.setMethod(function applyValue(value) {
 
 		for (rule of value.rules) {
 			if (rule.type == 'qb_entry') {
-				element = this.createElement('alchemy-query-builder-entry');
+				element = this.createElement('al-query-builder-entry');
 			} else {
-				element = this.createElement('alchemy-query-builder-group');
+				element = this.createElement('al-query-builder-group');
 			}
 
 			element.assigned_data.value = rule;
@@ -214,7 +214,7 @@ QueryBuilderGroup.setMethod(function applyValue(value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.7
+ * @version  0.2.0
  */
 QueryBuilderGroup.setMethod(function introduced() {
 
@@ -225,14 +225,14 @@ QueryBuilderGroup.setMethod(function introduced() {
 	add_rule.addEventListener('click', e => {
 		e.preventDefault();
 		
-		let new_rule = this.createElement('alchemy-query-builder-entry');
+		let new_rule = this.createElement('al-query-builder-entry');
 		this.rules_list.append(new_rule);
 	});
 
 	add_group.addEventListener('click', e => {
 		e.preventDefault();
 
-		let new_group = this.createElement('alchemy-query-builder-group');
+		let new_group = this.createElement('al-query-builder-group');
 		this.rules_list.append(new_group);
 	});
 

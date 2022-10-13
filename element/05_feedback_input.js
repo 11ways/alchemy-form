@@ -14,18 +14,9 @@ var FeedbackInput = Function.inherits('Alchemy.Element.Form.Base', 'FeedbackInpu
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
-FeedbackInput.setStatic('is_abstract_class', true, false);
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.3
- * @version  0.1.3
- */
- FeedbackInput.setStylesheetFile('form/alchemy_feedback_input');
+FeedbackInput.makeAbstractClass();
 
 /**
  * The readonly attribute
@@ -170,7 +161,7 @@ FeedbackInput.setMethod(function removeErrors() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.2.0
  *
  * @return   {<micro-copy>|String}
  */
@@ -187,7 +178,7 @@ FeedbackInput.setMethod(function convertMessage(message, parameters) {
 			return message;
 		}
 
-		microcopy = this.createElement('micro-copy');
+		microcopy = this.createElement('al-microcopy');
 		microcopy.key = message.after('microcopy:');
 
 		if (!parameters) {

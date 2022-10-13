@@ -1,5 +1,5 @@
 /**
- * The alchemy-table element
+ * The al-table element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -26,15 +26,6 @@ Table.setTemplate(`<header class="aft-header"></header>
 	</table>
 </div>
 <footer data-he-slot="footer" class="aft-footer"></footer>`, {plain_html: true, render_immediate: true});
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.setStylesheetFile('form/alchemy_table');
 
 /**
  * Getter for the header element
@@ -591,7 +582,7 @@ Table.setMethod(function setFilter(field, value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.2.0
  */
 Table.setMethod(function showPagination() {
 
@@ -607,10 +598,10 @@ Table.setMethod(function showPagination() {
 		return;
 	}
 
-	let pager = this.querySelector('alchemy-pager');
+	let pager = this.querySelector('al-pager');
 
 	if (!pager) {
-		pager = this.createElement('alchemy-pager');
+		pager = this.createElement('al-pager');
 		this.footer.append(pager);
 	}
 
@@ -626,7 +617,7 @@ Table.setMethod(function showPagination() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.8
- * @version  0.1.12
+ * @version  0.2.0
  *
  * @param    {FieldConfig}   field_config   The config on how to display the field
  * @param    {Object}        container      The container where the field should be in
@@ -659,7 +650,7 @@ Table.setMethod(function getFieldConfigView(field_config, container) {
 		return Hawkejs.createText(text);
 	}
 
-	let alchemy_field = this.createElement('alchemy-field');
+	let alchemy_field = this.createElement('al-field');
 	alchemy_field.purpose = this.purpose || 'view';
 	alchemy_field.mode = this.mode || 'inline';
 
@@ -978,7 +969,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.2.0
  *
  * @param    {String|RURL}   base_url
  */
@@ -1029,7 +1020,7 @@ Table.setMethod(function updateAnchors(base_url) {
 		anchor.setAttribute('href', url);
 	}
 
-	let pager = this.querySelector('alchemy-pager');
+	let pager = this.querySelector('al-pager');
 
 	if (pager) {
 		pager.src = base_url;
@@ -1166,7 +1157,7 @@ Table.setMethod(function sortData() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.6
+ * @version  0.2.0
  */
 Table.setMethod(function introduced() {
 
@@ -1224,7 +1215,7 @@ Table.setMethod(function introduced() {
 		}
 	}, 300, false, true));
 
-	let pager = this.querySelector('alchemy-pager');
+	let pager = this.querySelector('al-pager');
 
 	if (pager) {
 		pager.addEventListener('pager-request', function requestPage(e) {

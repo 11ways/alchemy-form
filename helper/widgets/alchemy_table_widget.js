@@ -30,11 +30,11 @@ AlchemyTable.constitute(function prepareSchema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.0
  */
 AlchemyTable.setMethod(function populateWidget() {
 
-	let table = this.createElement('alchemy-table'),
+	let table = this.createElement('al-table'),
 	    config = this.config;
 
 	if (config.id) {

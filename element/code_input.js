@@ -17,15 +17,6 @@ const CodeInput = Function.inherits('Alchemy.Element.Form.Base', 'CodeInput');
 CodeInput.setTemplateFile('form/elements/code_input');
 
 /**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-CodeInput.setStylesheetFile('form/alchemy_code_input');
-
-/**
  * Get/set the value
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -82,7 +73,7 @@ CodeInput.setMethod(async function introduced() {
 	editor.session.setUseWrapMode(true);
 	editor.setFontSize(16);
 
-	let parent_field = this.queryParents('alchemy-field');
+	let parent_field = this.queryParents('al-field');
 
 	if (parent_field && parent_field.widget_settings && parent_field.widget_settings.language_mode) {
 

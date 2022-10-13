@@ -13,9 +13,9 @@ const QueryBuilderData = Function.inherits('Alchemy.Element.Form.QueryBuilderBas
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.7
- * @version  0.1.7
+ * @version  0.2.0
  */
-QueryBuilderData.setStatic('is_abstract_class', true, false);
+QueryBuilderData.makeAbstractClass();
 
 /**
  * Check a filter

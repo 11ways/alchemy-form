@@ -50,7 +50,7 @@ QueryBuilderField.setMethod(function cast(value, to_datasource) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.12
+ * @version  0.2.0
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element
@@ -70,7 +70,7 @@ QueryBuilderField.setMethod(function loadData(config, element) {
 	};
 
 	if (element) {
-		form = element.queryParents('alchemy-form');
+		form = element.queryParents('al-form');
 
 		if (add_form_value && form) {
 			body.form_value = form.value;

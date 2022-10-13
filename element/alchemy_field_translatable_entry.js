@@ -5,9 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-var FieldTranslatableEntry = Function.inherits('Alchemy.Element.Form.FieldEntry', function FieldTranslatableEntry() {
-	FieldTranslatableEntry.super.call(this);
-});
+const FieldTranslatableEntry = Function.inherits('Alchemy.Element.Form.FieldEntry', 'FieldTranslatableEntry');
 
 /**
  * The template to use for the content of this element

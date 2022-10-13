@@ -5,7 +5,7 @@
  * @since    0.1.3
  * @version  0.1.3
  */
- var NumberInput = Function.inherits('Alchemy.Element.Form.FeedbackInput', 'NumberInput');
+const NumberInput = Function.inherits('Alchemy.Element.Form.FeedbackInput', 'NumberInput');
 
 /**
  * The hawkejs template to use

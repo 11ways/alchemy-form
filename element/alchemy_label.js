@@ -8,15 +8,6 @@
 const AlchemyLabel = Function.inherits('Alchemy.Element.Form.Base', 'Label');
 
 /**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemyLabel.setStylesheetFile('form/alchemy_form');
-
-/**
  * The linked element
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>

@@ -7,9 +7,7 @@ var VALUE = Symbol('value');
  * @since    0.1.0
  * @version  0.1.0
  */
-var FieldEntry = Function.inherits('Alchemy.Element.Form.FieldCustom', function FieldEntry() {
-	FieldEntry.super.call(this);
-});
+const FieldEntry = Function.inherits('Alchemy.Element.Form.FieldCustom', 'FieldEntry');
 
 /**
  * Don't register this as a custom element,
@@ -17,9 +15,9 @@ var FieldEntry = Function.inherits('Alchemy.Element.Form.FieldCustom', function 
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
-FieldEntry.setStatic('is_abstract_class', true, false);
+FieldEntry.makeAbstractClass();
 
 /**
  * Get the live value

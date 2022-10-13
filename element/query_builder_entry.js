@@ -335,7 +335,7 @@ QueryBuilderEntry.setMethod(async function applyValue(value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.0
  */
 QueryBuilderEntry.setMethod(async function applyValueTypeChanges() {
 
@@ -344,7 +344,7 @@ QueryBuilderEntry.setMethod(async function applyValueTypeChanges() {
 	let type = this.value_type_select.value;
 
 	if (type == 'variable') {
-		let select = this.createElement('alchemy-select');
+		let select = this.createElement('al-select');
 		select.value_item_template = 'form/select/qb_item';
 		select.option_item_template = 'form/select/qb_item';
 

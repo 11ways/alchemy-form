@@ -1,5 +1,3 @@
-@import "./general/index.scss";
-
 .textareabox,
 .inputbox {
 	$inputbox: &;
@@ -43,14 +41,14 @@
 }
 
 .inputfield,
-alchemy-string-input {
+al-string-input {
 	$inputfield: &;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	margin: 0;
 
-	& +.rest-fields > string-input:first-of-type {
+	& +.rest-fields > al-string-input:first-of-type {
 		margin-top: 3rem;
 	}
 
@@ -175,7 +173,7 @@ alchemy-string-input {
 	}
 }
 
-alchemy-string-input {
+al-string-input {
 	.inputlabel {
 		.label {
 			margin-bottom: 0 !important;
@@ -183,8 +181,8 @@ alchemy-string-input {
 	}
 }
 
-alchemy-password-input {
-	@extend alchemy-string-input;
+al-password-input {
+	@extend al-string-input;
 
 	& > label:first-of-type {
 		margin-bottom: 2rem;
@@ -253,7 +251,7 @@ alchemy-password-input {
 	}
 }
 
-alchemy-number-input {
+al-number-input {
 	$numberinput: &;
 	display: flex;
 	flex-flow: column wrap;

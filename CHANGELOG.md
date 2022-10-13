@@ -1,3 +1,7 @@
+## 0.2.0 (WIP)
+
+* Use the `al-` prefix for all custom elements instead of nothing or `alchemy-`
+
 ## 0.1.12 (2022-10-12)
 
 * Don't let users manually add form widgets

@@ -306,7 +306,7 @@ StringInput.setMethod(async function revalidate(trigger, force) {
  * @since    0.1.3
  * @version  0.1.3
  */
- StringInput.setMethod(function introduced() {
+StringInput.setMethod(function introduced() {
 
 	const that = this,
 	      input = this.input_el;

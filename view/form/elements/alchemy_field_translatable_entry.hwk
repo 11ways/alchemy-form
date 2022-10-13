@@ -9,10 +9,10 @@
 
 <div class="field">
 	<% if (alchemy_field.is_array) { %>
-		<alchemy-field-array
+		<al-field-array
 			#field_context=<% self %>
 			#alchemy_field=<% alchemy_field %>
-		></alchemy-field-array>
+		></al-field-array>
 	<% } else { %>
 		<% include(view_files, variables) %>
 	<% } %>

@@ -30,19 +30,19 @@ AlchemyForm.constitute(function prepareSchema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.2.0
  */
 AlchemyForm.setMethod(function populateWidget() {
 
 	let config = this.config,
-	    form = this.createElement('alchemy-form');
+	    form = this.createElement('al-form');
 
-	let col_el = this.createElement('alchemy-widgets-column'),
+	let col_el = this.createElement('al-widgets-column'),
 	    col = col_el.instance;
 
 	col.parent_instance = this;
 
-	form.classList.add('alchemy-widgets-container');
+	form.classList.add('al-widgets-container');
 
 	if (config.purpose) {
 		form.purpose = config.purpose;
@@ -101,7 +101,7 @@ AlchemyForm.setMethod(function populateWidget() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 AlchemyForm.setMethod(function getNestedColumn(widget) {
 
@@ -113,7 +113,7 @@ AlchemyForm.setMethod(function getNestedColumn(widget) {
 		return;
 	}
 
-	let col = widget.querySelector('alchemy-form > alchemy-widgets-column');
+	let col = widget.querySelector('al-form > al-widgets-column');
 
 	return col;
 });

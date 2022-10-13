@@ -2,10 +2,10 @@
 options = alchemy_field.config.options || {};
 %>
 
-<alchemy-query-builder-value
+<al-query-builder-value
 	class="alchemy-field-value"
 	#value={% value %}
 	#dataprovider={% alchemy_field %}
 	variable-types={% options.variable_types %}
 	source-types={% options.source_types %}
-></alchemy-query-builder-value>
+></al-query-builder-value>

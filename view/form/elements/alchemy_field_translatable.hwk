@@ -21,14 +21,14 @@
 	<% index = 0 %>
 	<% for (prefix in prefixes) { %>
 
-		<alchemy-field-translatable-entry
+		<al-field-translatable-entry
 			#alchemy_field_translatable=<% self %>
 			#field_context=<% self %>
 			#alchemy_field=<% alchemy_field %>
 
 			#value=<% values[prefix] %>
 			prefix=<% prefix %>
-		><% if (index > 0) $0.hidden = true; %></alchemy-field-translatable-entry>
+		><% if (index > 0) $0.hidden = true; %></al-field-translatable-entry>
 
 		<% index++ %>
 	<% } %>

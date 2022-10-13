@@ -14,16 +14,7 @@ const QueryBuilder = Function.inherits('Alchemy.Element.Form.Base', 'QueryBuilde
  * @since    0.1.6
  * @version  0.1.6
  */
-QueryBuilder.setTemplate(`<alchemy-query-builder-group></alchemy-query-builder-group>`, {plain_html: true, render_immediate: true});
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.6
- * @version  0.1.6
- */
-QueryBuilder.setStylesheetFile('form/query_builder');
+QueryBuilder.setTemplate(`<al-query-builder-group></al-query-builder-group>`, {plain_html: true, render_immediate: true});
 
 /**
  * The dataprovider used to get the variables
