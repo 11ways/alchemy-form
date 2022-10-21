@@ -1,0 +1,1 @@
+<div class="apb-content"><% Hawkejs.replaceChildren($0, child_nodes) %></div>
