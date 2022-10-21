@@ -1,0 +1,8 @@
+al-state {
+	display: block;
+
+	// Inactive states should always be hidden
+	&:not([active]) {
+		display: none !important;
+	}
+}

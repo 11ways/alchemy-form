@@ -44,10 +44,10 @@ QueryBuilderBase.enforceProperty(function dataprovider(new_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.0
  */
 QueryBuilderBase.setProperty(function root_query_builder() {
-	return this.queryParents('alchemy-query-builder');
+	return this.queryParents('al-query-builder');
 });
 
 /**
