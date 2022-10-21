@@ -226,15 +226,26 @@ FormAction.setMethod(function constructElement(renderer) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.0
  *
  * @return   {HTMLElement}
  */
 FormAction.setMethod(function _constructElement(renderer) {
 
-	let span = renderer.createElement('span');
-	span.textContent = this.title;
-	return span;
+	let button = renderer.createElement('al-button');
+	button.action_instance = this;
+
+	if (this.icon) {
+		let icon = renderer.createElement('al-icon');
+		icon.icon_name = this.icon;
+		button.append(icon);
+	}
+
+	if (this.title) {
+		button.append(this.title);
+	}
+
+	return button;
 });
 
 /**

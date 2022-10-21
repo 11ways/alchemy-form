@@ -23,7 +23,7 @@ UrlAction.addConfigProperty('url');
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.11
+ * @version  0.2.0
  *
  * @return   {HTMLElement}
  */
@@ -34,7 +34,7 @@ UrlAction.setMethod(function _constructElement(renderer) {
 	anchor.dataset.name = this.name;
 
 	if (this.icon) {
-		let alico = renderer.createElement('al-ico');
+		let alico = renderer.createElement('al-icon');
 		alico.setIcon(this.icon);
 		anchor.append(alico);
 	} else {
@@ -42,6 +42,7 @@ UrlAction.setMethod(function _constructElement(renderer) {
 	}
 
 	anchor.setAttribute('href', this.url);
+	anchor.setAttribute('title', this.title || this.name);
 	
 	return anchor;
 });
