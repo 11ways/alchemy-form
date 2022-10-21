@@ -3,6 +3,7 @@
 * Use the `al-` prefix for all custom elements instead of nothing or `alchemy-`
 * Add tab-elements & widget
 * Add abstract `WithDataprovider` class and make `al-table` and `al-select` use it
+* Allow `al-table` to reuse existing rows and prevent render flashes
 
 ## 0.1.12 (2022-10-12)
 

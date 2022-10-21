@@ -1,3 +1,5 @@
+const OLD_ROWS = Symbol('old_rows');
+
 /**
  * The al-table element
  *
@@ -109,13 +111,13 @@ Table.setAttribute('show-filters', {boolean: true});
 Table.setAttribute('view-type');
 
 /**
- * Keep track of the loadRemote calls
+ * Should existing rows be re-used when new data is loaded?
  *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.3
- * @version  0.1.3
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-Table.setProperty('load_remote_counter', 0);
+Table.setAttribute('update-existing-rows', {boolean: true});
 
 /**
  * Look for changes to the show-filters attribute
@@ -224,79 +226,6 @@ Table.setAssignedProperty('records');
 Table.setAssignedProperty('filters');
 
 /**
- * The records property
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.setAssignedProperty('recordsource', null, function onRecordsource(value) {
-	this.setRecordsource(value);
-	return value;
-});
-
-/**
- * Look for a new src value
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.enforceProperty(function src(new_value, old_value) {
-
-	if (new_value == old_value) {
-		return new_value;
-	}
-
-	this.setAttributeSilent('src', new_value);
-
-	return new_value;
-});
-
-/**
- * Look for a new src value
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.addObservedAttribute('src', function onSource(src) {
-	this.src = src;
-});
-
-/**
- * Clear the header elements
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.11
- *
- * @param    {*}   config
- */
-Table.setMethod(function setRecordsource(config) {
-
-	let url;
-
-	if (typeof config == 'object') {
-		url = alchemy.routeUrl(config.route, config.parameters);
-	} else {
-		url = config;
-	}
-
-	if (url == '#') {
-		let current_url = this.getCurrentUrl();
-
-		if (current_url) {
-			url = ''+current_url;
-		}
-	}
-
-	this.src = url;
-
-	this.loadRemoteData();
-});
-
-/**
  * Clear all the elements
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -329,6 +258,35 @@ Table.setMethod(function clearHeaders() {
  */
 Table.setMethod(function clearBody() {
 	Hawkejs.removeChildren(this.table_body);
+});
+
+/**
+ * Get the current rows by their pk
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ *
+ * @return   {Object<string,HTMLTableRowElement>}
+ */
+Table.setMethod(function getTableRowsByPk() {
+
+	let result = {},
+	    rows = this.table_body.queryAllNotNested('tr[data-pk]'),
+	    row,
+	    pk,
+	    i;
+
+	for (i = 0; i < rows.length; i++) {
+		row = rows[i];
+		pk = row.dataset.pk;
+
+		if (pk) {
+			result[pk] = row;
+		}
+	}
+
+	return result;
 });
 
 /**
@@ -512,7 +470,7 @@ Table.setMethod(function getCurrentStateUrl() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.2.0
  *
  * @param    {Array}   records
  */
@@ -520,12 +478,22 @@ Table.setMethod(function setRecords(records) {
 
 	this.assigned_data.records = records;
 
+	if (this.update_existing_rows) {
+		this[OLD_ROWS] = this.getTableRowsByPk();
+	} else {
+		this[OLD_ROWS] = null;
+	}
+
 	this.clearBody();
 
 	let record;
 
 	for (record of records) {
 		this.addDataRow(record);
+	}
+
+	if (this.update_existing_rows) {
+		this[OLD_ROWS] = null;
 	}
 
 	this.showPagination();
@@ -679,7 +647,7 @@ Table.setMethod(function addDataRow(entry) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.0
  *
  * @param    {Object}   entry
  *
@@ -692,31 +660,79 @@ Table.setMethod(function createDataRow(entry) {
 	}
 
 	let field_set_config,
-	    value,
-	    tr = this.createElement('tr'),
-	    td,
-		id = entry.$pk || entry._id || entry.id;
+	    is_existing_row,
+	    tr,
+	    id = entry.$pk || entry._id || entry.id;
+	
+	if (id && this[OLD_ROWS] && this[OLD_ROWS][id]) {
+		tr = this[OLD_ROWS][id];
+		is_existing_row = true;
+	} else {
+		tr = this.createElement('tr');
+	}
 	
 	if (id) {
 		tr.dataset.pk = id;
 	}
 
 	for (field_set_config of this.fieldset) {
-		td = this.createElement('td');
 
-		let element = this.getFieldConfigView(field_set_config, entry);
+		let create_new_contents = true,
+		    td;
 
-		if (element) {
-			td.append(element);
+		if (is_existing_row && field_set_config.path) {
+			td = tr.querySelector('td[data-path="' + field_set_config.path + '"]');
+
+			if (td) {
+				let checksum = Object.checksum(field_set_config.getValueIn(entry));
+
+				if (td.dataset.checksum == checksum) {
+					create_new_contents = false;
+				} else {
+					Hawkejs.removeChildren(td);
+				}
+			}
+		}
+		
+		if (!td) {
+			td = this.createElement('td');
+			td.dataset.path = field_set_config.path;
 		}
 
-		tr.append(td);
+		if (create_new_contents) {
+			let element = this.getFieldConfigView(field_set_config, entry);
+
+			if (element) {
+				if (this.update_existing_rows) {
+					let checksum = Object.checksum(element.original_value);
+					td.dataset.checksum = checksum;
+				}
+
+				td.append(element);
+			}
+		}
+
+		if (!is_existing_row) {
+			tr.append(td);
+		}
 	}
 
 	if (this.has_actions) {
-		td = this.createElement('td');
-		td.classList.add('aft-actions');
-		tr.append(td);
+
+		let td;
+
+		if (is_existing_row) {
+			td = tr.querySelector('td.aft-actions');
+			if (td) {
+				Hawkejs.removeChildren(td);
+			}
+		}
+
+		if (!td) {
+			td = this.createElement('td');
+			td.classList.add('aft-actions');
+			tr.append(td);
+		}
 
 		let actions = this.getEntryActions(entry, 'row');
 
