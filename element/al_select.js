@@ -1,20 +1,11 @@
 /**
- * The alchemy-select element
+ * The al-select element
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  */
-const AlchemySelect = Function.inherits('Alchemy.Element.Form.Base', 'Select');
-
-/**
- * The remote url attribute
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.setAttribute('src');
+const AlchemySelect = Function.inherits('Alchemy.Element.Form.WithDataprovider', 'Select');
 
 /**
  * The value clear count
@@ -125,16 +116,6 @@ AlchemySelect.addElementGetter('result_info', '.result-info');
  * @version  0.1.0
  */
 AlchemySelect.setAssignedProperty('sortable');
-
-/**
- * The dataprovider is an instance of something that will load
- * the remote data for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-AlchemySelect.setAssignedProperty('dataprovider');
 
 /**
  * The value property
@@ -770,7 +751,7 @@ AlchemySelect.setMethod(function getValueData(value) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  *
  * @param    {Number}   page
  *
@@ -793,7 +774,7 @@ AlchemySelect.setMethod(function _ensureValueData(value) {
 
 	this.delayAssemble(pledge);
 
-	this._loadRemote({value: value}).done(function gotValueData(err, result) {
+	this.fetchRemoteData({value: value}).done(function gotValueData(err, result) {
 
 		if (err) {
 			return pledge.reject(err);
@@ -919,17 +900,63 @@ AlchemySelect.setMethod(function _processResponseList(list, page) {
 });
 
 /**
+ * Construct the config object used to fetch data
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+AlchemySelect.setMethod(function getRemoteFetchConfig() {
+
+	// Don't perform request when everything has already been loaded
+	if (this.total_item_count >= this.loaded_item_count) {
+		return;
+	}
+
+	let config = {
+		search : this.search_value,
+		page   : this.page || 1,
+	};
+
+	return config;
+});
+
+
+/**
+ * Apply the fetched data
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
+
+	if (err) {
+		this.loading_dropdown = false;
+		return;
+	}
+
+	let page = config.page;
+
+	if (page == null || page == 1) {
+		Hawkejs.removeChildren(this.dropdown_content);
+	}
+
+	this._processResponseData(result, page);
+});
+
+/**
  * Load remote content
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.0
  *
  * @param    {Number}   page
  *
  * @return   {Pledge}
  */
-AlchemySelect.setMethod(function loadRemote(page) {
+AlchemySelect.setMethod(function old_loadRemote(page) {
 
 	let pledge = new Classes.Pledge();
 
@@ -957,7 +984,7 @@ AlchemySelect.setMethod(function loadRemote(page) {
 		page   : page
 	};
 
-	this._loadRemote(data).done(gotResponse);
+	this.fetchRemoteData(data).done(gotResponse);
 
 	function gotResponse(err, data) {
 
@@ -975,35 +1002,6 @@ AlchemySelect.setMethod(function loadRemote(page) {
 
 		pledge.resolve(true);
 	};
-
-	return pledge;
-});
-
-/**
- * Load remote content
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.1.0
- *
- * @param    {Object)   config
- *
- * @return   {Pledge}
- */
-AlchemySelect.setMethod(function _loadRemote(config) {
-
-	let pledge;
-
-	if (this.dataprovider) {
-		pledge = Blast.Classes.Pledge.cast(this.dataprovider.loadData(config, this));
-	} else {
-		let url = this.src;
-
-		pledge = this.hawkejs_helpers.Alchemy.getResource({
-			href : url,
-			get  : config
-		});
-	}
 
 	return pledge;
 });
@@ -1082,7 +1080,7 @@ AlchemySelect.setMethod(function setLastSuccessfulLoadedPage(page) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.0
  *
  * @param    {Number}   page
  */
@@ -1122,9 +1120,8 @@ AlchemySelect.setMethod(function loadOptions(page) {
 		return;
 	}
 
-	// If an URL is provided, use that
-	if (this.src || this.dataprovider) {
-		return this.loadRemote(page);
+	if (this.can_fetch_remote_data) {
+		return this.loadRemoteData({page});
 	}
 
 	let field = this.model_field;
@@ -1341,7 +1338,7 @@ AlchemySelect.setMethod(function _makeValueItem(type, value, data) {
 		item.prepareRenderVariables = async function() {
 
 			try {
-				await that.loadRemote();
+				await that.loadRemoteData();
 			} catch (err) {
 				return
 			}
@@ -1787,11 +1784,11 @@ AlchemySelect.setMethod(function applyLocalFilter(query) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.0
  */
 AlchemySelect.setMethod('refreshRemote', Fn.throttle(function refreshRemote() {
 	this.loaded_page = 0;
-	this.loadRemote();
+	this.loadRemoteData();
 }, {
 	minimum_wait  : 350,
 	immediate     : false,

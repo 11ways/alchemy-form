@@ -5,7 +5,7 @@
  * @since    0.1.0
  * @version  0.1.0
  */
-const Table = Function.inherits('Alchemy.Element.Form.Base', 'Table');
+const Table = Function.inherits('Alchemy.Element.Form.WithDataprovider', 'Table');
 
 /**
  * The template code
@@ -89,24 +89,6 @@ Table.addElementGetter('column_names_row', 'tr.aft-column-names');
  * @version  0.1.0
  */
 Table.addElementGetter('column_filters_row', 'tr.aft-column-filters');
-
-/**
- * The page attribute
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.setAttribute('page', {number: true});
-
-/**
- * The page-size attribute
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
- */
-Table.setAttribute('page-size', {number: true});
 
 /**
  * Should filters be shown?
@@ -741,18 +723,18 @@ Table.setMethod(function createDataRow(entry) {
 		if (actions && actions.length) {
 
 			let action,
-			    anchor;
+			    element;
 
 			// Iterate over all the defined actions
 			for (action of actions) {
 
-				anchor = action.constructElement(this);
+				element = action.constructElement(this);
 
-				if (!anchor) {
+				if (!element) {
 					continue;
 				}
 
-				td.append(anchor);
+				td.append(element);
 			}
 		}
 
@@ -913,7 +895,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
 		if (field.options.sortable !== false) {
 			col.classList.add('sortable');
-			icon = this.createElement('al-ico');
+			icon = this.createElement('al-icon');
 			icon.setAttribute('type', 'sorting-arrow');
 
 			// Wrap it in an anchor
@@ -999,7 +981,7 @@ Table.setMethod(function updateAnchors(base_url) {
 	for (i = 0; i < anchors.length; i++) {
 		anchor = anchors[i];
 
-		ico = anchor.querySelector('al-ico');
+		ico = anchor.querySelector('al-icon');
 
 		ico.classList.remove('up');
 		ico.classList.remove('down');
@@ -1065,64 +1047,58 @@ Table.setMethod(function selectRow(row) {
 });
 
 /**
- * Load the remote data
+ * Construct the config object used to fetch data
  *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.3
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
-Table.setMethod(function loadRemoteData() {
+Table.setMethod(function getRemoteFetchConfig() {
 
-	let that = this,
-	    src = this.src;
-
-	let body = {
+	let config = {
 		fields : this.fieldset.toJSON(),
 	};
 
 	if (this.page_size) {
-		body.page_size = this.page_size;
-		body.page = this.getWantedPage();
+		config.page_size = this.page_size;
+		config.page = this.getWantedPage();
 	}
 
-	body.sort = this.getWantedSort();
-	body.filters = this.getWantedFilters();
+	config.sort = this.getWantedSort();
+	config.filters = this.getWantedFilters();
 
-	let options = {
-		href : this.src,
-		post : true,
-		body : body
-	};
+	return config;
+});
 
-	let load_remote_id = ++this.load_remote_counter;
+/**
+ * Apply the fetched data
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Table.setMethod(function applyFetchedData(err, result, config) {
 
-	this.delayAssemble(async function() {
+	if (err) {
+		console.error(err);
+		return;
+	}
 
-		if (load_remote_id != that.load_remote_counter) {
-			return;
-		}
+	let records;
 
-		let result = await that.getResource(options);
+	if (Array.isArray(result)) {
+		records = result;
+	} else {
+		records = result.records;
+	}
 
-		if (!result) {
-			return;
-		}
+	this.records = records;
+	this.updateAnchors();
 
-		if (load_remote_id != that.load_remote_counter) {
-			return;
-		}
-
-		let records = result.records;
-
-		that.records = records;
-
-		that.updateAnchors();
-
-		if (Blast.isBrowser) {
-			let current_url = that.getCurrentStateUrl();
-			history.pushState(null, document.title, current_url+'');
-		}
-	});
+	if (Blast.isBrowser) {
+		let current_url = this.getCurrentStateUrl();
+		history.pushState(null, document.title, current_url+'');
+	}
 });
 
 /**
