@@ -6,6 +6,7 @@
 * Allow `al-table` to reuse existing rows and prevent render flashes
 * Add `al-state` and the abstract `Stateful` class for elements with states
 * Add `al-button` element
+* Allow adding a suffix option to certain fields
 
 ## 0.1.12 (2022-10-12)
 

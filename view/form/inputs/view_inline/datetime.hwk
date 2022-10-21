@@ -1,4 +1,8 @@
-<time
-	class="alchemy-field-value"
-	datetime={% value.toISOString() %}
->{{ value.format('Y‑m‑d H:i') }}</time>
+{% if alchemy_field.config.options.time_ago %}
+	<time-ago date={% value %}></time-ago>
+{% else %}
+	<time
+		class="alchemy-field-value"
+		datetime={% value.toISOString() %}
+	>{{ value.format('Y‑m‑d H:i') }}</time>
+{% /if %}

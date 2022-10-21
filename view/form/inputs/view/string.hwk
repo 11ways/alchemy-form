@@ -1,1 +1,6 @@
-<span class="alchemy-field-value">{{ value }}</span>
+<div>
+	<span class="alchemy-field-value">{{ value }}</span>
+	{% if alchemy_field.config.options.suffix %}
+		<span class="alchemy-field-suffix">{{ alchemy_field.config.options.suffix }}</span>
+	{% /if %}
+</div>
