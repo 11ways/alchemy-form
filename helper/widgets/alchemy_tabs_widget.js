@@ -110,7 +110,7 @@ Tabs.setMethod(function populateWidget() {
 		tab_button.id = 'tab-' + tab_config.name;
 
 		if (tab_config.icon) {
-			let ico = this.createElement('al-ico');
+			let ico = this.createElement('al-icon');
 			ico.icon_name = tab_config.icon;
 			tab_button.append(ico);
 		}
