@@ -1,5 +1,5 @@
 /**
- * The alchemy-tab-content element
+ * The al-tab-content element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0

@@ -1,5 +1,5 @@
 /**
- * The alchemy-number-input custom element
+ * The al-number-input custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3

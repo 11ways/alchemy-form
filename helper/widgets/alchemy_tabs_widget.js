@@ -101,7 +101,7 @@ Tabs.setMethod(function populateWidget() {
 
 	for (let tab_config of tabs) {
 
-		if (!tab_config.name) {
+		if (!tab_config?.name) {
 			continue;
 		}
 

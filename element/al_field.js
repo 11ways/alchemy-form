@@ -1,5 +1,5 @@
 /**
- * The alchemy-field element
+ * The al-field element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -122,7 +122,7 @@ Field.enforceProperty(function alchemy_form(new_value) {
 Field.addElementGetter('error_area', '.error-area');
 
 /**
- * Get the optional alchemy-field-schema it belongs to
+ * Get the optional al-field-schema it belongs to
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -180,7 +180,7 @@ Field.enforceProperty(function schema(new_value, old_value) {
 		}
 	}
 
-	// See if the alchemy-form element has an explicit schema instance
+	// See if the al-form element has an explicit schema instance
 	if (!new_value && this.alchemy_form) {
 		new_value = this.alchemy_form.schema;
 	}

@@ -1,5 +1,5 @@
 /**
- * The alchemy-string-input custom element
+ * The al-string-input custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

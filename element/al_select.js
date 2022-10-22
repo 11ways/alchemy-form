@@ -467,7 +467,7 @@ AlchemySelect.setMethod(function introduced() {
 
 	this.addEventListener('keydown', function onKeydown(e) {
 
-		// Only listen for keydowns on the alchemy-select itself
+		// Only listen for keydowns on the al-select itself
 		if (e.target != that) {
 			return;
 		}

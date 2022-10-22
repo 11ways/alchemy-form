@@ -19,6 +19,6 @@ const BooleanDefinition = Function.inherits('Alchemy.QueryBuilder.VariableDefini
  * @param    {Hawkejs.Renderer}
  */
 BooleanDefinition.setMethod(function createValueInput(renderer) {
-	let toggle = renderer.createElement('alchemy-toggle');
+	let toggle = renderer.createElement('al-toggle');
 	return toggle;
 });

@@ -1,5 +1,5 @@
 /**
- * The alchemy-tab-context element
+ * The al-tab-context element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0

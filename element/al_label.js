@@ -1,5 +1,5 @@
 /**
- * The alchemy-label custom element
+ * The al-label custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

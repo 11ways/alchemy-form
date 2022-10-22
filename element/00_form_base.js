@@ -1,5 +1,5 @@
 /**
- * The base class for all other alchemy-form elements
+ * The base class for all other al-form elements
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

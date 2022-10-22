@@ -1,5 +1,5 @@
 /**
- * The alchemy-query-builder-value custom element
+ * The al-query-builder-value custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.7

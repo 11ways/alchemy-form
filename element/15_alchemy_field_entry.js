@@ -1,7 +1,7 @@
 var VALUE = Symbol('value');
 
 /**
- * The alchemy-field-entry element
+ * The al-field-entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -53,16 +53,16 @@ FieldEntry.setProperty(function value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  */
 FieldEntry.setProperty(function value_element() {
 
 	let input;
 
-	if (this.is_array && this.tagName != 'ALCHEMY-FIELD-ARRAY' && this.tagName != 'ALCHEMY-FIELD-ARRAY-ENTRY') {
-		input = this.querySelector('alchemy-field-array');
+	if (this.is_array && this.tagName != 'AL-FIELD-ARRAY' && this.tagName != 'AL-FIELD-ARRAY-ENTRY') {
+		input = this.querySelector('al-field-array');
 	} else {
-		input = this.querySelector('alchemy-field-schema, .alchemy-field-value');
+		input = this.querySelector('al-field-schema, .alchemy-field-value');
 	}
 
 	return input;

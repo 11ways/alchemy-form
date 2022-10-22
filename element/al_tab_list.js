@@ -1,5 +1,5 @@
 /**
- * The alchemy-tab-list element
+ * The al-tab-list element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0

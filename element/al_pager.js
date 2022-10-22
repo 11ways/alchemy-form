@@ -1,5 +1,5 @@
 /**
- * The alchemy-pager element
+ * The al-pager element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

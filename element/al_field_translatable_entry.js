@@ -1,5 +1,5 @@
 /**
- * The alchemy-field-translatable-entry element
+ * The al-field-translatable-entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

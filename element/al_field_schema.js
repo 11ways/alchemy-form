@@ -1,5 +1,5 @@
 /**
- * The alchemy-field-schema element
+ * The al-field-schema element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

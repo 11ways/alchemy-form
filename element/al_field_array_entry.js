@@ -1,5 +1,5 @@
 /**
- * The alchemy-field-array-entry element
+ * The al-field-array-entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
@@ -17,7 +17,7 @@ const FieldArrayEntry = Function.inherits('Alchemy.Element.Form.FieldEntry', 'Fi
 FieldArrayEntry.setTemplateFile('form/elements/alchemy_field_array_entry');
 
 /**
- * Get a reference to the alchemy-field-array parent
+ * Get a reference to the al-field-array parent
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

@@ -1,5 +1,5 @@
 /**
- * The alchemy-select-item element
+ * The al-select-item element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0

@@ -1,5 +1,5 @@
 /**
- * The alchemy-toggle custom element
+ * The al-toggle custom element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
@@ -32,7 +32,7 @@ QueryBuilder.setAssignedProperty('dataprovider');
  * @since    0.1.6
  * @version  0.1.6
  */
-QueryBuilder.addElementGetter('root_group', ':scope > alchemy-query-builder-group');
+QueryBuilder.addElementGetter('root_group', ':scope > al-query-builder-group');
 
 /**
  * Get/set the value

@@ -26,7 +26,7 @@ AlchemyField.constitute(function prepareSchema() {
 });
 
 /**
- * Find the alchemy-form parent
+ * Find the al-form parent
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.4
