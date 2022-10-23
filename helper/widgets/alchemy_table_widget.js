@@ -60,6 +60,10 @@ AlchemyTable.setMethod(function populateWidget() {
 		table.recordsource = config.recordsource;
 	}
 
+	if (config.use_url_pagination) {
+		table.use_url_pagination = config.use_url_pagination;
+	}
+
 	table.purpose = config.purpose || 'view';
 	table.mode = config.mode || 'inline';
 

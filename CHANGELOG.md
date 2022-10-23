@@ -7,6 +7,7 @@
 * Add `al-state` and the abstract `Stateful` class for elements with states
 * Add `al-button` element
 * Allow adding a suffix option to certain fields
+* Allow using `al-table` pager without a url
 
 ## 0.1.12 (2022-10-12)
 

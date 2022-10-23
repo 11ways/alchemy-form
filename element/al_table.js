@@ -102,6 +102,15 @@ Table.addElementGetter('column_filters_row', 'tr.aft-column-filters');
 Table.setAttribute('show-filters', {boolean: true});
 
 /**
+ * Should the url be used for pagination?
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Table.setAttribute('use-url-pagination', {boolean: true});
+
+/**
  * Which optional view-type to use for field values
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -224,6 +233,18 @@ Table.setAssignedProperty('records');
  * @version  0.1.0
  */
 Table.setAssignedProperty('filters');
+
+/**
+ * Get the active row
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Table.setProperty(function active_row() {
+	let result = this.queryAllNotNested('tr.aft-selected');
+	return result[0];
+});
 
 /**
  * Clear all the elements
@@ -542,10 +563,16 @@ Table.setMethod(function showPagination() {
 		return;
 	}
 
-	let url = this.getCurrentUrl();
+	const use_url_pagination = this.use_url_pagination;
 
-	if (!url) {
-		return;
+	let url;
+
+	if (use_url_pagination) {
+		url = this.getCurrentUrl();
+
+		if (!url) {
+			return;
+		}
 	}
 
 	let pager = this.querySelector('al-pager');
@@ -555,8 +582,11 @@ Table.setMethod(function showPagination() {
 		this.footer.append(pager);
 	}
 
-	pager.src = url;
-	pager.url_param = this.getBaseUrlParam();
+	if (use_url_pagination) {
+		pager.src = url;
+		pager.url_param = this.getBaseUrlParam();
+	}
+
 	pager.page_size = records.page_size;
 
 	pager.showPage(records.page, Math.ceil(records.available / records.page_size));

@@ -167,7 +167,7 @@ Pager.setMethod(function getVisiblePagesElements() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.0
  *
  * @param    {Number}   page
  * @param    {Number}   amount_of_pages
@@ -200,7 +200,8 @@ Pager.setMethod(function showPage(page, amount_of_pages) {
 	    nr,
 	    i;
 
-	if (src && url_param) {
+	// Create let scope
+	if (true) {
 		let first_anchor = this.link_first.children[0],
 		    prev_anchor = this.link_prev.children[0],
 		    next_anchor = this.link_next.children[0],
@@ -208,46 +209,59 @@ Pager.setMethod(function showPage(page, amount_of_pages) {
 		    data,
 		    url;
 
-		data = {};
-		data[url_param] = {page: 1};
-		url = RURL.parse(src);
-		url.param(data);
+		if (url_param) {
+			data = {};
+			data[url_param] = {page: 1};
+			url = RURL.parse(src);
+			url.param(data);
+			first_anchor.setAttribute('href', url);
+		}
 
-		first_anchor.setAttribute('href', url);
+		first_anchor.dataset.page = 1;
 
 		let prev = page - 1;
 
 		if (prev < 1) prev = 1;
 
-		data = {};
-		data[url_param] = {page: prev};
-		url = RURL.parse(src);
-		url.param(data);
+		if (url_param) {
+			data = {};
+			data[url_param] = {page: prev};
+			url = RURL.parse(src);
+			url.param(data);
+			prev_anchor.setAttribute('href', url);
+		}
 
-		prev_anchor.setAttribute('href', url);
+		prev_anchor.dataset.page = prev;
 
 		let next = page + 1;
 
 		if (next > amount_of_pages) {
 			next_anchor.href = '#';
 			next_anchor.disabled = true;
+			next_anchor.removeAttribute('data-page');
 		} else {
 			next_anchor.disabled = false;
 
-			data = {};
-			data[url_param] = {page: next};
-			url = RURL.parse(src);
-			url.param(data);
+			if (url_param) {
+				data = {};
+				data[url_param] = {page: next};
+				url = RURL.parse(src);
+				url.param(data);
+				next_anchor.setAttribute('href', url);
+			}
 
-			next_anchor.setAttribute('href', url);
+			next_anchor.dataset.page = next;
 		}
 
-		data = {};
-		data[url_param] = {page: amount_of_pages};
-		url = RURL.parse(src);
-		url.param(data);
+		if (url_param) {
+			data = {};
+			data[url_param] = {page: amount_of_pages};
+			url = RURL.parse(src);
+			url.param(data);
+			last_anchor.setAttribute('href', url);
+		}
 
-		last_anchor.setAttribute('href', url);
+		last_anchor.dataset.page = amount_of_pages;
 	}
 
 	for (i = 0; i < page_links.length; i++) {
@@ -307,13 +321,16 @@ Pager.setMethod(function introduced() {
 
 	this.addEventListener('click', function onClick(e) {
 
-		if (e.target.nodeName != 'A') {
-			return;
-		}
-
-		let page_nr_el = e.target.queryParents('[data-page]');
+		let page_nr_el = e.target.queryUp('[data-page]');
 
 		if (!page_nr_el) {
+
+			let anchor = e.target.queryUp('a');
+
+			if (anchor && anchor.href == '#') {
+				e.preventDefault();
+			}
+
 			return;
 		}
 

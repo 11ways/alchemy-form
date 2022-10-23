@@ -946,67 +946,6 @@ AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
 });
 
 /**
- * Load remote content
- *
- * @author   Jelle De Loecker <jelle@develry.be>
- * @since    0.1.0
- * @version  0.2.0
- *
- * @param    {Number}   page
- *
- * @return   {Pledge}
- */
-AlchemySelect.setMethod(function old_loadRemote(page) {
-
-	let pledge = new Classes.Pledge();
-
-	// Don't perform request when everything has already been loaded
-	if (this.total_item_count >= this.loaded_item_count) {
-		pledge.resolve(true);
-		return;
-	}
-
-	if (!this.src && !this.dataprovider) {
-		pledge.resolve(false);
-		return pledge;
-	}
-
-	if (page == null) {
-		page = 1;
-	}
-
-	const that = this;
-
-	this.loading_dropdown = true;
-
-	let data = {
-		search : this.search_value,
-		page   : page
-	};
-
-	this.fetchRemoteData(data).done(gotResponse);
-
-	function gotResponse(err, data) {
-
-		if (err) {
-			that.loading_dropdown = false;
-			pledge.resolve(false);
-			throw err;
-		}
-
-		if (page == null || page == 1) {
-			Hawkejs.removeChildren(that.dropdown_content);
-		}
-
-		that._processResponseData(data, page);
-
-		pledge.resolve(true);
-	};
-
-	return pledge;
-});
-
-/**
  * Recreate the dropdown items
  *
  * @author   Jelle De Loecker <jelle@develry.be>
