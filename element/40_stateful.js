@@ -25,10 +25,8 @@ Stateful.setAttribute('state');
  * @since    0.2.0
  * @version  0.2.0
  */
-Stateful.constitute(function addStateListener() {
-	this.addObservedAttribute('state', function onChange(state) {
-		this.refresh();
-	});
+Stateful.addObservedAttribute('state', function onChange(state) {
+	this.refresh();
 });
 
 /**

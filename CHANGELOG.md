@@ -8,6 +8,7 @@
 * Add `al-button` element
 * Allow adding a suffix option to certain fields
 * Allow using `al-table` pager without a url
+* Move widgets to `alchemy-widgets` plugin, because that depends on `alchemy-form`
 
 ## 0.1.12 (2022-10-12)
 
