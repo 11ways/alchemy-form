@@ -35,6 +35,15 @@ Button.setRole('button');
 Button.setAttribute('tabindex', {default: 0});
 
 /**
+ * The allowed activatable states
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Button.setAttribute('activatable-states', {type: 'token_list'});
+
+/**
  * Action instances
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -51,6 +60,18 @@ Button.setAssignedProperty('action_instance');
  * @version  0.2.0
  */
 Button.setMethod(function activate() {
+
+	let allowed_states = this.activatable_states;
+
+	if (!allowed_states.length) {
+		allowed_states = ['default', 'ready'];
+	} else {
+		allowed_states = allowed_states.values();
+	}
+
+	if (allowed_states.indexOf(this.state) == -1) {
+		return;
+	}
 
 	let event = this.emit('activate');
 

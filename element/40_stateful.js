@@ -16,7 +16,7 @@ const Stateful = Function.inherits('Alchemy.Element.Form.Base', 'Stateful');
  * @since    0.2.0
  * @version  0.2.0
  */
-Stateful.setAttribute('state');
+Stateful.setAttribute('state', {default: 'default'});
 
 /**
  * Add a state listener to all child classes
@@ -73,6 +73,30 @@ Stateful.setMethod(function setState(state_name, duration_in_ms, final_state) {
 });
 
 /**
+ * Create a state scheduler function.
+ * This will only call the callback if the state count remains the same
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.0
+ * @version  0.2.0
+ */
+Stateful.setMethod(function wrapForCurrentState(callback) {
+
+	let count = this[STATE_COUNT];
+
+	return () => {
+
+		if (this[STATE_COUNT] != count) {
+			return false;
+		}
+
+		callback();
+
+		return true;
+	}
+});
+
+/**
  * Refresh all the children
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -82,12 +106,20 @@ Stateful.setMethod(function setState(state_name, duration_in_ms, final_state) {
 Stateful.setMethod(function refresh() {
 
 	let current_state = this.state,
+	    state_parent,
 	    children = this.queryAllNotNested('[state-name]'),
 	    child,
 	    i;
 
 	for (i = 0; i < children.length; i++) {
 		child = children[i];
+
+		state_parent = child.queryParents('[state]');
+
+		if (state_parent != this) {
+			continue;
+		}
+
 		child.active = child.state_name == current_state;
 	}
 });
