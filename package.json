@@ -1,14 +1,14 @@
 {
 	"name": "alchemy-form",
 	"description": "Form plugin for Alchemy",
-	"version": "0.2.0-alpha",
+	"version": "0.2.0",
 	"repository": {
 		"type" : "git",
 		"url"  : "https://github.com/11ways/alchemy-form.git"
 	},
 	"peerDependencies": {
 		"alchemymvc"    : ">=1.2.0",
-		"alchemy-media" : "~0.6.3"
+		"alchemy-media" : "~0.7.0"
 	},
 	"license": "MIT",
 	"engines": {

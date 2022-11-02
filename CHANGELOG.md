@@ -1,4 +1,4 @@
-## 0.2.0 (WIP)
+## 0.2.0 (2022-11-02)
 
 * Use the `al-` prefix for all custom elements instead of nothing or `alchemy-`
 * Add tab-elements & widget
