@@ -64,7 +64,7 @@ Button.setMethod(function activate() {
 	let allowed_states = this.activatable_states;
 
 	if (!allowed_states.length) {
-		allowed_states = ['default', 'ready'];
+		allowed_states = ['default', 'ready', 'idle'];
 	} else {
 		allowed_states = allowed_states.values();
 	}
