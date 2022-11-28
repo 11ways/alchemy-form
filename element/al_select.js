@@ -137,7 +137,11 @@ AlchemySelect.setAssignedProperty('value', function getValue(value) {
 });
 
 /**
- * The options property (will be stored in assigned_data)
+ * The options property:
+ * this contains configuration options of this element.
+ *
+ * It does NOT contain things to select from.
+ * Use `values` for that instead!
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
@@ -240,7 +244,7 @@ AlchemySelect.setProperty(function loaded_items() {
  */
 AlchemySelect.setProperty(function loaded_item_count() {
 	if (this.options.values) {
-		return this.options.values.size;
+		return this.options.values.size || 0;
 	} else {
 		return 0;
 	}
@@ -793,7 +797,7 @@ AlchemySelect.setMethod(function _ensureValueData(value) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.2.1
  */
 AlchemySelect.setMethod(function _processPreloadedValues() {
 
@@ -808,11 +812,13 @@ AlchemySelect.setMethod(function _processPreloadedValues() {
 		items     : [],
 	};
 
-	let item,
-	    key;
+	let item;
 
 	let enum_values = new Classes.Alchemy.Map.Enum(values),
 	    value;
+
+	// Make sure to use this new enum instance from now on
+	this.options.values = enum_values;
 
 	for (let key of enum_values.keys()) {
 		value = enum_values.get(key);
@@ -847,9 +853,7 @@ AlchemySelect.setMethod(function _processResponseData(response, page) {
 		this.total_item_count = response.available;
 	}
 
-	let records = response.items || response.records,
-	    record,
-	    item;
+	let records = response.items || response.records;
 
 	if (!records) {
 		records = [];
@@ -955,8 +959,7 @@ AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
 AlchemySelect.setMethod(function recreateDropdownElements() {
 
 	let items = this.loaded_items,
-	    item,
-	    key;
+	    item;
 
 	Hawkejs.removeChildren(this.dropdown_content);
 

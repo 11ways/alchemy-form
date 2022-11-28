@@ -2,6 +2,7 @@
 
 * Enable `al-form` model validation
 * Don't throw an error when a `al-field` element has no field name configured
+* Overwrite preloaded `al-select` values with their processed variant
 
 ## 0.2.0 (2022-11-02)
 
