@@ -1,6 +1,7 @@
 ## 0.2.1 (WIP)
 
 * Enable `al-form` model validation
+* Don't throw an error when a `al-field` element has no field name configured
 
 ## 0.2.0 (2022-11-02)
 

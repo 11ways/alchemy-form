@@ -770,7 +770,7 @@ Field.setMethod(function removeErrors() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.2.1
  */
 Field.setMethod(function retained() {
 
@@ -781,7 +781,9 @@ Field.setMethod(function retained() {
 			id += this.alchemy_form.id + '-';
 		}
 
-		id += this.field_name.slug();
+		if (this.field_name) {
+			id += this.field_name.slug();
+		}
 
 		this.id = id;
 	}
