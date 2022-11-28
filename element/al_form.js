@@ -153,13 +153,13 @@ Form.setMethod(Hawkejs.SERIALIZE_FORM, function serializeForm() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.1
  */
 Form.setMethod(async function submit() {
 
 	let result;
 
-	if (false && this.model) {
+	if (this.model) {
 		let model = alchemy.getModel(this.model);
 
 		if (model) {
@@ -183,6 +183,8 @@ Form.setMethod(async function submit() {
 			throw err;
 		}
 	}
+
+	return result;
 });
 
 /**

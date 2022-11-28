@@ -1,3 +1,7 @@
+## 0.2.1 (WIP)
+
+* Enable `al-form` model validation
+
 ## 0.2.0 (2022-11-02)
 
 * Use the `al-` prefix for all custom elements instead of nothing or `alchemy-`
