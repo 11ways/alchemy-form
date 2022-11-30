@@ -57,7 +57,7 @@ Button.setAssignedProperty('action_instance');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.2.1
  */
 Button.setMethod(function activate() {
 
@@ -81,6 +81,35 @@ Button.setMethod(function activate() {
 
 	if (this.action_instance) {
 		this.action_instance.execute(event);
+	} else {
+		let form = this.queryUp('al-form, form');
+
+		if (form) {
+			let pledge = form.submit();
+
+			if (Pledge.isThenable(pledge)) {
+				let old_state = this.state;
+				this.setState('busy');
+
+				Pledge.done(pledge, err => {
+
+					let temp_state,
+					    duration;
+
+					if (err) {
+						temp_state = 'error';
+						duration = 2500;
+					} else {
+						temp_state = 'done';
+						duration = 1000;
+					}
+
+					this.setState(temp_state, duration, old_state);
+				});
+			} else {
+				this.setState('busy', 1000);
+			}
+		}
 	}
 });
 

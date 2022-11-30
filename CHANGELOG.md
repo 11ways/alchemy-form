@@ -5,6 +5,7 @@
 * Overwrite preloaded `al-select` values with their processed variant
 * Throw an error when a document does not have a `loadQueryBuilderData` method while using the `FormApi#queryBuilderData` action
 * `QueryBuilderValue` instances will now always add a type to the `value_explicit` object
+* Make `al-button` elements submit forms automatically
 
 ## 0.2.0 (2022-11-02)
 
