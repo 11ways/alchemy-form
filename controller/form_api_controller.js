@@ -67,7 +67,7 @@ FormApi.setAction(async function related(conduit) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  *
  * @param    {Conduit}   conduit
  */
@@ -84,7 +84,11 @@ FormApi.setAction(async function queryBuilderData(conduit) {
 			const doc = await model.findByPk(body.$pk);
 
 			if (doc) {
-				result = await doc.loadQueryBuilderData(config);
+				if (typeof doc.loadQueryBuilderData != 'function') {
+					throw new Error('The document class of "' + body.model + '" has no loadQueryBuilderData(config) method');
+				} else {
+					result = await doc.loadQueryBuilderData(config);
+				}
 			}
 		}
 	}

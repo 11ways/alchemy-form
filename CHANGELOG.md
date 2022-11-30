@@ -3,6 +3,7 @@
 * Enable `al-form` model validation
 * Don't throw an error when a `al-field` element has no field name configured
 * Overwrite preloaded `al-select` values with their processed variant
+* Throw an error when a document does not have a `loadQueryBuilderData` method while using the `FormApi#queryBuilderData` action
 
 ## 0.2.0 (2022-11-02)
 
