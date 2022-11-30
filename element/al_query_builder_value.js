@@ -80,7 +80,7 @@ QueryBuilderValue.addElementGetter('value_input_wrapper', '.qb-value-input-wrapp
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  */
 QueryBuilderValue.setProperty(function value() {
 
@@ -105,7 +105,7 @@ QueryBuilderValue.setProperty(function value() {
 		if (input) {
 
 			let value_explicit = {
-				type  : this.getValueType(input),
+				type  : this.getValueType(input) || 'unknown_value_type',
 				value : null,
 			}
 
