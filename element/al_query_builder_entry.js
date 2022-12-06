@@ -165,14 +165,23 @@ QueryBuilderEntry.setMethod(async function loadData(config, element) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  */
 QueryBuilderEntry.setMethod(async function loadValueTypeData(config) {
 
 	let items = [];
 
-	items.push({id: 'variable', title: 'Other variable'});
-	items.push({id: 'value', title: 'Value'});
+	items.push({
+		id: 'variable',
+		title: 'Variable',
+		description: 'Use the value of a variable',
+	});
+
+	items.push({
+		id: 'value',
+		title: 'Value',
+		description: 'Supply the value now',
+	});
 
 	return items;
 });
@@ -232,26 +241,54 @@ QueryBuilderEntry.setMethod(async function loadVariableData(config) {
 });
 
 /**
+ * Get the field_select variable definition
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.1
+ * @version  0.2.1
+ *
+ * @return   {Promise<Object>}
+ */
+QueryBuilderEntry.setMethod(async function getFieldSelectVariableDefinition(variable_name) {
+
+	let variable_def = this.field_select.getValueData(variable_name);
+
+	if (variable_def) {
+		return variable_def;
+	}
+
+	await this.field_select.waitForTasks();
+	variable_def = this.field_select.getValueData(variable_name);
+
+	if (!variable_def) {
+		return this.field_select.awaitValueData(variable_name);
+	}
+
+	return variable_def;
+});
+
+/**
  * Load operator data
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  */
 QueryBuilderEntry.setMethod(async function loadOperatorData(config) {
 
 	let type = this.field_select.value;
 
+	console.log(' -- Loading operator data, type is now:', type);
+
 	if (!type) {
 		return;
 	}
 
-	let variable_def = this.field_select.getValueData(type);
+	let variable_def = await this.getFieldSelectVariableDefinition(type);
 
 	let items = [];
 
 	if (variable_def) {
-
 		if (!this.type || this.type == 'logical') {
 			items.include(variable_def.getLogicalOperators());
 		} else if (this.type == 'assignment') {
@@ -267,7 +304,7 @@ QueryBuilderEntry.setMethod(async function loadOperatorData(config) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  */
 QueryBuilderEntry.setMethod(async function showValueInput() {
 
@@ -277,13 +314,7 @@ QueryBuilderEntry.setMethod(async function showValueInput() {
 		return;
 	}
 
-	let entry = this.field_select.getValueData(variable_name);
-
-	if (!entry) {
-		await this.field_select.waitForTasks();
-
-		entry = this.field_select.getValueData(variable_name);
-	}
+	let entry = await this.getFieldSelectVariableDefinition(variable_name);
 
 	if (!entry) {
 		return;

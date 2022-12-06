@@ -751,6 +751,22 @@ AlchemySelect.setMethod(function getValueData(value) {
 });
 
 /**
+ * Get the data for a specific value,
+ * but make sure it's loaded
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    0.2.1
+ * @version  0.2.1
+ *
+ * @param    {*}   value
+ *
+ * @return   {Pledge<Object>}
+ */
+AlchemySelect.setMethod(function awaitValueData(value) {
+	return this._ensureValueData(value);
+});
+
+/**
  * Ensure the data for the given value is loaded
  *
  * @author   Jelle De Loecker <jelle@develry.be>

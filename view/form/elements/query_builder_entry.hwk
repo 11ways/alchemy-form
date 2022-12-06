@@ -1,4 +1,6 @@
 <div class="qb-field-wrapper">
+	<small class="small-title">Field</small>
+
 	<al-select
 		class="qb-field"
 		#dataprovider={% self %}
@@ -7,6 +9,8 @@
 	></al-select>
 </div>
 <div class="qb-operator-wrapper">
+	<small class="small-title">Operator</small>
+
 	<al-select
 		class="qb-operator"
 		#dataprovider={% self %}
@@ -15,15 +19,20 @@
 	></al-select>
 </div>
 <div class="qb-value-wrapper">
-	<al-select
-		class="qb-value-type"
-		#dataprovider={% self %}
-		value-item-template="form/select/qb_item"
-		option-item-template="form/select/qb_item"
-	></al-select>
+	<small class="small-title">Value</small>
 
-	<div class="qb-value-input-wrapper">
+	<div class="qb-value-nested-wrapper">
 
+		<al-select
+			class="qb-value-type"
+			#dataprovider={% self %}
+			value-item-template="form/select/qb_item"
+			option-item-template="form/select/qb_item"
+		></al-select>
+
+		<div class="qb-value-input-wrapper">
+
+		</div>
 	</div>
 </div>
 <div class="qb-delete-wrapper">
