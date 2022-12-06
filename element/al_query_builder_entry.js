@@ -249,7 +249,7 @@ QueryBuilderEntry.setMethod(async function loadVariableData(config) {
  *
  * @return   {Promise<Object>}
  */
-QueryBuilderEntry.setMethod(async function getFieldSelectVariableDefinition(variable_name) {
+QueryBuilderEntry.setMethod(async function getFieldSelectVariableDefinition(variable_name, attempt = 0) {
 
 	let variable_def = this.field_select.getValueData(variable_name);
 
@@ -261,7 +261,14 @@ QueryBuilderEntry.setMethod(async function getFieldSelectVariableDefinition(vari
 	variable_def = this.field_select.getValueData(variable_name);
 
 	if (!variable_def) {
-		return this.field_select.awaitValueData(variable_name);
+		variable_def = await this.field_select.awaitValueData(variable_name);
+	}
+
+	if (!variable_def && attempt == 0) {
+		// There is an annoying race condition where one select gets valid data,
+		// but the other field doesn't. So in that case: wait a little bit and try agian.
+		await Pledge.after(250);
+		return this.getFieldSelectVariableDefinition(variable_name, 1);
 	}
 
 	return variable_def;
@@ -277,8 +284,6 @@ QueryBuilderEntry.setMethod(async function getFieldSelectVariableDefinition(vari
 QueryBuilderEntry.setMethod(async function loadOperatorData(config) {
 
 	let type = this.field_select.value;
-
-	console.log(' -- Loading operator data, type is now:', type);
 
 	if (!type) {
 		return;

@@ -7,6 +7,7 @@
 * `QueryBuilderValue` instances will now always add a type to the `value_explicit` object
 * Make `al-button` elements submit forms automatically
 * Fix operator `al-select` element staying empty in a query builder entry
+* Work around a race condition in the query builder
 
 ## 0.2.0 (2022-11-02)
 
