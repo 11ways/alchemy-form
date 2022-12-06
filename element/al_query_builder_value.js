@@ -129,14 +129,23 @@ QueryBuilderValue.setProperty(function value() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.1
  */
 QueryBuilderValue.setMethod(async function loadSourceTypeData(config) {
 
 	let items = [];
 
-	items.push({id: 'variable', title: 'Variable'});
-	items.push({id: 'value', title: 'Value'});
+	items.push({
+		id: 'variable',
+		title: 'Variable',
+		description: 'Use the value of a variable',
+	});
+
+	items.push({
+		id: 'value',
+		title: 'Value',
+		description: 'Supply the value now',
+	});
 
 	return items;
 });
