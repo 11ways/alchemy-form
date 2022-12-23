@@ -44,6 +44,15 @@ Button.setAttribute('tabindex', {default: 0});
 Button.setAttribute('activatable-states', {type: 'token_list'});
 
 /**
+ * Preconfigured behaviours
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.1
+ * @version  0.2.1
+ */
+Button.setAttribute('behaviour', {type: 'token_list'});
+
+/**
  * Action instances
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -81,7 +90,7 @@ Button.setMethod(function activate() {
 
 	if (this.action_instance) {
 		this.action_instance.execute(event);
-	} else {
+	} else if (this.behaviour.contains('submit')) {
 		let form = this.queryUp('al-form, form');
 
 		if (form) {

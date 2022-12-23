@@ -8,6 +8,7 @@
 * Make `al-button` elements submit forms automatically
 * Fix operator `al-select` element staying empty in a query builder entry
 * Work around a race condition in the query builder
+* Add `behaviour` attribute to `al-button` element
 
 ## 0.2.0 (2022-11-02)
 
