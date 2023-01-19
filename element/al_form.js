@@ -153,11 +153,35 @@ Form.setMethod(Hawkejs.SERIALIZE_FORM, function serializeForm() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.1
+ * @version  0.2.2
  */
 Form.setMethod(async function submit() {
 
 	let result;
+
+	await this.validate();
+
+	try {
+		result = await hawkejs.scene.onFormSubmit(this, null, {render_error: false});
+	} catch (err) {
+		if (err instanceof Classes.Alchemy.Error.Validation) {
+			this.showError(err);
+		} else {
+			throw err;
+		}
+	}
+
+	return result;
+});
+
+/**
+ * Validate this form
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.2
+ * @version  0.2.2
+ */
+Form.setMethod(async function validate() {
 
 	if (this.model) {
 		let model = alchemy.getModel(this.model);
@@ -174,17 +198,6 @@ Form.setMethod(async function submit() {
 		}
 	}
 
-	try {
-		result = await hawkejs.scene.onFormSubmit(this, null, {render_error: false});
-	} catch (err) {
-		if (err instanceof Classes.Alchemy.Error.Validation) {
-			this.showError(err);
-		} else {
-			throw err;
-		}
-	}
-
-	return result;
 });
 
 /**

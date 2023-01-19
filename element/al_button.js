@@ -66,7 +66,7 @@ Button.setAssignedProperty('action_instance');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.1
+ * @version  0.2.2
  */
 Button.setMethod(function activate() {
 
@@ -82,7 +82,7 @@ Button.setMethod(function activate() {
 		return;
 	}
 
-	let event = this.emit('activate');
+	let event = this.emit('activate', {cancelable: true});
 
 	if (event.defaultPrevented) {
 		return;

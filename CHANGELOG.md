@@ -1,3 +1,7 @@
+## 0.2.2 (WIP)
+
+* Fix `al-button`'s `activate` event not being cancelable
+
 ## 0.2.1 (2022-12-23)
 
 * Enable `al-form` model validation
