@@ -1,6 +1,7 @@
 ## 0.2.2 (WIP)
 
 * Fix `al-button`'s `activate` event not being cancelable
+* Add `placeholder` support to the string field
 
 ## 0.2.1 (2022-12-23)
 

@@ -10,4 +10,5 @@
 	type={% type %}
 	form=<% form_id %>
 	name=<% path %>
+	placeholder={% alchemy_field.placeholder %}
 >

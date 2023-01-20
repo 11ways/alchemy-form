@@ -89,6 +89,15 @@ Field.setAttribute('readonly', {boolean: true});
 Field.setAssignedProperty('widget_settings');
 
 /**
+ * The placeholder
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.2
+ * @version  0.2.2
+ */
+Field.setAttribute('placeholder');
+
+/**
  * Get the parent al-form element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>

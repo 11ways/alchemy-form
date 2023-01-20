@@ -167,6 +167,7 @@ Form.setMethod(async function submit() {
 		if (err instanceof Classes.Alchemy.Error.Validation) {
 			this.showError(err);
 		} else {
+			this.showError(err);
 			throw err;
 		}
 	}
