@@ -1,4 +1,4 @@
-## 0.2.2 (WIP)
+## 0.2.2 (2023-01-23)
 
 * Fix `al-button`'s `activate` event not being cancelable
 * Add `placeholder` support to the string field
