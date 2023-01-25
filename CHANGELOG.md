@@ -1,3 +1,7 @@
+## 0.2.3 (WIP)
+
+* Use `Scene#pushToHistory()` instead of directly calling `pushState`
+
 ## 0.2.2 (2023-01-23)
 
 * Fix `al-button`'s `activate` event not being cancelable

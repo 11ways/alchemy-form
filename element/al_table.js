@@ -1121,7 +1121,7 @@ Table.setMethod(function getRemoteFetchConfig() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.2.3
  */
 Table.setMethod(function applyFetchedData(err, result, config) {
 
@@ -1142,8 +1142,7 @@ Table.setMethod(function applyFetchedData(err, result, config) {
 	this.updateAnchors();
 
 	if (Blast.isBrowser) {
-		let current_url = this.getCurrentStateUrl();
-		history.pushState(null, document.title, current_url+'');
+		hawkejs.scene.pushToHistory(null, this.getCurrentStateUrl());
 	}
 });
 
