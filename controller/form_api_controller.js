@@ -17,7 +17,7 @@ const FormApi = Function.inherits('Alchemy.Controller', 'FormApi');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.3
  *
  * @param    {Conduit}   conduit
  */
@@ -34,22 +34,44 @@ FormApi.setAction(async function related(conduit) {
 	if (config.value) {
 		crit.where(model.primary_key).equals(config.value);
 	} else if (config.search) {
-		let display_fields = Array.cast(model.displayField);
+		let display_fields = Array.cast(model.display_field),
+		    search_fields = [];
 
 		let or = crit.or();
 		let rx = RegExp.interpretWildcard('*' + body.config.search + '*', 'i');
 
 		for (let field of display_fields) {
-			if (!field) {
+			if (!field || !model.getField(field)) {
 				continue;
 			}
+			search_fields.push(field);
+		}
 
+		if (!search_fields.length) {
+			if (model.getField('title')) {
+				search_fields.push('title');
+			}
+
+			if (model.getField('name')) {
+				search_fields.push('name');
+			}
+
+			if (model.getField('slug')) {
+				search_fields.push('slug');
+			}
+		}
+
+		for (let field of search_fields) {
 			or.where(field).equals(rx);
 		}
 	}
 
 	if (config.page) {
 		crit.page(config.page);
+	}
+
+	if (model.display_field_select) {
+		crit.select(model.display_field_select);
 	}
 
 	let records = await model.find('all', crit);

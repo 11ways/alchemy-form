@@ -5,6 +5,7 @@
 * Make local-filtering in `al-select` elements case insensitive
 * Fix `al-select` never getting more than the first page in `getRemoteFetchConfig` method
 * Add `hasOneParent` field support
+* Make `FormApi#related()` action make sure fields exist before querying them
 
 ## 0.2.2 (2023-01-23)
 
