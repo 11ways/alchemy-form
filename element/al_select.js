@@ -970,7 +970,7 @@ AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.4
+ * @version  0.2.3
  */
 AlchemySelect.setMethod(function recreateDropdownElements() {
 
@@ -979,10 +979,12 @@ AlchemySelect.setMethod(function recreateDropdownElements() {
 
 	Hawkejs.removeChildren(this.dropdown_content);
 
-	for (let key of items.keys()) {
-		item = items.get(key);
-		item = this._makeOption(item.id, item);
-		this.addToDropdown(item);
+	if (items && typeof items.keys == 'function') {
+		for (let key of items.keys()) {
+			item = items.get(key);
+			item = this._makeOption(item.id, item);
+			this.addToDropdown(item);
+		}
 	}
 
 	this.refreshResultAmount();
@@ -1667,7 +1669,7 @@ AlchemySelect.setMethod(function onTypeAreaKeydown(e, is_input) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.3
  */
 AlchemySelect.setMethod(function onTypeAreaKeyup(e, is_input) {
 
@@ -1683,14 +1685,19 @@ AlchemySelect.setMethod(function onTypeAreaKeyup(e, is_input) {
 			return;
 	}
 
-	if (this.search_value) {
+	let search_value = this.search_value,
+	    previous = this._previous_typed_search_value || '';
 
+	if (previous != search_value) {
 		// Only perform a remote search
 		// when at least 2 characters have been entered
-		if (this.search_value.length > 2) {
+		if (search_value.length === 0 || search_value.length > 2) {
 			this.refreshRemote();
 		}
+
 	}
+
+	this._previous_typed_search_value = search_value;
 
 	this.applyLocalFilter();
 });

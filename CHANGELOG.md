@@ -6,6 +6,7 @@
 * Fix `al-select` never getting more than the first page in `getRemoteFetchConfig` method
 * Add `hasOneParent` field support
 * Make `FormApi#related()` action make sure fields exist before querying them
+* Add a workaround so `al-select` actually refreshes elements when removing the search value
 
 ## 0.2.2 (2023-01-23)
 
