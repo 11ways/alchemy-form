@@ -3,6 +3,7 @@
 * Use `Scene#pushToHistory()` instead of directly calling `pushState`
 * Select `display_field_select` fields when requesting related data
 * Make local-filtering in `al-select` elements case insensitive
+* Fix `al-select` never getting more than the first page in `getRemoteFetchConfig` method
 
 ## 0.2.2 (2023-01-23)
 

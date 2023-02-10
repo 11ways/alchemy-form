@@ -924,12 +924,12 @@ AlchemySelect.setMethod(function _processResponseList(list, page) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.2.3
  */
 AlchemySelect.setMethod(function getRemoteFetchConfig() {
 
 	// Don't perform request when everything has already been loaded
-	if (this.total_item_count >= this.loaded_item_count) {
+	if (this.loaded_item_count >= this.total_item_count) {
 		return;
 	}
 
