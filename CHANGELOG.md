@@ -1,6 +1,8 @@
 ## 0.2.3 (WIP)
 
 * Use `Scene#pushToHistory()` instead of directly calling `pushState`
+* Select `display_field_select` fields when requesting related data
+* Make local-filtering in `al-select` elements case insensitive
 
 ## 0.2.2 (2023-01-23)
 

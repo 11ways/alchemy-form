@@ -1700,7 +1700,7 @@ AlchemySelect.setMethod(function onTypeAreaKeyup(e, is_input) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.3
  */
 AlchemySelect.setMethod(function applyLocalFilter(query) {
 
@@ -1713,7 +1713,7 @@ AlchemySelect.setMethod(function applyLocalFilter(query) {
 	    i;
 
 	if (query) {
-		query = query.trim();
+		query = query.trim().toLowerCase();
 	}
 
 	for (i = 0; i < this.dropdown_content.children.length; i++) {
@@ -1722,10 +1722,22 @@ AlchemySelect.setMethod(function applyLocalFilter(query) {
 
 		if (!query) {
 			allow = true;
-		} else if (String(element.value).indexOf(query) > -1) {
-			allow = true;
-		} else if (element.textContent.indexOf(query) > -1) {
-			allow = true;
+		}
+
+		if (!allow) {
+			let value = String(element.value).toLowerCase();
+
+			if (value.includes(query)) {
+				allow = true;
+			}
+		}
+
+		if (!allow) {
+			let text = element.textContent.toLowerCase();
+
+			if (text.includes(query)) {
+				allow = true;
+			}
 		}
 
 		if (allow) {
