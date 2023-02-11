@@ -1,4 +1,4 @@
-## 0.2.3 (WIP)
+## 0.2.3 (2023-02-11)
 
 * Use `Scene#pushToHistory()` instead of directly calling `pushState`
 * Select `display_field_select` fields when requesting related data
