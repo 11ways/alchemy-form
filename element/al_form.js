@@ -289,13 +289,17 @@ Form.setMethod(async function showViolations(err) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.2.4
  *
  * @param    {String}   path
  *
  * @return   {AlchemyField}
  */
 Form.setMethod(function findFieldByPath(path) {
+
+	if (!path) {
+		return;
+	}
 
 	let current = this,
 	    result,

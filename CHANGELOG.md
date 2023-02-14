@@ -1,3 +1,7 @@
+## 0.2.4 (WIP)
+
+* Don't look for a field when the path is not specified
+
 ## 0.2.3 (2023-02-11)
 
 * Use `Scene#pushToHistory()` instead of directly calling `pushState`
