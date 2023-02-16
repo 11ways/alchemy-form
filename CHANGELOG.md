@@ -1,6 +1,7 @@
 ## 0.2.4 (WIP)
 
 * Don't look for a field when the path is not specified
+* Make `al-field-schema` elements use `Field#getSubSchema()` method
 
 ## 0.2.3 (2023-02-11)
 

@@ -21,47 +21,28 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.12
+ * @version  0.2.4
  */
 FieldSchema.setProperty(function schema() {
 
-	if (this.alchemy_field && this.alchemy_field.config.options) {
-		let schema = this.alchemy_field.config.options.schema;
+	const field = this.alchemy_field?.config;
+
+	if (field?.options) {
+
+		let schema = field.options.schema;
 
 		if (typeof schema == 'string') {
-			let other_field = this.getSchemaSupplierField();
-			schema = null;
+			const form = this.alchemy_field.alchemy_form;
 
-			if (other_field && other_field.value && other_field.config && other_field.config.options) {
-				let values = other_field.config.options.values;
+			// @TODO: This will always get the "root" form value,
+			// so this might not work with nested schemas
+			let record_value = form.value;
 
-				if (values) {
-					let value;
-
-					if (values instanceof Classes.Alchemy.Map.Backed) {
-						value = values.get(other_field.value);
-					} else {
-						value = values[other_field.value];
-					}
-
-					if (value) {
-						if (value.schema) {
-							schema = value.schema;
-						} else if (value.value) {
-							// Enumified values can be wrapped on the server-side
-							value = value.value;
-
-							if (value.schema) {
-								schema = value.schema;
-							}
-						}
-					}
-
-					if (!schema) {
-						schema = value;
-					}
-				}
+			if (form.model) {
+				record_value = record_value[form.model];
 			}
+
+			return field.getSubschema(record_value, schema)
 		}
 
 		return schema;
