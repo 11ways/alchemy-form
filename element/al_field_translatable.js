@@ -75,7 +75,44 @@ FieldTranslatable.setMethod(function showPrefix(prefix) {
 			element.hidden = true;
 		}
 	}
+});
 
+/**
+ * Check the translation contents
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.4
+ * @version  0.2.4
+ */
+FieldTranslatable.setMethod(function checkTranslationContents() {
+
+	let field = this.field_context?.config;
+
+	let has_content,
+	    buttons = this.querySelectorAll('button[data-has-content][data-prefix]'),
+	    button,
+	    prefix,
+	    values = this.value,
+	    value,
+	    i;
+	
+	for (i = 0; i < buttons.length; i++) {
+		button = buttons[i];
+		prefix = button.dataset.prefix;
+		value = values?.[prefix];
+
+		if (field) {
+			has_content = field.valueHasContent(value);
+		} else {
+			has_content = value != null && value !== '';
+		}
+
+		if (has_content) {
+			button.dataset.hasContent = 'true';
+		} else {
+			button.dataset.hasContent = 'false';
+		}
+	}
 });
 
 /**
@@ -83,15 +120,23 @@ FieldTranslatable.setMethod(function showPrefix(prefix) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.4
  */
 FieldTranslatable.setMethod(function introduced() {
 
 	const that = this;
 
+	let doTranslationCheck = Function.throttle(() => {
+		that.checkTranslationContents();
+	}, 500, true, true);
+
 	this.onEventSelector('click', '.prefix-buttons button[data-prefix]', function onClick(e) {
 		e.preventDefault();
 		that.showPrefix(this.dataset.prefix);
+		doTranslationCheck();
 	});
 
+	this.addEventListener('change', doTranslationCheck);
+	this.addEventListener('keyup', doTranslationCheck);
+	this.addEventListener('click', doTranslationCheck);
 });
