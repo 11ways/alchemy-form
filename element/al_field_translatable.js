@@ -124,9 +124,15 @@ FieldTranslatable.setMethod(function checkTranslationContents() {
  */
 FieldTranslatable.setMethod(function introduced() {
 
-	const that = this;
+	const that = this,
+	      field = this.field_context;
 
 	let doTranslationCheck = Function.throttle(() => {
+
+		if (field?.purpose == 'view') {
+			return;
+		}
+
 		that.checkTranslationContents();
 	}, 500, true, true);
 
