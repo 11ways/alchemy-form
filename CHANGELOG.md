@@ -2,6 +2,7 @@
 
 * Don't look for a field when the path is not specified
 * Make `al-field-schema` elements use `Field#getSubSchema()` method
+* Add an icon to the translatable-field entry buttons to see if it has a translation or not
 
 ## 0.2.3 (2023-02-11)
 

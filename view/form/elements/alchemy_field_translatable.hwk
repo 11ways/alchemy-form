@@ -8,9 +8,24 @@
 <div class="prefix-buttons">
 	<% index = 0 %>
 	<% for (prefix in prefixes) { %>
-		<button data-prefix=<% prefix %>>
+		<% value = null %>
+		<% if (values) value = values[prefix] %>
+
+		<button
+			data-prefix={% prefix %}
+			data-has-content=<% alchemy_field.config.valueHasContent(value) ? 'true' : 'false' %>
+		>
 			<% if (index == 0) $0.classList.add('active') %>
-			{%= prefix %}
+
+			<span class="prefix-name">{{ prefix }}</span>
+
+			<al-icon-stack class="has-empty-content">
+				<al-icon icon-name="language"></al-icon>
+				<al-icon icon-name="ban" size=2></al-icon>
+			</al-icon-stack>
+
+			<al-icon class="has-content" icon-name="language"></al-icon>
+
 		</button>
 
 		<% index++ %>

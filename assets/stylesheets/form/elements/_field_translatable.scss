@@ -3,6 +3,46 @@ al-field-translatable {
 	position: relative;
 
 	.prefix-buttons {
-		
+		button {
+			display: flex;
+			flex-flow: row;
+		}
+
+		.has-empty-content {
+			font-size: 0.7rem;
+		}
+
+		.has-content {
+			font-size: 0.9rem;
+		}
+
+		.has-empty-content,
+		.has-content {
+			margin-left: 0.5rem;
+		}
+
+		[data-has-content="true"] {
+			.has-empty-content {
+				display: none;
+			}
+		}
+
+		[data-has-content="false"] {
+			.has-content {
+				display: none;
+			}
+		}
+
+		[icon-name] {
+			color: #333;
+		}
+
+		[icon-name="ban"] {
+			color: tomato;
+		}
+
+		.has-content {
+			color: green;
+		}
 	}
 }
