@@ -137,8 +137,16 @@ FieldTranslatable.setMethod(function introduced() {
 	}, 500, true, true);
 
 	this.onEventSelector('click', '.prefix-buttons button[data-prefix]', function onClick(e) {
+
 		e.preventDefault();
-		that.showPrefix(this.dataset.prefix);
+
+		let button = this.closest('[data-prefix]');
+
+		if (!button) {
+			return;
+		}
+
+		that.showPrefix(button.dataset.prefix);
 		doTranslationCheck();
 	});
 
