@@ -25,24 +25,35 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  */
 FieldSchema.setProperty(function schema() {
 
-	const field = this.alchemy_field?.config;
+	const field_element = this.alchemy_field;
+	const field = field_element?.config;
 
 	if (field?.options) {
 
 		let schema = field.options.schema;
 
 		if (typeof schema == 'string') {
-			const form = this.alchemy_field.alchemy_form;
 
-			// @TODO: This will always get the "root" form value,
-			// so this might not work with nested schemas
-			let record_value = form.value;
+			let parent_schema_value;
 
-			if (form.model) {
-				record_value = record_value[form.model];
+			let parent_schema = field_element.queryParents('al-field[field-type="schema"]');
+
+			if (parent_schema) {
+				parent_schema_value = parent_schema.value;
+			} else {
+
+				const form = field_element.alchemy_form;
+
+				let record_value = form.value;
+
+				if (form.model) {
+					record_value = record_value[form.model];
+				}
+
+				parent_schema_value = record_value;
 			}
 
-			return field.getSubschema(record_value, schema)
+			return field.getSubschema(parent_schema_value, schema)
 		}
 
 		return schema;
