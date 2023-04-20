@@ -17,11 +17,56 @@ const CodeInput = Function.inherits('Alchemy.Element.Form.Base', 'CodeInput');
 CodeInput.setTemplateFile('form/elements/code_input');
 
 /**
+ * Line number info
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.5
+ * @version  0.2.5
+ */
+CodeInput.setAttribute('show-line-numbers', {type: 'boolean', default: true});
+
+/**
+ * The ace mode to use
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.5
+ * @version  0.2.5
+ */
+CodeInput.setAttribute('language-mode');
+
+/**
+ * The theme to use
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.5
+ * @version  0.2.5
+ */
+CodeInput.setAttribute('color-theme');
+
+/**
+ * The minimum number of lines to show (height)
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.5
+ * @version  0.2.5
+ */
+CodeInput.setAttribute('min-lines', {type: 'number'});
+
+/**
+ * The maximum number of lines to show (height)
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.5
+ * @version  0.2.5
+ */
+CodeInput.setAttribute('max-lines', {type: 'number'});
+
+/**
  * Get/set the value
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.2.5
  */
 CodeInput.setProperty(function value(value) {
 
@@ -34,6 +79,11 @@ CodeInput.setProperty(function value(value) {
 	if (editor_el) {
 		return editor_el.textContent;
 	}
+
+	if (this.assigned_data.value) {
+		return this.assigned_data.value;
+	}
+
 }, function setValue(value) {
 
 	if (this._editor) {
@@ -51,6 +101,7 @@ CodeInput.setProperty(function value(value) {
 		return editor_el.textContent = value;
 	}
 
+	this.assigned_data.value = value;
 });
 
 /**
@@ -58,7 +109,7 @@ CodeInput.setProperty(function value(value) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.10
+ * @version  0.2.5
  */
 CodeInput.setMethod(async function introduced() {
 
@@ -68,7 +119,20 @@ CodeInput.setMethod(async function introduced() {
 
 	editor_el.hidden = false;
 
-	let editor = ace.edit(editor_el);
+	let theme = this.color_theme || 'ace/theme/tomorrow_night_eighties';
+
+	if (!theme.startsWith('ace/theme')) {
+		theme = 'ace/theme/' + theme;
+	}
+
+	let options = {
+		showLineNumbers : this.show_line_numbers,
+		minLines        : this.minLines || 4,
+		maxLines        : this.maxLines || 50,
+		theme           : theme,
+	};
+
+	let editor = ace.edit(editor_el, options);
 
 	editor.session.setUseWrapMode(true);
 	editor.setFontSize(16);
@@ -86,6 +150,18 @@ CodeInput.setMethod(async function introduced() {
 		}
 
 		editor.session.setMode(mode);
+	}
+
+	if (this.assigned_data.value) {
+		editor.setValue(this.assigned_data.value, -1);
+	}
+
+	if (this.language_mode) {
+		try {
+			editor.session.setMode('ace/mode/' + this.language_mode);
+		} catch (err) {
+			// Ignore
+		}
 	}
 
 	this._editor = editor;

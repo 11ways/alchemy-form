@@ -1,3 +1,7 @@
+## 0.2.5 (WIP)
+
+* Add more configuration to `al-code-input`
+
 ## 0.2.4 (2023-02-26)
 
 * Don't look for a field when the path is not specified
