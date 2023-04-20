@@ -1,4 +1,4 @@
-## 0.2.5 (WIP)
+## 0.2.5 (2023-04-20)
 
 * Add more configuration to `al-code-input`
 
