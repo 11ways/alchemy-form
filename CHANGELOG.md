@@ -1,6 +1,7 @@
 ## 0.2.6 (WIP)
 
 * Fix `al-field-schema` element not being able to get schema of an arrayable field
+* Add `Pathway` system for faceted breadcrumbs
 
 ## 0.2.5 (2023-04-20)
 

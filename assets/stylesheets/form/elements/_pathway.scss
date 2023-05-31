@@ -1,0 +1,56 @@
+al-pathway {
+	display: flex;
+}
+
+al-pathway-selection {
+	display: flex;
+	gap: 1rem;
+
+	& > .leaf-info {
+		border-radius: 5px;
+		padding: 10px;
+		cursor: pointer;
+
+		background-color: var(--pathway-leaf-bg, rgb(31, 41, 55));
+		color: var(--pathway-leaf-color, rgb(255, 255, 255));
+
+		&:hover {
+			background-color: var(--pathway-leaf-hover-bg, rgb(56, 69, 85));
+		}
+	}
+}
+
+
+.al-pathway-leaf-dropdown {
+	background-color: var(--pathway-leaf-option-selection-bg, rgb(55, 65, 81));
+	color: var(--pathway-leaf-color, rgb(255, 255, 255));
+	display: flex;
+	border-radius: 5px;
+
+	.al-pathway-select-leaf-type,
+	.al-pathway-select-leaf-value {
+		padding: 10px 0;
+	}
+
+	.al-pathway-select-leaf-type {
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			padding: 15px 25px;
+			cursor: pointer;
+
+			&:hover {
+				background-color: var(--pathway-leaf-option-selection-hover-bg, rgb(69, 84, 101));
+			}
+		}
+	}
+
+
+
+}

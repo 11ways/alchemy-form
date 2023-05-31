@@ -1,0 +1,5 @@
+<al-pathway-selection
+	class="al-pathway-selection-root"
+	#selected_leaf={% self.rootleaf %}
+	#value={% self.value %}
+></al-pathway-selection>

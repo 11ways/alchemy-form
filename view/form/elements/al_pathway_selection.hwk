@@ -1,0 +1,10 @@
+<div class="leaf-info">
+	<span class="select-button">
+		<span class="select-button-title">
+			{{ self.getDisplayTitle() }}
+		</span>
+	</span>
+</div>
+<div class="leaf-children">
+	<% self.populateChildren($0) %>
+</div>

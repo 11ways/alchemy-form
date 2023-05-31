@@ -133,7 +133,5 @@ QueryBuilderData.setMethod(async function loadVariableData(config) {
 		}
 	}
 
-	console.log('Got loadvariable data:', result);
-
 	return result;
 });
