@@ -1,3 +1,7 @@
+## 0.2.6 (WIP)
+
+* Fix `al-field-schema` element not being able to get schema of an arrayable field
+
 ## 0.2.5 (2023-04-20)
 
 * Add more configuration to `al-code-input`

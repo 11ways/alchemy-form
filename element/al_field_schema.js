@@ -21,7 +21,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.4
+ * @version  0.2.6
  */
 FieldSchema.setProperty(function schema() {
 
@@ -32,6 +32,8 @@ FieldSchema.setProperty(function schema() {
 
 		let schema = field.options.schema;
 
+		// If the schema is a string, it's actually a reference to another field
+		// that *should* contain the schema.
 		if (typeof schema == 'string') {
 
 			let parent_schema_value;
@@ -51,6 +53,17 @@ FieldSchema.setProperty(function schema() {
 				}
 
 				parent_schema_value = record_value;
+			}
+
+			// If this field is inside an array, get the index
+			let array_entry_element = field_element.queryParents('al-field-array-entry');
+			if (array_entry_element) {
+				let index = array_entry_element.index;
+
+				// If it has an index, get the value at that index
+				if (index != null && Array.isArray(parent_schema_value)) {
+					parent_schema_value = parent_schema_value[index];
+				}
 			}
 
 			return field.getSubschema(parent_schema_value, schema)
