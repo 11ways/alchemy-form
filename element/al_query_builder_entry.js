@@ -73,15 +73,30 @@ QueryBuilderEntry.addElementGetter('value_input_wrapper', '.qb-value-input-wrapp
 QueryBuilderEntry.addElementGetter('delete_button', '.qb-delete-entry');
 
 /**
+ * Get the current operator
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.2.6
+ * @version  0.2.6
+ */
+QueryBuilderEntry.setProperty(function operator() {
+	return this.operator_select?.value;
+}, function setValue(value) {
+	if (this.operator_select) {
+		this.operator_select.value = value;
+	}
+});
+
+/**
  * Get/set the value
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.6
- * @version  0.1.6
+ * @version  0.2.6
  */
 QueryBuilderEntry.setProperty(function value() {
 
-	if (!this.field_select.value) {
+	if (!this.field_select?.value) {
 		return;
 	}
 
@@ -325,7 +340,7 @@ QueryBuilderEntry.setMethod(async function showValueInput() {
 		return;
 	}
 
-	let element = entry.createValueInput(this.hawkejs_renderer);
+	let element = entry.createValueInput(this.hawkejs_renderer, this);
 
 	element.classList.add('qb-value-input');
 

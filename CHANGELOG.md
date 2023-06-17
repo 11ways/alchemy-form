@@ -3,6 +3,7 @@
 * Fix `al-field-schema` element not being able to get schema of an arrayable field
 * Add `Pathway` system for faceted breadcrumbs
 * Allow `al-select` to take in simple arrays as data
+* Allow getting the current operator in a query builder entry
 
 ## 0.2.5 (2023-04-20)
 
