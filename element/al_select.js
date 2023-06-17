@@ -854,7 +854,7 @@ AlchemySelect.setMethod(function _processPreloadedValues() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.6
  *
  * @param    {Object}   response
  * @param    {Number}   page       The page, if it's via pagination
@@ -872,7 +872,11 @@ AlchemySelect.setMethod(function _processResponseData(response, page) {
 	let records = response.items || response.records;
 
 	if (!records) {
-		records = [];
+		if (Array.isArray(response)) {
+			records = response;
+		} else {
+			records = [];
+		}
 	}
 
 	this._processResponseList(records, page);
