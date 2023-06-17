@@ -245,10 +245,41 @@ Selection.setMethod(function getDisplayTitle() {
  */
 Selection.setMethod(function introduced() {
 
-	let select_button = this.querySelector('.select-button');
+	let select_button = this.querySelector('.leaf-info');
 
-	select_button.addEventListener('click', () => {
+	let added_listener = false;
+
+	select_button.addEventListener('click', (e) => {
+		const that = this;
+
+		e.preventDefault();
+		e.stopPropagation();
+
 		this.showLeafDropdown();
+
+		if (added_listener) {
+			return;
+		}
+
+		added_listener = true;
+
+		document.body.addEventListener('click', function onceOnClick(e) {
+
+			if (e.target.closest('.leaf-options')) {
+				return;
+			}
+
+			if (e.target.closest('.' + LEAF_DROPDOWN)) {
+				return;
+			}
+
+			if (that._current_element_under_us) {
+				that.removeDropdown();
+			}
+
+			document.body.removeEventListener('click', onceOnClick);
+			added_listener = false;
+		});
 	});
 
 	if (!this.selected_leaf) {
@@ -293,6 +324,9 @@ Selection.setMethod(async function showLeafDropdown() {
 	if (!leaf_options?.length) {
 		return;
 	}
+
+	// Close all existing dropdowns
+	this.removeDropdown();
 
 	let div = this.createElement('div');
 	div.classList.add(LEAF_DROPDOWN);
@@ -360,7 +394,12 @@ Selection.setMethod(function addLeafSelectionElement(options, target_wrapper) {
 		li.classList.add(LEAF_TYPE_ITEM);
 
 		li.dataset.value = leaf.id;
-		li.textContent = leaf.id || leaf.name;
+
+		let microcopy = this.createElement('micro-copy');
+		microcopy.key = 'pathway-leaf-selection-item';
+		microcopy.parameters = {leaf_id: leaf.id || leaf.name};
+
+		li.append(microcopy);
 
 		ul.append(li);
 	}
@@ -448,10 +487,6 @@ Selection.setMethod(function setLeafOptions(leaves) {
 	}
 
 	this.leaf_options = leaves;
-
-	if (leaves.length == 1) {
-		this.setSelectedLeaf(leaves[0]);
-	}
 });
 
 /**
@@ -464,6 +499,10 @@ Selection.setMethod(function setLeafOptions(leaves) {
  * @param    {mixed}   value_id
  */
 Selection.setMethod(function setSelectedValue(value_id) {
+
+	if (!this.selected_leaf && this.leaf_options?.length == 1) {
+		this.setSelectedLeaf(this.leaf_options[0]);
+	}
 
 	this.selected_value_id = value_id;
 
@@ -564,7 +603,7 @@ Selection.setMethod(async function createLeafValuesElement(leaf, values_element)
 		let option = this.createElement('li');
 		option.classList.add(LEAF_VALUE_ITEM);
 		option.setAttribute('data-value', value.$pk || value._id || value.id);
-		option.textContent = value.title || value.name || value.slug || value.$pk || value._id || value.id;
+		option.textContent = alchemy.getDisplayTitle(value);
 
 		ul.appendChild(option);
 	}
@@ -633,11 +672,19 @@ Selection.setMethod(function positionElementUnderUs(element) {
  */
 Selection.setMethod(function removeDropdown() {
 
+	let elements = document.querySelectorAll('.' + LEAF_DROPDOWN),
+	    result = false;
+
 	if (this._current_element_under_us) {
 		this._current_element_under_us.remove();
 		this._current_element_under_us = null;
-		return true;
+		result = true;
 	}
 
-	return false;
+	for (let i = 0; i < elements.length; i++) {
+		elements[i].remove();
+		result = true;
+	}
+
+	return result;
 });

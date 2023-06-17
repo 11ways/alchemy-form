@@ -65,7 +65,7 @@ Leaf.setStatic(function unDry(obj) {
 Leaf.setMethod(function getDisplayTitle() {
 
 	let key = 'pathway-leaf-title',
-	    params = {leafid: this.id};
+	    params = {leaf_id: this.id};
 
 	return new Classes.Alchemy.Microcopy(key, params);
 });
