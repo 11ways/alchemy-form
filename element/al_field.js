@@ -151,10 +151,22 @@ Field.enforceProperty(function alchemy_field_schema(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.7
  */
 Field.enforceProperty(function config(new_value, old_value) {
 
+	// If an explicit field is set without a schema,
+	// we need to remember it for serializing purposes
+	if (new_value && !new_value.schema) {
+		this.assigned_data.field_config = new_value;
+	}
+
+	// See if there is a rememberd field available
+	if (!new_value && this.assigned_data?.field_config) {
+		new_value = this.assigned_data.field_config;
+	}
+
+	// There is no remembered field, so check the schema
 	if (!new_value && this.field_name) {
 
 		let schema = this.schema;
@@ -824,9 +836,13 @@ Field.setMethod(async function loadData(config, element) {
 
 	if (field) {
 
+		console.log('Loading data...', config, element);
+
 		let result;
 
 		if (typeof field.loadData == 'function') {
+
+			console.log(' -- Using loadData of', field);
 
 			try {
 				result = await field.loadData(config, element);
@@ -840,16 +856,21 @@ Field.setMethod(async function loadData(config, element) {
 			}
 		}
 
+		let model = field.parent_schema?.model_name,
+		    assoc_model = field.options?.model_name || field.options?.modelName;
+
 		let resource_options = {
 			name  : 'FormApi#related',
 			post  : true,
 			body  : {
 				field        : field.name,
-				model        : field.parent_schema.model_name,
-				assoc_model  : field.options.modelName,
+				model        : model,
+				assoc_model  : assoc_model,
 				config       : config,
 			}
 		};
+
+		console.log('Resource options:', resource_options)
 
 		if (this.data_src) {
 			resource_options.name = this.data_src;
