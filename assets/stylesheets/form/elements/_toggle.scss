@@ -2,6 +2,7 @@ al-toggle {
 	display: flex;
 	position: relative;
 	align-items: center;
+	cursor: pointer;
 
 	input {
 		opacity: 0;
@@ -14,7 +15,7 @@ al-toggle {
 		background-color: #20c05b;
 
 		&:before {
-			content: attr(data-unchecked);
+			content: " ";
 			left: 0;
 		}
 
@@ -36,8 +37,9 @@ al-toggle {
 		border-radius: 4px;
 		min-width: 134px;
 
+		box-shadow: 0px 0px 2px rgba(0,0,0,0.3);
 		transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
-		background: #848484;
+		background: #b7b7b7;
 		position: relative;
 
 		&:before,
@@ -48,9 +50,9 @@ al-toggle {
 		}
 
 		&:before {
-			content: attr(data-checked);
+			content: " ";
 			left: 67px;
-			font-size: 12px;
+			font-size: 14px;
 			line-height: 36px;
 			width: 67px;
 			padding: 0 12px;
@@ -65,11 +67,15 @@ al-toggle {
 
 		&:after {
 			content: attr(data-unchecked);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: calc(100% - 4px);
+
 			top: 2px;
 			left: 2px;
 			border-radius: 2px;
 			width: 65px;
-			line-height: 32px;
 			font-size: 12px;
 			font-weight: bold;
 

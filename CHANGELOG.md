@@ -3,6 +3,7 @@
 * If a `al-field` element is assigned a `Field` instance to its `config` property without a parent `schema` property, it will be stored in its `assigned_data` property
 * Make sure string fields use the `text` input type instead of `string` in some cases
 * Automatically add the `does-not-expand` css class to `al-toggle` element
+* Improve `al-toggle` styling
 
 ## 0.2.6 (2023-06-17)
 
