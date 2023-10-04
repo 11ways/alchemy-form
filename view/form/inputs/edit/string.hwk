@@ -4,6 +4,8 @@
 	{% set type = "text" %}
 {% /if %}
 
+<% if (type == 'string') type = 'text'; %>
+
 <input
 	value=<% value %>
 	class="alchemy-field-value"
