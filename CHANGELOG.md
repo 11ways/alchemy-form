@@ -4,6 +4,7 @@
 * Make sure string fields use the `text` input type instead of `string` in some cases
 * Automatically add the `does-not-expand` css class to `al-toggle` element
 * Improve `al-toggle` styling
+* Store a `al-field` element's applied options in the new `applied_options` property, so it can be used inside the view templates too
 
 ## 0.2.6 (2023-06-17)
 

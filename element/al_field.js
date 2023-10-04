@@ -89,6 +89,15 @@ Field.setAttribute('readonly', {boolean: true});
 Field.setAssignedProperty('widget_settings');
 
 /**
+ * Applied options
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.7
+ * @version  0.2.7
+ */
+Field.setAssignedProperty('applied_options');
+
+/**
  * The placeholder
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -602,7 +611,7 @@ Field.setProperty(function value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.12
- * @version  0.1.12
+ * @version  0.2.7
  *
  * @param    {Object}   options
  */
@@ -644,6 +653,7 @@ Field.setMethod(function applyOptions(options) {
 		this.field_title = options.title;
 	}
 
+	this.applied_options = options;
 });
 
 /**
