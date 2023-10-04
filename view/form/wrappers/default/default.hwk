@@ -3,11 +3,11 @@
 		<span
 			data-he-name="field-title"
 			data-he-slot="field-title"
-		><%= alchemy_field.field_title %></span>
+		>{{ alchemy_field.field_title }}</span>
 		<small
 			data-he-name="field-description"
 			data-he-slot="field-description"
-		><%= alchemy_field.field_description %></small>
+		>{{ alchemy_field.field_description }}</small>
 	</al-label>
 </div>
 <div data-he-name="field"></div>
