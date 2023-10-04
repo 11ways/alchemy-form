@@ -1,8 +1,28 @@
-{% if alchemy_field.config.options.time_ago %}
-	<time-ago date={% value %}></time-ago>
-{% else %}
+<%
+date_format = '';
+
+if (alchemy_field && alchemy_field.applied_options) {
+	date_format = alchemy_field.applied_options.date_format;
+}
+
+if (!date_format || date_format == 'timeago' || date_format == 'time-ago' || date_format == 'time_ago') {
+	date_format = 'relative';
+}
+
+if (alchemy_field?.config?.options?.time_ago) {
+	date_format = 'relative';
+}
+
+%>
+
+<% if (date_format == 'relative') { %>
+	<time-ago
+		class="alchemy-field-value"
+		date={% value.toISOString() %}
+	></time-ago>
+<% } else { %>
 	<time
 		class="alchemy-field-value"
 		datetime={% value.toISOString() %}
-	>{{ value.format('Y‑m‑d H:i') }}</time>
-{% /if %}
+	>{{ value.format(date_format) }}</time>
+<% } %>

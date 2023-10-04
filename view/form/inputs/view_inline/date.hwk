@@ -1,4 +1,1 @@
-<time
-	class="alchemy-field-value"
-	datetime={% value.toISOString() %}
->{{ value.format('Y‑m‑d') }}</time>
+<% include('form/inputs/view_inline/datetime') %>
