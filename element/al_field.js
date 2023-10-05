@@ -846,13 +846,9 @@ Field.setMethod(async function loadData(config, element) {
 
 	if (field) {
 
-		console.log('Loading data...', config, element);
-
 		let result;
 
 		if (typeof field.loadData == 'function') {
-
-			console.log(' -- Using loadData of', field);
 
 			try {
 				result = await field.loadData(config, element);
@@ -879,8 +875,6 @@ Field.setMethod(async function loadData(config, element) {
 				config       : config,
 			}
 		};
-
-		console.log('Resource options:', resource_options)
 
 		if (this.data_src) {
 			resource_options.name = this.data_src;

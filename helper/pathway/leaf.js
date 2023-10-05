@@ -137,18 +137,13 @@ Leaf.setMethod(async function getPage(page_nr) {
 
 	let provider = this.getProvider();
 
-	console.log('Getting page...', page_nr, 'from', provider)
-
 	if (!provider) {
 		return;
 	}
 
 	let records = await provider.getAll();
 
-	console.log('Got records:', records)
-
 	return records;
-
 });
 
 /**

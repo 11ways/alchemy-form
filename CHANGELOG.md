@@ -1,3 +1,5 @@
+## 0.2.8 (WIP)
+
 ## 0.2.7 (2023-10-05)
 
 * If a `al-field` element is assigned a `Field` instance to its `config` property without a parent `schema` property, it will be stored in its `assigned_data` property
