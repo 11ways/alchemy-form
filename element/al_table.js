@@ -1121,7 +1121,7 @@ Table.setMethod(function getRemoteFetchConfig() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.3
+ * @version  0.2.8
  */
 Table.setMethod(function applyFetchedData(err, result, config) {
 
@@ -1133,6 +1133,9 @@ Table.setMethod(function applyFetchedData(err, result, config) {
 	let records;
 
 	if (Array.isArray(result)) {
+		records = result;
+	} else if (result.length) {
+		// This way we keep `DocumentList` instances as they are!
 		records = result;
 	} else {
 		records = result.records;
