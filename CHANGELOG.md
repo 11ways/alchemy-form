@@ -1,4 +1,4 @@
-## 0.2.8 (WIP)
+## 0.2.8 (2023-10-15)
 
 * Add basic `al-apex-chart` element
 * Fix `al-table` always turning `DocumentList` instances into dumb arrays

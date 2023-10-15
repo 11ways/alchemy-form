@@ -24,7 +24,6 @@ FormAction.makeAbstractClass();
  */
 FormAction.startNewGroup('alchemy_form_actions');
 
-
 /**
  * Add a configuration property
  *
