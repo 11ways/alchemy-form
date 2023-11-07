@@ -1,0 +1,15 @@
+<%
+if (alchemy_field && alchemy_field.config && alchemy_field.config.options && alchemy_field.config.options.scale != null) {
+	step = 10 ** (-1 * alchemy_field.config.options.scale);
+} else {
+	step = 1;
+}
+%>
+<input
+	value=<% value %>
+	class="alchemy-field-value"
+	type="number"
+	form=<% form_id %>
+	name=<% path %>
+	step={% step %}
+>

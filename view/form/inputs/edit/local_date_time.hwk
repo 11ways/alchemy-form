@@ -1,0 +1,20 @@
+<%
+
+if (value) {
+
+	// Make sure it's a date
+	value = LocalDate.create(value);
+
+	// According to MDN `toISOString()` should work,
+	// but neither Chrome or Firefox allow that format (it still contains timezone info)
+	value = value.format('Y-m-d\\TH:i:s');
+}
+%>
+<input
+	value=<% value %>
+	class="alchemy-field-value"
+	type="datetime-local"
+	form=<% form_id %>
+	name=<% path %>
+	pattern="\d{4}-\d{2}-\d{2} \d{1,2}:\d{1,2}(?::\d{1,2})?"
+>

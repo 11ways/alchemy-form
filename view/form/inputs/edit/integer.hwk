@@ -1,0 +1,8 @@
+<input
+	value=<% value %>
+	class="alchemy-field-value"
+	type="number"
+	form=<% form_id %>
+	name=<% path %>
+	step="1"
+>
