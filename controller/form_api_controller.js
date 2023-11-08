@@ -17,7 +17,7 @@ const FormApi = Function.inherits('Alchemy.Controller', 'FormApi');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.3
+ * @version  0.2.9
  *
  * @param    {Conduit}   conduit
  */
@@ -30,6 +30,12 @@ FormApi.setAction(async function related(conduit) {
 	let crit = model.find();
 	crit.limit(50);
 	crit.setOption('scenario', 'related_data');
+
+	if (body.constraints) {
+		for (let key in body.constraints) {
+			crit.where(key).equals(body.constraints[key]);
+		}
+	}
 
 	if (config.value) {
 		crit.where(model.primary_key).equals(config.value);

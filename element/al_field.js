@@ -864,7 +864,7 @@ Field.setMethod(function retained() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.9
+ * @version  0.2.9
  *
  * @param    {Object}        config
  * @param    {HTMLElement}   element
@@ -891,18 +891,27 @@ Field.setMethod(async function loadData(config, element) {
 			}
 		}
 
+		const field_options = field.options || {},
+		      assoc_options = field_options.options;
+
 		let model = field.parent_schema?.model_name,
-		    assoc_model = field.options?.model_name || field.options?.modelName;
+		    assoc_model = field_options.model_name || field_options.modelName;
+
+		let body = {
+			field        : field.name,
+			model        : model,
+			assoc_model  : assoc_model,
+			config       : config,
+		};
+
+		if (assoc_options?.constraints) {
+			body.constraints = this.resolveConstraintInstruction(assoc_options.constraints);
+		}
 
 		let resource_options = {
 			name  : 'FormApi#related',
 			post  : true,
-			body  : {
-				field        : field.name,
-				model        : model,
-				assoc_model  : assoc_model,
-				config       : config,
-			}
+			body  : body,
 		};
 
 		if (this.data_src) {
@@ -911,6 +920,41 @@ Field.setMethod(async function loadData(config, element) {
 
 		return this.hawkejs_helpers.Alchemy.getResource(resource_options);
 	}
+});
+
+/**
+ * Resolve a constraint instruction
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ *
+ * @param    {Object}   constraints
+ */
+Field.setMethod(function resolveConstraintInstruction(constraints) {
+
+	let context,
+	    result = {},
+	    value,
+	    key;
+
+	for (key in constraints) {
+		value = constraints[key];
+
+		if (value && typeof value == 'object') {
+			if (value instanceof Classes.Alchemy.PathEvaluator) {
+				if (!context && this.alchemy_form) {
+					context = this.alchemy_form.getMainValue();
+				}
+
+				result[key] = value.getValue({$0: context}) ?? null;
+			}
+		} else {
+			result[key] = value;
+		}
+	}
+
+	return result;
 });
 
 /**
