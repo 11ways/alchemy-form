@@ -2,6 +2,7 @@
 
 * Add support for new local Date/Time fields & Decimal fields
 * Add "hidden" field templates
+* Fix `al-toggle` not firing a change event
 
 ## 0.2.8 (2023-10-15)
 
