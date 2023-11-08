@@ -88,29 +88,11 @@ Form.setProperty(function main_error_area() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.2.9
  */
 Form.setProperty(function value() {
 
-	let fields = this.queryAllNotNested('al-field'),
-	    result = {},
-	    field,
-	    key,
-	    i;
-
-	if (this.document && this.document.$pk) {
-		result[this.document.$model.primary_key] = this.document.$pk;
-	}
-
-	for (i = 0; i < fields.length; i++) {
-		field = fields[i];
-
-		if (field && field.readonly) {
-			continue;
-		}
-
-		result[field.field_name] = field.value;
-	}
+	let result = this.getMainValue();
 
 	if (this.model) {
 		result = {
@@ -149,6 +131,38 @@ Form.setMethod(Hawkejs.SERIALIZE_FORM, function serializeForm() {
 });
 
 /**
+ * Get the non-wrapped value
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setMethod(function getMainValue() {
+
+	let fields = this.queryAllNotNested('al-field'),
+	    result = {},
+	    field,
+	    key,
+	    i;
+
+	if (this.document && this.document.$pk) {
+		result[this.document.$model.primary_key] = this.document.$pk;
+	}
+
+	for (i = 0; i < fields.length; i++) {
+		field = fields[i];
+
+		if (field && field.readonly) {
+			continue;
+		}
+
+		result[field.field_name] = field.value;
+	}
+
+	return result;
+});
+
+/**
  * Submit this form
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -180,25 +194,39 @@ Form.setMethod(async function submit() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.2
- * @version  0.2.2
+ * @version  0.2.9
  */
 Form.setMethod(async function validate() {
 
-	if (this.model) {
-		let model = alchemy.getModel(this.model);
+	let doc = this.getValueAsDocument();
 
-		if (model) {
-			let doc = model.createDocument(this.value);
+	let violations = await doc.getViolations();
 
-			let violations = await doc.getViolations();
-
-			if (violations) {
-				this.showError(violations);
-				throw violations;
-			}
-		}
+	if (violations) {
+		this.showError(violations);
+		throw violations;
 	}
 
+});
+
+/**
+ * Get the value as a document instance
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setMethod(function getValueAsDocument() {
+
+	if (!this.model) {
+		return;
+	}
+
+	let model = alchemy.getModel(this.model);
+
+	if (model) {
+		return model.createDocument(this.value);
+	}
 });
 
 /**

@@ -5,7 +5,7 @@ variables = {
 	alchemy_field : self,
 	field_context : self,
 	view_files    : view_files,
-	value         : self.original_value,
+	value         : self.value_to_render,
 }
 %>
 

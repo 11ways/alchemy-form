@@ -1,3 +1,5 @@
+const LAST_SET_VALUE = Symbol('last_set_value');
+
 /**
  * The al-field element
  *
@@ -583,7 +585,7 @@ Field.setProperty(function value_element() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.2.9
  */
 Field.setProperty(function value() {
 
@@ -591,18 +593,45 @@ Field.setProperty(function value() {
 
 	if (element) {
 		return element.value;
-	} else {
-		return this.original_value;
 	}
+
+	return this.value_to_render;
 
 }, function setValue(value) {
 
-	let element = this.value_element;
+	let has_changed = !Object.alike(this[LAST_SET_VALUE], value);
 
-	if (element) {
-		element.value = value;
-	} else if (this.original_value == null) {
+	if (this.original_value == null) {
 		this.original_value = value;
+	}
+
+	this[LAST_SET_VALUE] = value;
+
+	if (!this.valueElementHasValuePropertySetter()) {
+		if (has_changed) {
+			this.rerender();
+		}
+	} else {
+		let element = this.value_element;
+
+		if (element) {
+			element.value = value;
+		}
+	}
+});
+
+/**
+ * Get value to use for rendering
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Field.setProperty(function value_to_render() {
+	if (this[LAST_SET_VALUE] != null) {
+		return this[LAST_SET_VALUE];
+	} else {
+		return this.original_value;
 	}
 });
 
@@ -882,5 +911,44 @@ Field.setMethod(async function loadData(config, element) {
 
 		return this.hawkejs_helpers.Alchemy.getResource(resource_options);
 	}
+});
 
+/**
+ * Does this field require a re-render when a related field changes?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Field.setMethod(function requiresRerenderOnRelatedFieldChange() {
+
+	if (!this.valueElementHasValuePropertySetter()) {
+		return true;
+	}
+
+	return false;
+});
+
+/**
+ * Can the value element of this field be updated by its value property?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Field.setMethod(function valueElementHasValuePropertySetter() {
+
+	let element = this.value_element;
+
+	if (!element) {
+		return false;
+	}
+
+	let descriptor = Object.getPropertyDescriptor(element, 'value');
+
+	if (typeof descriptor?.set == 'function') {
+		return true;
+	}
+
+	return false;
 });
