@@ -856,7 +856,120 @@ Field.setMethod(function retained() {
 		label.setAttribute('for', v_id);
 		this.value_element.setAttribute('id', v_id);
 	}
+});
 
+/**
+ * Is this field in the given list somehow?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ *
+ * @param    {string[]|Field[]}   list
+ *
+ * @return   boolean
+ */
+Field.setMethod(function isInList(list) {
+
+	if (!list?.length) {
+		return false;
+	}
+
+	for (let entry of list) {
+
+		if (typeof entry == 'string') {
+			if (entry == this.field_name) {
+				return true;
+			}
+
+			continue;
+		}
+
+		if (entry == this || entry == this.config) {
+			return true;
+		}
+
+		// @TODO
+	}
+
+	return false;
+});
+
+/**
+ * The element has been introduced to the DOM for the first time
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Field.setMethod(function introduced() {
+
+	let dependencies = this.getDependencyFields();
+
+	if (!dependencies.length) {
+		return;
+	}
+
+	let form = this.alchemy_form;
+
+	if (!form) {
+		return;
+	}
+
+	form.addEventListener('change', e => {
+
+		let changed_field = e.target.closest('al-field');
+
+		// Rerender the entire field when a field we depend on changes
+		// (@TODO: use something less drastic than a rerender)
+		if (changed_field?.field_name && changed_field.isInList(dependencies)) {
+			this.handleDependentFieldValueChange(changed_field);
+		}
+	});
+});
+
+/**
+ * Refresh the value of this field somehow
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ *
+ * @param    {Alchemy.Element.Form.Field}   changed_field
+ */
+Field.decorateMethod(
+	Blast.Decorators.throttle({
+		minimum_wait: 50,
+		reset_on_call: true,
+	}),
+	async function handleDependentFieldValueChange(changed_field) {
+
+	const field = this.config;
+
+	// Unset the value
+	this.value = null;
+
+	if (field?.is_computed) {
+		let doc = this.alchemy_form.getValueAsDocument();
+
+		if (doc) {
+			let value = await doc.recomputeFieldIfNecessary(field, true);
+			this.value = value;
+		}
+	}
+});
+
+/**
+ * Get any other field names this field depends on
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ *
+ * @return   {string[]}
+ */
+Field.setMethod(function getDependencyFields() {
+	return this.config?.dependency_fields || [];
 });
 
 /**

@@ -91,6 +91,36 @@ FormApi.setAction(async function related(conduit) {
 });
 
 /**
+ * The action to recompute field values
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ *
+ * @param    {Conduit}   conduit
+ * @param    {String}    model_name
+ * @param    {String}    field
+ */
+FormApi.setAction(async function recompute(conduit, model_name, field) {
+
+	const body = conduit.body || {};
+
+	const model = this.getModel(model_name);
+
+	if (!model) {
+		return conduit.error(new Error('Model "' + model_name + '" not found'));
+	}
+
+	let doc = model.createDocument(body);
+
+	await doc.recomputeFieldIfNecessary(field, true);
+
+	conduit.end({
+		result : doc[field],
+	});
+});
+
+/**
  * The related action
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
