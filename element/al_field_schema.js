@@ -21,7 +21,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.6
+ * @version  0.2.9
  */
 FieldSchema.setProperty(function schema() {
 
@@ -46,12 +46,7 @@ FieldSchema.setProperty(function schema() {
 
 				const form = field_element.alchemy_form;
 
-				let record_value = form.value;
-
-				if (form.model) {
-					record_value = record_value[form.model];
-				}
-
+				let record_value = form.getMainValue();
 				parent_schema_value = record_value;
 			}
 

@@ -3,6 +3,7 @@ Router.add({
 	methods    : 'post',
 	paths      : '/api/form/data/related',
 	policy     : 'logged_in',
+	cache      : true,
 	is_system_route : true,
 });
 
@@ -11,6 +12,7 @@ Router.add({
 	methods    : 'post',
 	paths      : '/api/form/data/qbdata',
 	policy     : 'logged_in',
+	cache      : true,
 	is_system_route : true,
 });
 

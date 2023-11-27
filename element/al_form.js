@@ -35,6 +35,15 @@ Form.setAttribute('method');
 Form.setAttribute('model');
 
 /**
+ * Should the entire document be submitted?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setAttribute('serialize-entire-document', {type: 'boolean'});
+
+/**
  * The document that is being edited
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -95,9 +104,13 @@ Form.setProperty(function value() {
 	let result = this.getMainValue();
 
 	if (this.model) {
-		result = {
-			[this.model] : result
-		};
+		let model = alchemy.getModel(this.model);
+
+		if (model) {
+			result = {
+				[model.model_name] : result
+			};
+		}
 	}
 
 	return result;
@@ -142,11 +155,18 @@ Form.setMethod(function getMainValue() {
 	let fields = this.queryAllNotNested('al-field'),
 	    result = {},
 	    field,
-	    key,
 	    i;
 
-	if (this.document && this.document.$pk) {
-		result[this.document.$model.primary_key] = this.document.$pk;
+	if (this.document) {
+
+		if (this.serialize_entire_document) {
+			let value = this.document.$main;
+			Object.assign(result, value);
+		}
+
+		if (this.document.$pk) {
+			result[this.document.$model.primary_key] = this.document.$pk;
+		}
 	}
 
 	for (i = 0; i < fields.length; i++) {
@@ -186,7 +206,64 @@ Form.setMethod(async function submit() {
 		}
 	}
 
+	if (result?.render == false && result.document) {
+		this.setDocument(result.document);
+	}
+
 	return result;
+});
+
+/**
+ * Get a field by its name
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setMethod(function getField(name) {
+	
+	let fields = this.queryAllNotNested('al-field'),
+	    field,
+	    i;
+
+	for (i = 0; i < fields.length; i++) {
+		field = fields[i];
+
+		if (field.field_name == name) {
+			return field;
+		}
+	}
+});
+
+/**
+ * Set the document
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setMethod(function setDocument(document) {
+
+	let current_value = this.getMainValue();
+
+	// Set the current document
+	this.document = document;
+
+	console.log('Setting document', document);
+
+	for (let key in current_value) {
+		let original_value = current_value[key],
+		    new_value = document[key];
+
+		if (!Object.alike(original_value, new_value)) {
+			let field = this.getField(key);
+
+			if (field) {
+ 				field.value = new_value;
+			}
+		}
+	}
+
 });
 
 /**
@@ -225,8 +302,34 @@ Form.setMethod(function getValueAsDocument() {
 	let model = alchemy.getModel(this.model);
 
 	if (model) {
-		return model.createDocument(this.value);
+		return model.createDocument(this.getMainValue());
 	}
+});
+
+/**
+ * Get the updated document:
+ * The original document's values + the form's values
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Form.setMethod(function getUpdatedDocument() {
+
+	if (!this.model) {
+		return;
+	}
+
+	const model = alchemy.getModel(this.model);
+	const original_value = this.document;
+
+	if (!original_value) {
+		return this.getValueAsDocument();
+	}
+
+	let main_value = Object.assign({}, original_value.$main, this.getMainValue());
+
+	return model.createDocument(main_value);
 });
 
 /**

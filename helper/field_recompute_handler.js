@@ -1,7 +1,3 @@
-if (!Blast.isBrowser) {
-	return;
-}
-
 /**
  * Recompute fields in the browser that has its logic in the server
  *
@@ -34,7 +30,21 @@ alchemy.registerCustomHandler('recompute_field', async function fieldRecomputeHa
 		field      : field.name,
 	};
 
-	let response = await hawkejs.scene.helpers.Alchemy.getResource(resource_options, params);
+	console.log(document)
+
+	let helpers;
+
+	if (Blast.isServer) {
+		helpers = document.conduit?.renderer?.helpers;
+	} else {
+		helpers = hawkejs.scene.helpers;
+	}
+
+	if (!helpers) {
+		return;
+	}
+
+	let response = await helpers.Alchemy.getResource(resource_options, params);
 
 	return response?.result;
 });

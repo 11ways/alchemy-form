@@ -199,7 +199,7 @@ WithDataprovider.setMethod(function getWantedPage() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.2.9
  *
  * @param    {Object}   fetch_config
  */
@@ -207,9 +207,9 @@ WithDataprovider.setMethod(function loadRemoteData(fetch_config) {
 
 	let pledge = new Classes.Pledge();
 
-	let config = this.getRemoteFetchConfig();
+	let config = this.getRemoteFetchConfig(fetch_config);
 
-	if (fetch_config) {
+	if (fetch_config && fetch_config != config) {
 		Object.assign(config, fetch_config);
 	}
 

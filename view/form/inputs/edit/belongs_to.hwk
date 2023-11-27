@@ -1,5 +1,7 @@
 <al-select
 	class="alchemy-field-value"
+	value-item-template={% alchemy_field.getFieldOption('value_item_template') %}
+	option-item-template={% alchemy_field.getFieldOption('option_item_template') %}
 ><%
 $0.dataprovider = alchemy_field;
 $0.name = path;

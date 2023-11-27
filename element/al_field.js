@@ -608,6 +608,7 @@ Field.setProperty(function value() {
 	this[LAST_SET_VALUE] = value;
 
 	if (!this.valueElementHasValuePropertySetter()) {
+		// @TODO: Rerendering during a render causes a deadlock 
 		if (has_changed) {
 			this.rerender();
 		}
@@ -920,6 +921,8 @@ Field.setMethod(function introduced() {
 
 		let changed_field = e.target.closest('al-field');
 
+		console.log('Field change', changed_field, e, this)
+
 		// Rerender the entire field when a field we depend on changes
 		// (@TODO: use something less drastic than a rerender)
 		if (changed_field?.field_name && changed_field.isInList(dependencies)) {
@@ -939,7 +942,7 @@ Field.setMethod(function introduced() {
  */
 Field.decorateMethod(
 	Blast.Decorators.throttle({
-		minimum_wait: 50,
+		minimum_wait: 150,
 		reset_on_call: true,
 	}),
 	async function handleDependentFieldValueChange(changed_field) {
@@ -950,7 +953,7 @@ Field.decorateMethod(
 	this.value = null;
 
 	if (field?.is_computed) {
-		let doc = this.alchemy_form.getValueAsDocument();
+		let doc = this.alchemy_form.getUpdatedDocument();
 
 		if (doc) {
 			let value = await doc.recomputeFieldIfNecessary(field, true);
@@ -1108,4 +1111,34 @@ Field.setMethod(function valueElementHasValuePropertySetter() {
 	}
 
 	return false;
+});
+
+/**
+ * Get a certain field option.
+ * This might be defined in the Field instance itself, or on this element.
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.9
+ * @version  0.2.9
+ */
+Field.setMethod(function getFieldOption(name) {
+
+	if (!name) {
+		return;
+	}
+
+	let dasherized = name.dasherize();
+	let attribute_name = 'data-' + dasherized;
+
+	if (this.hasAttribute(attribute_name)) {
+		let result = this.getAttribute(attribute_name);
+
+		if (result) {
+			return result;
+		}
+	}
+
+	let underscored = name.underscore();
+
+	return this.config?.options?.[underscored];
 });
