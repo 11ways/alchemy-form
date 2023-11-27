@@ -1,4 +1,4 @@
-## 0.2.9 (WIP)
+## 0.2.9 (2023-11-27)
 
 * Add support for new local Date/Time fields & Decimal fields
 * Add "hidden" field templates
