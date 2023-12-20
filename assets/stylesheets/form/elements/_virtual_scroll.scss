@@ -1,0 +1,19 @@
+al-virtual-scroll {
+	display: block;
+	min-height: 20rem;
+	min-width: 2rem;
+	overflow: auto;
+	border: 1px solid red;
+
+	.top-trigger,
+	.bottom-trigger {
+		width: 1px;
+		height: 1px;
+	}
+
+	[data-loaded-entry-index] {
+		border: 1px solid orange;
+		min-height: 2rem;
+		padding: 1rem;
+	}
+}
