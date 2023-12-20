@@ -1,3 +1,7 @@
+## 0.2.10 (WIP)
+
+* Fix `al-table` throwing an error when receiving null data
+
 ## 0.2.9 (2023-11-27)
 
 * Add support for new local Date/Time fields & Decimal fields
