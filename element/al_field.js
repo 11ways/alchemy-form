@@ -1043,7 +1043,7 @@ Field.setMethod(async function loadData(config, element) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.9
- * @version  0.2.9
+ * @version  0.2.10
  *
  * @param    {Object}   constraints
  */
@@ -1060,7 +1060,7 @@ Field.setMethod(function resolveConstraintInstruction(constraints) {
 		if (value && typeof value == 'object') {
 			if (value instanceof Classes.Alchemy.PathEvaluator) {
 				if (!context && this.alchemy_form) {
-					context = this.alchemy_form.getMainValue();
+					context = this.alchemy_form.getValueAsDocument();
 				}
 
 				result[key] = value.getValue({$0: context}) ?? null;
