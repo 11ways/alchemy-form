@@ -1,4 +1,4 @@
-## 0.2.10 (WIP)
+## 0.2.10 (2024-01-15)
 
 * Fix `al-table` throwing an error when receiving null data
 * Add `al-virtual-scroll` element
