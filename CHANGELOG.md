@@ -3,6 +3,7 @@
 * Fix `al-table` throwing an error when receiving null data
 * Add `al-virtual-scroll` element
 * Make field `constraints` work by using the `Document` instance instead of plain data object
+* Clear old errors when validating a form
 
 ## 0.2.9 (2023-11-27)
 

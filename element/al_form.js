@@ -271,7 +271,7 @@ Form.setMethod(function setDocument(document) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.2
- * @version  0.2.9
+ * @version  0.2.10
  */
 Form.setMethod(async function validate() {
 
@@ -279,11 +279,12 @@ Form.setMethod(async function validate() {
 
 	let violations = await doc.getViolations();
 
+	this.clearErrors();
+
 	if (violations) {
 		this.showError(violations);
 		throw violations;
 	}
-
 });
 
 /**
