@@ -6,8 +6,8 @@ const DOM_ELEMENT = Symbol('dom_element'),
  * A scrollable container that only renders the visible elements.
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 const VirtualScroll = Function.inherits('Alchemy.Element.Form.WithDataprovider', 'VirtualScroll');
 
@@ -15,8 +15,8 @@ const VirtualScroll = Function.inherits('Alchemy.Element.Form.WithDataprovider',
  * The template to use to render an entry
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('item-template');
 
@@ -24,8 +24,8 @@ VirtualScroll.setAttribute('item-template');
  * Which sides can be used for remote loading?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('remote-load-sides', function getRemoteLoadSides(val) {
 
@@ -42,8 +42,8 @@ VirtualScroll.setAttribute('remote-load-sides', function getRemoteLoadSides(val)
  * On what side are new items added?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('insert-side', function getInsertSide(val) {
 
@@ -59,8 +59,8 @@ VirtualScroll.setAttribute('insert-side', function getInsertSide(val) {
  * This is only used to inform the remote host.
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('sort', function getSort(val) {
 
@@ -83,8 +83,8 @@ VirtualScroll.setAttribute('sort', function getSort(val) {
  * The batch size
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('batch-size', function getBatchSize(value) {
 
@@ -100,8 +100,8 @@ VirtualScroll.setAttribute('batch-size', function getBatchSize(value) {
  * The amount of allowed-invisible-elements to remain in the dom
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('allowed-invisible-elements', function getAllowedInvisibleElements(value) {
 
@@ -126,8 +126,8 @@ VirtualScroll.setAttribute('allowed-invisible-elements', function getAllowedInvi
  * The expected height of an entry (in pixels)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('expected-item-height', {type: 'number'});
 
@@ -135,8 +135,8 @@ VirtualScroll.setAttribute('expected-item-height', {type: 'number'});
  * The expected width of an entry (in pixels)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAttribute('expected-item-width', {type: 'number'});
 
@@ -144,8 +144,8 @@ VirtualScroll.setAttribute('expected-item-width', {type: 'number'});
  * Getter for the top-trigger element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.addElementGetter('top_trigger', '.top-trigger');
 
@@ -153,8 +153,8 @@ VirtualScroll.addElementGetter('top_trigger', '.top-trigger');
  * Getter for the bottom-trigger element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.addElementGetter('bottom_trigger', '.bottom-trigger');
 
@@ -162,13 +162,13 @@ VirtualScroll.addElementGetter('bottom_trigger', '.bottom-trigger');
  * The bidrectional array
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setAssignedProperty('loaded_entries', function getLoadedEntries(val) {
 
 	if (!val) {
-		val = new Classes.Develry.BiDirectionalArray();
+		val = new Classes.Develry.LinkedMap();
 		this.loaded_entries = val;
 	}
 
@@ -179,8 +179,8 @@ VirtualScroll.setAssignedProperty('loaded_entries', function getLoadedEntries(va
  * Get the expected item height in pixels
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function getExpectedItemHeight() {
 	return this.expected_item_height || 100;
@@ -190,8 +190,8 @@ VirtualScroll.setMethod(function getExpectedItemHeight() {
  * Construct the config object used to fetch data
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function getRemoteFetchConfig(config) {
 
@@ -214,18 +214,16 @@ VirtualScroll.setMethod(function getRemoteFetchConfig(config) {
 		config.page = this.getWantedPage();
 	}
 
-	let lowest_index = this.loaded_entries.start_index,
-	    highest_index = this.loaded_entries.end_index;
-
-	let element;
+	let head = this.loaded_entries.head,
+	    tail = this.loaded_entries.tail;
 
 	if (config.direction == 'top') {
-		if (isFinite(lowest_index)) {
-			config.before = this.loaded_entries.at(lowest_index)?.record;
+		if (head) {
+			config.before = head.value?.record;
 		}
 	} else if (config.direction == 'bottom') {
-		if (isFinite(highest_index)) {
-			config.after = this.loaded_entries.at(highest_index)?.record;
+		if (tail) {
+			config.after = tail.value?.record;
 		}
 	}
 
@@ -237,8 +235,8 @@ VirtualScroll.setMethod(function getRemoteFetchConfig(config) {
  * to render are added to the DOM
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function ensureTriggerElements() {
 
@@ -295,8 +293,8 @@ VirtualScroll.setMethod(function ensureTriggerElements() {
  * Apply the fetched data
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function applyFetchedData(err, result, config) {
 
@@ -333,15 +331,13 @@ VirtualScroll.setMethod(function applyFetchedData(err, result, config) {
 	if (append) {
 		//records = Array.cast(records).reverse();
 		for (let record of records) {
-			let entry = {record};
-			let index = this.loaded_entries.append(entry);
-			entry.index = index;
+			let entry = this.createEntryFor(record);
+			this.loaded_entries.set(entry.key, entry);
 		}
 	} else {
 		for (let record of records) {
-			let entry = {record};
-			let index = this.loaded_entries.prepend(entry);
-			entry.index = index;
+			let entry = this.createEntryFor(record);
+			this.loaded_entries.unshift(entry.key, entry);
 		}
 	}
 
@@ -352,27 +348,26 @@ VirtualScroll.setMethod(function applyFetchedData(err, result, config) {
  * Get the highest index of a dom element that has been added
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
-VirtualScroll.setMethod(function getDomIndexRange() {
+VirtualScroll.setMethod(function getDomKeyRange() {
 
-	let elements = this.querySelectorAll('[data-loaded-entry-index]'),
-	    highest = -Infinity,
-	    lowest = Infinity,
+	let elements = this.querySelectorAll('[data-loaded-entry-key]'),
+	    highest = null,
+	    lowest = null,
 	    element;
 
-	for (let i = 0; i < elements.length; i++) {
-		element = elements[i];
-		let index = Number(element.dataset.loadedEntryIndex);
+	element = elements[0];
 
-		if (index > highest) {
-			highest = index;
-		}
+	if (element) {
+		lowest = element.dataset.loadedEntryKey;
+	}
 
-		if (index < lowest) {
-			lowest = index;
-		}
+	element = elements[elements.length - 1];
+
+	if (element) {
+		highest = element.dataset.loadedEntryKey;
 	}
 
 	return [lowest, highest];
@@ -382,8 +377,8 @@ VirtualScroll.setMethod(function getDomIndexRange() {
  * Handle the scroll event
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function handleScrollEvent() {
 	// @TODO
@@ -393,24 +388,27 @@ VirtualScroll.setMethod(function handleScrollEvent() {
  * Add missing elements from loaded entries
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function showEntries(side) {
 
-	let [lowest_dom_index, highest_dom_index] = this.getDomIndexRange();
-	let id_to_check;
+	let [lowest_key, highest_key] = this.getDomKeyRange();
+	let key_to_check,
+	    direction;
 
 	if (side == 'bottom') {
-		id_to_check = highest_dom_index + this.batch_size - 1;
+		direction = 'getNodeAfter';
+		key_to_check = highest_key;
 	} else {
-		id_to_check = lowest_dom_index - this.batch_size + 1;
+		direction = 'getNodeBefore';
+		key_to_check = lowest_key;
 	}
 
 	this.addMissingElementsFromLoadedEntries();
 
 	// If the id to check is already loaded, don't do anything
-	if (this.loaded_entries.at(id_to_check)) {
+	if (this.loaded_entries[direction](key_to_check, this.batch_size)) {
 		return;
 	}
 
@@ -420,24 +418,62 @@ VirtualScroll.setMethod(function showEntries(side) {
 });
 
 /**
+ * Get the key of something
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.10
+ * @version  0.2.10
+ */
+VirtualScroll.setMethod(function getKeyOf(record) {
+
+	if (record._id != null) {
+		return '' + record._id;
+	}
+
+	if (record.id != null) {
+		return '' + record.id;
+	}
+
+	if (record.key != null) {
+		return '' + record.key;
+	}
+
+	throw new Error('Could not get key of record');
+});
+
+/**
+ * Create an entry object for the given record
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.2.10
+ * @version  0.2.10
+ */
+VirtualScroll.setMethod(function createEntryFor(record) {
+
+	let entry = {
+		record,
+		key : this.getKeyOf(record),
+	};
+
+	return entry;
+});
+
+/**
  * Insert a new record from somewhere
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function insertRecord(record) {
 
-	let entry = {record},
-	    index;
+	let entry = this.createEntryFor(record);
 
 	if (this.insert_side == 'bottom') {
-		index = this.loaded_entries.append(entry);
+		this.loaded_entries.set(entry.key, entry);
 	} else {
-		index = this.loaded_entries.prepend(entry);
+		this.loaded_entries.unshift(entry.key, entry);
 	}
-
-	entry.index = index;
 
 	let is_at_bottom = this.scrollTop + this.clientHeight >= this.scrollHeight;
 
@@ -453,23 +489,15 @@ VirtualScroll.setMethod(function insertRecord(record) {
  * Add missing elements from loaded entries
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function addMissingElementsFromLoadedEntries() {
 
-	let [lowest_dom_index, highest_dom_index] = this.getDomIndexRange();
+	let [lowest_key, highest_key] = this.getDomKeyRange();
 
 	let top_result,
 	    bottom_result;
-
-	if (highest_dom_index == -Infinity) {
-		highest_dom_index = -1;
-	}
-
-	if (lowest_dom_index == Infinity) {
-		lowest_dom_index = 0;
-	}
 
 	let add_to_bottom = 0,
 	    add_to_top = 0;
@@ -486,33 +514,38 @@ VirtualScroll.setMethod(function addMissingElementsFromLoadedEntries() {
 	}
 
 	let added = [];
+	let add_count = 0;
 
-	let top_index = lowest_dom_index,
-	    bottom_index = highest_dom_index,
-	    add_count = 0;
+	let top_node = this.loaded_entries.getNode(lowest_key),
+	    bottom_node = this.loaded_entries.getNode(highest_key);
+
+	if (!top_node && !bottom_node) {
+		top_node = this.loaded_entries.tail;
+	}
 
 	while (true) {
 
-		if (add_to_top > 0) {
+		if (add_to_top > 0 && top_node) {
 			add_to_top--;
-			top_index--;
-			top_result = this._addAdjacent(this.top_trigger, top_index);
+			top_node = top_node.prev;
+
+			top_result = this._addAdjacent(this.top_trigger, top_node);
 
 			if (top_result) {
-				added.push(top_index);
+				added.push(top_node.key);
 				add_count++;
 			}
 		} else {
 			top_result = false;
 		}
 
-		if (add_to_bottom > 0) {
+		if (add_to_bottom > 0 && bottom_node) {
 			add_to_bottom--;
-			bottom_index++;
-			bottom_result = this._addAdjacent(this.bottom_trigger, bottom_index);
+			bottom_node = bottom_node.next;
+			bottom_result = this._addAdjacent(this.bottom_trigger, bottom_node);
 
 			if (bottom_result) {
-				added.push(bottom_index);
+				added.push(bottom_node.key);
 				add_count++;
 			}
 		} else {
@@ -533,8 +566,8 @@ VirtualScroll.setMethod(function addMissingElementsFromLoadedEntries() {
  * Cull invisible elements from the DOM.
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function cullInvisibleElements(added) {
 
@@ -547,10 +580,10 @@ VirtualScroll.setMethod(function cullInvisibleElements(added) {
 	}
 
 	// Get the lowest and highest dom index
-	let [lowest_dom_index, highest_dom_index] = this.getDomIndexRange();
+	let [lowest_key, highest_key] = this.getDomKeyRange();
 
-	let lowest_element = this.querySelector('[data-loaded-entry-index="' + lowest_dom_index + '"]'),
-	    highest_element = this.querySelector('[data-loaded-entry-index="' + highest_dom_index + '"]');
+	let lowest_element = this.querySelector('[data-loaded-entry-key="' + lowest_key + '"]'),
+	    highest_element = this.querySelector('[data-loaded-entry-key="' + highest_key + '"]');
 
 	let lowest_to_remove = [],
 	    highest_to_remove = [];
@@ -619,8 +652,8 @@ VirtualScroll.setMethod(function cullInvisibleElements(added) {
  * Hide the given element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function _hideElement(element, removed_from_side) {
 	this.increaseScrollPaddingBecauseRemoved(removed_from_side, element);
@@ -631,8 +664,8 @@ VirtualScroll.setMethod(function _hideElement(element, removed_from_side) {
  * Get the scrollpadding for the given side
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function getScrollPadding(side) {
 
@@ -653,8 +686,8 @@ VirtualScroll.setMethod(function getScrollPadding(side) {
  * Set the scrollpadding for the given side
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function setScrollPadding(side, amount) {
 
@@ -684,8 +717,8 @@ VirtualScroll.setMethod(function setScrollPadding(side, amount) {
  * because it has been removed from the given side
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  *
  * @param    {String}   side
  * @param    {Element}  element
@@ -699,8 +732,8 @@ VirtualScroll.setMethod(function increaseScrollPaddingBecauseRemoved(side, eleme
  * Increase the scroll padding of the given side with the given element height.
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function increaseScrollPadding(side, element) {
 
@@ -714,8 +747,8 @@ VirtualScroll.setMethod(function increaseScrollPadding(side, element) {
  * Decrease the scroll padding of the given side
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  *
  * @param    {String}   side
  */
@@ -729,8 +762,8 @@ VirtualScroll.setMethod(function decreaseScrollPadding(side, element) {
  * Decrease the scroll padding of the given side
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  *
  * @param    {Element}   side_trigger
  * @param    {Element}   element
@@ -753,15 +786,20 @@ VirtualScroll.setMethod(function decreaseScrollPaddingBecauseInserted(side_trigg
  * Add an element adjacent to the given trigger
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
+ *
+ * @param    {Element}   trigger_element
+ * @param    {KeyedNode} node
+ *
+ * @return   {boolean}
  */
-VirtualScroll.setMethod(function _addAdjacent(trigger_element, dom_index) {
+VirtualScroll.setMethod(function _addAdjacent(trigger_element, node) {
 
 	let position = trigger_element == this.bottom_trigger ? 'beforebegin' : 'afterend';
 	let is_top = trigger_element == this.top_trigger;
 
-	let entry = this.loaded_entries.at(dom_index);
+	let entry = node?.value;
 
 	if (!entry) {
 		return false;
@@ -794,8 +832,8 @@ VirtualScroll.setMethod(function _addAdjacent(trigger_element, dom_index) {
  * Get the entry element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function getEntryElement(entry) {
 
@@ -809,7 +847,7 @@ VirtualScroll.setMethod(function getEntryElement(entry) {
 		result = this.createElement('div');
 		entry[DOM_ELEMENT] = result;
 		result.textContent = entry.record.name;
-		result.dataset.loadedEntryIndex = entry.index;
+		result.dataset.loadedEntryKey = entry.key;
 
 		if (typeof hawkejs !== 'undefined') {
 			let placeholder = hawkejs.scene.general_renderer.partial(this.item_template, {
@@ -827,8 +865,8 @@ VirtualScroll.setMethod(function getEntryElement(entry) {
  * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.9
- * @version  0.2.9
+ * @since    0.2.10
+ * @version  0.2.10
  */
 VirtualScroll.setMethod(function introduced() {
 	this.ensureTriggerElements();
