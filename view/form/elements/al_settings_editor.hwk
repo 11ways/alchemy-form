@@ -1,0 +1,29 @@
+<div class="al-settings-sidebar">
+	<al-toc
+		parent-selector="al-settings-editor"
+		children-selector=".al-settings-container"
+		elements-selector=".al-settings-group"
+		title-selector=".al-settings-group-title"
+	></al-toc>
+</div>
+<div class="al-settings-main">
+	<div class="al-settings-container"><% self.populateSettingsContainer($0) %></div>
+	<div class="al-settings-actions">
+		<al-button class="save-changes" state="ready">
+			<al-state state-name="saving">
+				<al-icon icon-style="duotone" icon-name="spinner" icon-flags="spin"></al-icon>
+				{%t "saving" %}
+			</al-state>
+
+			<al-state state-name="saved">
+				<al-icon icon-style="duotone" icon-name="badge-check" icon-flags="beat"></al-icon>
+				{%t "saved" %}
+			</al-state>
+
+			<al-state state-name="ready">
+				<al-icon icon-style="duotone" icon-name="floppy-disk-circle-arrow-right"></al-icon>
+				{%t "save" %}
+			</al-state>
+		</al-button>
+	</div>
+</div>

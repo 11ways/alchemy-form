@@ -1,0 +1,47 @@
+al-settings-editor {
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+
+	.al-settings-group {
+		padding-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.al-settings-setting-header {
+		margin-bottom: 0.5rem;
+	}
+
+	.al-settings-group-title {
+		font-weight: bold;
+		font-size: 1.6rem;
+	}
+
+	.al-settings-group-header {
+		padding: 0.2rem 1rem 0.5rem;
+	}
+
+	.al-settings-setting {
+		padding: 0.2rem 1rem 1.5rem;
+	}
+
+	.al-settings-setting-title {
+		font-weight: bold;
+	}
+
+	.al-settings-setting-description micro-copy:not(:empty) {
+		display: block;
+		margin-top: 0.3rem;
+	}
+
+	al-field {
+		.field,
+		.field input {
+			width: 100%;
+		}
+	}
+
+	al-toc {
+		position: sticky;
+		top: 1rem;
+	}
+}

@@ -2,6 +2,7 @@
 
 * Upgrade to Alchemy v1.4.0
 * Add edit template for the `Object` field type
+* Add settings editor element
 
 ## 0.2.10 (2024-01-15)
 
