@@ -44,6 +44,15 @@ CodeInput.setAttribute('language-mode');
 CodeInput.setAttribute('color-theme');
 
 /**
+ * Is the value an object?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+CodeInput.setAttribute('value-is-object', {type: 'boolean'});
+
+/**
  * The minimum number of lines to show (height)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -66,25 +75,43 @@ CodeInput.setAttribute('max-lines', {type: 'number'});
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.5
+ * @version  0.3.0
  */
-CodeInput.setProperty(function value(value) {
+CodeInput.setProperty(function value() {
+
+	let result;
 
 	if (this._editor) {
-		return this._editor.getValue();
+		result = this._editor.getValue();
+	} else {
+		let editor_el = this.querySelector('.code-editor');
+
+		if (editor_el) {
+			result = editor_el.textContent;
+		} else {
+			if (this.assigned_data.value) {
+				return this.assigned_data.value;
+			}
+
+			return;
+		}
 	}
 
-	let editor_el = this.querySelector('.code-editor');
-
-	if (editor_el) {
-		return editor_el.textContent;
+	if (result) {
+		result = JSON.safeParse(result);
 	}
 
-	if (this.assigned_data.value) {
-		return this.assigned_data.value;
-	}
+	return result;
 
-}, function setValue(value) {
+}, function setValue(original_value) {
+
+	let value;
+
+	if (this.value_is_object) {
+		value = JSON.stringify(value, null, '\t');
+	} else {
+		value = original_value;
+	}
 
 	if (this._editor) {
 		this._editor.setValue(value);
@@ -101,7 +128,9 @@ CodeInput.setProperty(function value(value) {
 		return editor_el.textContent = value;
 	}
 
-	this.assigned_data.value = value;
+	this.assigned_data.value = original_value;
+
+	this.hawkejs_renderer.registerElementInstance(this);
 });
 
 /**
@@ -153,7 +182,14 @@ CodeInput.setMethod(async function introduced() {
 	}
 
 	if (this.assigned_data.value) {
-		editor.setValue(this.assigned_data.value, -1);
+
+		let value = this.assigned_data.value;
+
+		if (this.value_is_object) {
+			value = JSON.stringify(value, null, '\t');
+		}
+
+		editor.setValue(value, -1);
 	}
 
 	if (this.language_mode) {
@@ -163,6 +199,8 @@ CodeInput.setMethod(async function introduced() {
 			// Ignore
 		}
 	}
+
+	this.style.height = null;
 
 	this._editor = editor;
 });

@@ -1,0 +1,9 @@
+<al-code-input
+	class="alchemy-field-value"
+	form=<% form_id %>
+	name=<% path %>
+	placeholder={% alchemy_field.placeholder %}
+	language-mode="json"
+	value-is-object
+	#value={% value %}
+></al-code-input>
