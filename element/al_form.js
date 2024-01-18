@@ -249,8 +249,6 @@ Form.setMethod(function setDocument(document) {
 	// Set the current document
 	this.document = document;
 
-	console.log('Setting document', document);
-
 	for (let key in current_value) {
 		let original_value = current_value[key],
 		    new_value = document[key];

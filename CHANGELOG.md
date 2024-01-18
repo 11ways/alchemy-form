@@ -1,3 +1,7 @@
+## 0.3.0 (WIP)
+
+* Upgrade to Alchemy v1.4.0
+
 ## 0.2.10 (2024-01-15)
 
 * Fix `al-table` throwing an error when receiving null data
