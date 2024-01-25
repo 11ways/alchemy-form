@@ -1,4 +1,4 @@
-Router.add({
+Plugin.addRoute({
 	name       : 'FormApi#related',
 	methods    : 'post',
 	paths      : '/api/form/data/related',
@@ -7,7 +7,7 @@ Router.add({
 	is_system_route : true,
 });
 
-Router.add({
+Plugin.addRoute({
 	name       : 'FormApi#queryBuilderData',
 	methods    : 'post',
 	paths      : '/api/form/data/qbdata',
@@ -16,7 +16,7 @@ Router.add({
 	is_system_route : true,
 });
 
-Router.add({
+Plugin.addRoute({
 	name            : 'FormApi#recompute',
 	methods         : 'post',
 	paths           : '/api/form/data/recompute/{model_name}/{field}',
