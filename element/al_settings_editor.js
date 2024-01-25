@@ -106,6 +106,7 @@ SettingsEditor.setMethod(function _addGroupToContainer(container, group) {
 
 	let title_element = this.createElement('div');
 	title_element.classList.add('al-settings-group-title');
+	title_element.dataset.toc_level = group.group_id.count('.');
 
 	let group_title_microcopy = this.createElement('micro-copy');
 	group_title_microcopy.key = 'settings.title.group:' + group.group_id;

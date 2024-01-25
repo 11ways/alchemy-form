@@ -1,5 +1,7 @@
 <div class="al-settings-sidebar">
 	<al-toc
+		container-element="ul"
+		entry-element="li"
 		parent-selector="al-settings-editor"
 		children-selector=".al-settings-container"
 		elements-selector=".al-settings-group"
