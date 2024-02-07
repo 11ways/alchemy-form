@@ -3,11 +3,27 @@
 		<span
 			data-he-name="field-title"
 			data-he-slot="field-title"
-		>{{ alchemy_field.field_title }}</span>
+		>
+			{%t
+				"alchemy-field-title"
+				field=field_context.config.name
+				path=field_context.config.path_in_document
+				zone=self.zone
+				fallback=alchemy_field.field_title
+			%}
+		</span>
 		<small
 			data-he-name="field-description"
 			data-he-slot="field-description"
-		>{{ alchemy_field.field_description }}</small>
+		>
+			{%t
+				"alchemy-field-description"
+				field=field_context.config.name
+				path=field_context.config.path_in_document
+				zone=self.zone
+				fallback=alchemy_field.field_description
+			%}
+		</small>
 	</al-label>
 </div>
 <div data-he-name="field"></div>

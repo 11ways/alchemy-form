@@ -103,6 +103,27 @@ Base.setAttribute('purpose', function getPurpose(value) {
 Base.setAttribute('mode');
 
 /**
+ * The zone determines where the form/field is being used.
+ * For example: admin, frontend, chimera, invoice, ...
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Base.setAttribute('zone', function getZone(value) {
+
+	if (value) {
+		return value;
+	}
+
+	if (!value && this.alchemy_form) {
+		value = this.alchemy_form.zone;
+	}
+
+	return value;
+});
+
+/**
  * The view-type determines which type of wrapper/field to use,
  * e.g.: view, list, edit, ...
  * 

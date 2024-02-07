@@ -4,6 +4,7 @@
 * Add edit template for the `Object` field type
 * Add settings editor element
 * Make `readonly` attribute work on `al-field` and `al-form` elements
+* Use "alchemy-field-title" and "alchemy-field-description" microcopy in `al-field` labels
 
 ## 0.2.10 (2024-01-15)
 
