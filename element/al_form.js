@@ -35,6 +35,15 @@ Form.setAttribute('method');
 Form.setAttribute('model');
 
 /**
+ * Is this a read only form?
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Form.setAttribute('readonly', {boolean: true});
+
+/**
  * Should the entire document be submitted?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>

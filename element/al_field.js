@@ -77,9 +77,17 @@ Field.setAttribute('wrapper-view');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.2
- * @version  0.1.2
+ * @version  0.3.0
  */
-Field.setAttribute('readonly', {boolean: true});
+Field.setAttribute('readonly', function getReadonlyValue(current_value) {
+
+	if (current_value == null) {
+		current_value = this.alchemy_form?.readonly;
+	}
+
+	return current_value;
+
+}, {boolean: true});
 
 /**
  * Widget settings for use in the views

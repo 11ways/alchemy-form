@@ -33,4 +33,19 @@ al-field {
 			display: inline-flex;
 		}
 	}
+
+	.alchemy-field-empty-value {
+		color: #666;
+		font-style: italic;
+	}
+}
+
+al-form[readonly] al-field,
+al-field[readonly] {
+	pointer-events: none;
+
+	.alchemy-field-value {
+		opacity: 0.8;
+		filter: brightness(0.95);
+	}
 }
