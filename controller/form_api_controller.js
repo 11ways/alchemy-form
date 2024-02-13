@@ -17,7 +17,7 @@ const FormApi = Function.inherits('Alchemy.Controller', 'FormApi');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.9
+ * @version  0.3.0
  *
  * @param    {Conduit}   conduit
  */
@@ -32,9 +32,7 @@ FormApi.setAction(async function related(conduit) {
 	crit.setOption('scenario', 'related_data');
 
 	if (body.constraints) {
-		for (let key in body.constraints) {
-			crit.where(key).equals(body.constraints[key]);
-		}
+		crit.applyConditions(body.constraints);
 	}
 
 	if (config.value) {
