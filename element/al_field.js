@@ -593,14 +593,20 @@ Field.setProperty(function value_element() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.9
+ * @version  0.3.0
  */
 Field.setProperty(function value() {
 
 	let element = this.value_element;
 
 	if (element) {
-		return element.value;
+		let value = element.value;
+
+		if (this.config) {
+			value = this.config.castContainedValues(value);
+		}
+
+		return value;
 	}
 
 	return this.value_to_render;
@@ -1051,32 +1057,19 @@ Field.setMethod(async function loadData(config, element) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.9
- * @version  0.2.10
+ * @version  0.3.0
  *
- * @param    {Object}   constraints
+ * @param    {Criteria|Object}   constraints
+ *
+ * @param    {Object}
  */
 Field.setMethod(function resolveConstraintInstruction(constraints) {
 
-	let context,
-	    result = {},
-	    value,
-	    key;
+	let context = {$0: this.alchemy_form.getValueAsDocument()};
 
-	for (key in constraints) {
-		value = constraints[key];
+	constraints = Classes.Alchemy.Criteria.Criteria.cast(constraints);
 
-		if (value && typeof value == 'object') {
-			if (value instanceof Classes.Alchemy.PathEvaluator) {
-				if (!context && this.alchemy_form) {
-					context = this.alchemy_form.getValueAsDocument();
-				}
-
-				result[key] = value.getValue({$0: context}) ?? null;
-			}
-		} else {
-			result[key] = value;
-		}
-	}
+	let result = constraints.compileToConditions(context);
 
 	return result;
 });

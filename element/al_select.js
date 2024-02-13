@@ -951,12 +951,13 @@ AlchemySelect.setMethod(function getRemoteFetchConfig() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.3.0
  */
 AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
 
 	if (err) {
 		this.loading_dropdown = false;
+		alchemy.handleError(err);
 		return;
 	}
 
