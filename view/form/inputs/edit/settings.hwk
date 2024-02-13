@@ -1,0 +1,5 @@
+<% config = value.getEditorConfiguration() %>
+<al-settings-editor
+	class="alchemy-field-value"
+	#settings_config={% config %}
+></al-settings-editor>

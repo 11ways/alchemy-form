@@ -1,6 +1,6 @@
 al-settings-editor {
 	display: grid;
-	grid-template-columns: 1fr 4fr;
+	grid-template-columns: minmax(200px, 1.5fr) minmax(25vw, 9fr);
 
 	.al-settings-group {
 		padding-top: 0.5rem;
@@ -20,8 +20,13 @@ al-settings-editor {
 		padding: 0.2rem 1rem 0.5rem;
 	}
 
+	.al-settings-actions,
 	.al-settings-setting {
 		padding: 0.2rem 1rem 1.5rem;
+	}
+
+	.al-settings-actions {
+		margin-top: 2rem;
 	}
 
 	.al-settings-setting-title {
@@ -31,6 +36,16 @@ al-settings-editor {
 	.al-settings-setting-description micro-copy:not(:empty) {
 		display: block;
 		margin-top: 0.3rem;
+	}
+
+	.al-settings-sidebar {
+		border-right: 1px solid #ebebeb;
+		margin-right: 1.5rem;
+
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
 	}
 
 	al-field {

@@ -35,6 +35,42 @@ SettingsEditor.setAssignedProperty('settings_config');
 SettingsEditor.setAttribute('src');
 
 /**
+ * Get the current value
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    1.3.0
+ * @version  1.3.0
+ */
+SettingsEditor.setProperty(function value() {
+
+	let result = {};
+
+	let root_key,
+	    elements = this.querySelectorAll('.al-settings-setting'),
+	    element,
+	    field,
+	    i;
+
+	for (i = 0; i < elements.length; i++) {
+		element = elements[i];
+
+		field = element.querySelector('al-field');
+
+		if (!field) {
+			continue;
+		}
+
+		if (!root_key) {
+			root_key = element.dataset.id.split('.')[0];
+		}
+
+		Object.setPath(result, element.dataset.id, field.value);
+	}
+
+	return result[root_key];
+});
+
+/**
  * Populate the settings container
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -96,35 +132,48 @@ SettingsEditor.setMethod(function _addGroupToContainer(container, group) {
 		throw new Error('No container given');
 	}
 
-	let group_element = this.createElement('div');
-	group_element.classList.add('al-settings-group');
-	group_element.dataset.id = group.group_id;
-	group_element.id = this.createId(group.group_id);
+	let add_group = false;
 
-	let header_element = this.createElement('header');
-	header_element.classList.add('al-settings-group-header');
-
-	let title_element = this.createElement('div');
-	title_element.classList.add('al-settings-group-title');
-	title_element.dataset.toc_level = group.group_id.count('.');
-
-	let group_title_microcopy = this.createElement('micro-copy');
-	group_title_microcopy.key = 'settings.title.group:' + group.group_id;
-	group_title_microcopy.fallback = group.name.titleize();
-
-	title_element.append(group_title_microcopy);
-	header_element.append(title_element);
-	group_element.append(header_element);
-
-	let settings_container = this.createElement('div');
-	settings_container.classList.add('al-settings-settings-container');
-
-	for (let setting of group.settings) {
-		this._addSettingToGroupElement(settings_container, setting);
+	if (group.settings?.length) {
+		add_group = true;
+	} else if (group.children?.length) {
+		// If the root group has no settings, don't add it
+		if (!group.is_root) {
+			add_group = true;
+		}
 	}
 
-	group_element.append(settings_container);
-	container.append(group_element);
+	if (add_group) {
+		let group_element = this.createElement('div');
+		group_element.classList.add('al-settings-group');
+		group_element.dataset.id = group.group_id;
+		group_element.id = this.createId(group.group_id);
+
+		let header_element = this.createElement('header');
+		header_element.classList.add('al-settings-group-header');
+
+		let title_element = this.createElement('div');
+		title_element.classList.add('al-settings-group-title');
+		title_element.dataset.toc_level = group.group_id.count('.');
+
+		let group_title_microcopy = this.createElement('micro-copy');
+		group_title_microcopy.key = 'settings.title.group:' + group.group_id;
+		group_title_microcopy.fallback = group.name.titleize();
+
+		title_element.append(group_title_microcopy);
+		header_element.append(title_element);
+		group_element.append(header_element);
+
+		let settings_container = this.createElement('div');
+		settings_container.classList.add('al-settings-settings-container');
+
+		for (let setting of group.settings) {
+			this._addSettingToGroupElement(settings_container, setting);
+		}
+
+		group_element.append(settings_container);
+		container.append(group_element);
+	}
 
 	for (let child_group of group.children) {
 		this._addGroupToContainer(container, child_group);
@@ -224,9 +273,23 @@ SettingsEditor.setMethod(function introduced() {
 
 	let save_button = this.querySelector('.save-changes');
 
-	save_button.addEventListener('activate', e => {
-		this.save();
+	save_button.addEventListener('activate', async e => {
+
+		let old_state = save_button.state;
+
+		save_button.setState('saving');
+
+		try {
+			await this.save();
+		} catch (err) {
+			save_button.setState('error', 2500, old_state);
+			return;
+		}
+
+		save_button.setState('saved', 1000, old_state);
 	});
+
+	save_button.hidden = !this.src;
 });
 
 /**
