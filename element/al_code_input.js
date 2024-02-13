@@ -97,7 +97,7 @@ CodeInput.setProperty(function value() {
 		}
 	}
 
-	if (result) {
+	if (result && this.value_is_object) {
 		result = JSON.safeParse(result);
 	}
 
