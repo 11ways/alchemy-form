@@ -677,7 +677,7 @@ Table.setMethod(function addDataRow(entry) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.3.0
  *
  * @param    {Object}   entry
  *
@@ -703,6 +703,10 @@ Table.setMethod(function createDataRow(entry) {
 	
 	if (id) {
 		tr.dataset.pk = id;
+	}
+
+	if (!this.fieldset) {
+		throw new Error('No fieldset has been defined for this table yet');
 	}
 
 	for (field_set_config of this.fieldset) {
@@ -907,7 +911,7 @@ Table.setMethod(function attachContextMenus() {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.12
+ * @version  0.3.0
  */
 Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
@@ -935,7 +939,7 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 	}
 
 	for (field of value) {
-		col = this.createElement('td');
+		col = this.createElement('th');
 		span = this.createElement('span');
 		span.textContent = field.title;
 
@@ -980,10 +984,10 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 	}
 
 	if (this.has_actions) {
-		col = this.createElement('td');
+		col = this.createElement('th');
 		names_row.append(col);
 
-		col = this.createElement('td');
+		col = this.createElement('th');
 		filter_row.append(col);
 	}
 
