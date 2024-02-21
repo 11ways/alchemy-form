@@ -1,16 +1,5 @@
-<% wrapper_files = self.wrapper_files %>
-<% view_files = self.view_files %>
-<%
-variables = {
-	alchemy_field : self,
-	field_context : self,
-	view_files    : view_files,
-	value         : self.value_to_render,
-}
-%>
-
 <% if (wrapper_files) { %>
-	<% include(wrapper_files, variables) %>
+	<% include(wrapper_files) %>
 <% } %>
 
 <% if (wrapper_files) start('field') %>

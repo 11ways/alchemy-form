@@ -1,5 +1,6 @@
 al-field {
 	display: block;
+	--badge-font-size: 1rem;
 
 	&[field-type="boolean"] {
 		
@@ -8,33 +9,24 @@ al-field {
 			justify-content: flex-start;
 		}
 
-		.boolean-wrapper {
-			&.boolean-true {
-				--boolean-color: green;
-				--text-color: white;
-			}
+		.boolean-true {
+			--badge-bg: var(--boolean-true);
+			--badge-color: white;
+		}
 
-			&.boolean-false {
-				--boolean-color: red;
-				--text-color: white;
-			}
+		.boolean-false {
+			--badge-bg: var(--boolean-false);
+			--badge-color: white;
+		}
 
-			&.boolean-null {
-				--boolean-color: #f3f3f3;
-				--text-color: #666;
-				font-style: italic;
-			}
-
-			background-color: var(--boolean-color);
-			border-radius: 5px;
-			padding: 4px 8px;
-			min-width: 1rem;
-			color: var(--text-color, white);
-			display: inline-flex;
+		.value-icon {
+			margin-right: 0.5rem;
 		}
 	}
 
-	.alchemy-field-empty-value {
+	.alchemy-field-empty-value-placeholder {
+		--badge-background-color: #f3f3f3;
+		--boolean-color: #f3f3f3;
 		color: #666;
 		font-style: italic;
 	}

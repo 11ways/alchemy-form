@@ -651,7 +651,71 @@ Field.setProperty(function value_to_render() {
 });
 
 /**
+ * Get the placeholder for empty values (if any)
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Field.setProperty(function allow_empty_value_placeholder() {
+	return !!(this.applied_options?.empty_value_placeholder ?? true);
+});
+
+/**
+ * Create the empty value placeholder text
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ *
+ * @return   {string|HTMLElement|Microcopy}
+ */
+Field.setMethod(function createEmptyValuePlaceholderText() {
+
+	let microcopy = this.applied_options?.empty_value_placeholder;
+
+	if (microcopy) {
+		return microcopy;
+	}
+
+	microcopy = Classes.Alchemy.Microcopy('empty-value-placeholder', {
+		field_name : this.field_name,
+		model_name : this.model,
+		field_type : this.field_type,
+		zone       : this.zone,
+		path       : this.config?.path_in_document,
+	});
+
+	return microcopy;
+});
+
+/**
+ * Get variables needed to render this
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Field.setMethod(function prepareRenderVariables() {
+
+	let value = this.value_to_render,
+	    value_is_empty = value == null || value === '' || (Array.isArray(value) ? value.length == 0 : false);
+
+	let result = {
+		alchemy_field  : this,
+		field_context  : this,
+		view_files     : this.view_files,
+		wrapper_files  : this.wrapper_files,
+		value,
+		value_is_empty,
+	};
+
+	return result;
+});
+
+/**
  * Apply options
+ * (Like options from a FieldConfig instance)
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.12

@@ -3,7 +3,7 @@
 		<% if (value || value === false) { %>
 			{{ value }}
 		<% } else { %>
-			<span class="alchemy-field-empty-value">
+			<span class="alchemy-badge alchemy-field-empty-value-placeholder">
 				{%t
 					"empty-value"
 					field=field_context.config.name

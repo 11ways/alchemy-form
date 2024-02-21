@@ -1,6 +1,7 @@
 ## 0.3.0-alpha.2 (WIP)
 
 * Added `.alchemy-badge` class
+* Use badges & microcopy for showing in-line empty values
 
 ## 0.3.0-alpha.1 (2024-02-15)
 

@@ -1,19 +1,26 @@
-<span
-	class="alchemy-field-value boolean-wrapper"
->
-	<%
-		new_class = '';
+{% if (value_is_empty AND self.allow_empty_value_placeholder) %}
+	<span class="alchemy-field-value">
+		<span class="alchemy-badge alchemy-field-empty-value-placeholder">
+			{{ self.createEmptyValuePlaceholderText() }}
+		</span>
+	</span>
+{% else %}
+	<span class="alchemy-badge alchemy-field-value">
+		<% $0.classList.add('boolean-' + value) %>
 
-		if (value) {
-			new_class = 'boolean-true';
-		} else if (value === false) {
-			new_class = 'boolean-false';
-		} else {
-			new_class = 'boolean-null';
-			value = 'empty';
-		}
+		{% if value %}
+			<al-icon class="value-icon" icon-name="check"></al-icon>
+		{% else %}
+			<al-icon class="value-icon" icon-name="xmark"></al-icon>
+		{% /if %}
 
-		$0.classList.add(new_class);
-	%>
-	{{ value }}
-</span>
+		{%t
+			"" + value
+			field_name=self.field_name
+			model_name=self.model
+			field_type=self.field_type
+			zone=self.zone
+			path=self.config.path_in_document
+		%}
+	</span>
+{% /if %}
