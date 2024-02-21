@@ -1,0 +1,29 @@
+:root {
+	--badge-font-size: 0.9rem;
+	--badge-font-weight: 400;
+	--badge-line-height: 1;
+	--badge-color: #666;
+	--badge-bg: #f3f3f3;
+	--badge-border-radius: 5px;
+	--badge-padding: 4px 8px;
+	--badge-white-space: nowrap;
+	--badge-user-select: none;
+
+	--boolean-true: #28a745;
+	--boolean-false: #dc3545;
+}
+
+.alchemy-badge {
+	display: inline-flex;
+	text-align: center;
+
+	user-select: var(--badge-user-select);
+	padding: var(--badge-padding);
+	font-size: var(--badge-font-size);
+	font-weight: var(--badge-font-weight);
+	line-height: var(--badge-line-height);
+	border-radius: var(--badge-border-radius);
+	color: var(--badge-color);
+	background-color: var(--badge-bg);
+	white-space: var(--badge-white-space);
+}
