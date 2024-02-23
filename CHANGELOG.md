@@ -3,6 +3,7 @@
 * Added `.alchemy-badge` class
 * Use badges & microcopy for showing in-line empty values
 * Also set the `al-field`'s model attribute inside `al-table` elements
+* Depend on the `alchemy-styleboost` peer dependency
 
 ## 0.3.0-alpha.1 (2024-02-15)
 

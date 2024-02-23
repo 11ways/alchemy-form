@@ -1,3 +1,5 @@
+@use "form/general" as *;
+
 .textareabox,
 .inputbox {
 	$inputbox: &;

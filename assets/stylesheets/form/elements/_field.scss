@@ -1,3 +1,5 @@
+@use "styleboost" as *;
+
 al-field {
 	display: block;
 	--badge-font-size: 1rem;
@@ -10,13 +12,11 @@ al-field {
 		}
 
 		.boolean-true {
-			--badge-bg: var(--boolean-true);
-			--badge-color: white;
+			@extend .use-true-theme;
 		}
 
 		.boolean-false {
-			--badge-bg: var(--boolean-false);
-			--badge-color: white;
+			@extend .use-false-theme;
 		}
 
 		.value-icon {
@@ -25,9 +25,8 @@ al-field {
 	}
 
 	.alchemy-field-empty-value-placeholder {
-		--badge-background-color: #f3f3f3;
-		--boolean-color: #f3f3f3;
-		color: #666;
+		--color-theme-fill: var(--color-inactive-bg);
+		--color-theme-fill-text: var(--color-inactive-bg-text);
 		font-style: italic;
 	}
 }

@@ -1,33 +1,10 @@
-:root {
-	--al-button-font-size: 1em;
-	--al-button-font-weight: 400;
-	--al-button-bg-color: rgb(89, 105, 225);
-	--al-button-bg-color-hover: rgb(105, 118, 218);
-	--al-button-text-color: white;
-}
+@use "styleboost";
 
 al-button {
+	@extend .default-button;
+
 	display: inline-block;
-	font-size: var(--al-button-font-size);
-	font-weight: var(--al-button-font-weight);
-	background-color: var(--al-button-bg-color);
-	color: var(--al-button-text-color);
-	cursor: pointer;
-	user-select: none;
-
 	position: relative;
-	padding: 0.5em 1em;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: bottom;
-	transition: 0.1s;
-	overflow: hidden;
-	line-height: 1.5;
-
-	al-icon,
-	.icon {
-		line-height: 1 !important;
-	}
 
 	.apb-content {
 		display: flex;
@@ -42,11 +19,7 @@ al-button {
 
 	&[disabled] {
 		pointer-events: none;
-		filter: saturate(0.5);
+		filter: unquote("saturate(0.5)");
 		cursor: not-allowed;
-	}
-
-	&:hover {
-		background-color: var(--al-button-bg-color-hover);
 	}
 }
