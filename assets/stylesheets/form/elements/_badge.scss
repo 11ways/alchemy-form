@@ -25,16 +25,17 @@
 	color: var(--badge-color, var(--color-theme-fill-text));
 	background-color: var(--badge-bg, var(--color-theme-fill));
 	white-space: var(--badge-white-space);
+}
 
-	$counter: 0;
+$counter: 0;
 
-	// Iterate over all the available colors
-	@each $color, $value in styleboost.$colors {
-		$counter: $counter + 1;
+// Iterate over all the available colors and create a badge color set for each
+// We do this without the badge class to lower specificity
+@each $color, $value in styleboost.$colors {
+	$counter: $counter + 1;
 
-		&[data-badge-color-set="#{$counter}"] {
-			--badge-color: var(--color-shade-#{$counter});
-			--badge-bg: var(--color-tint-#{$counter});
-		}
+	[data-badge-color-set="#{$counter}"] {
+		--badge-color: var(--color-shade-#{$counter});
+		--badge-bg: var(--color-tint-#{$counter});
 	}
 }
