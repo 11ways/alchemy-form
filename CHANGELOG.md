@@ -4,6 +4,7 @@
 * Use badges & microcopy for showing in-line empty values
 * Also set the `al-field`'s model attribute inside `al-table` elements
 * Depend on the `alchemy-styleboost` peer dependency
+* Let enum values use automatic styleboost colors in indexes + show correct titles
 
 ## 0.3.0-alpha.1 (2024-02-15)
 

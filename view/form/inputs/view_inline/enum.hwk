@@ -5,5 +5,28 @@
 		</span>
 	</span>
 {% else %}
-	<span class="alchemy-badge alchemy-field-value alchemy-field-enum">{{ value }}</span>
+	{% set enum_config to self.config.getValueConfiguration(value) %}
+	{% set display_value to OR enum_config.title OR enum_config.name OR value %}
+
+	<span class="alchemy-badge alchemy-field-value alchemy-field-enum">
+		<% $0.classList.add('enum-' + value) %>
+
+		{% if enum_config.number %}
+			<% $0.dataset.badgeColorSet = enum_config.number %>
+		{% /if %}
+
+		{% if enum_config.color %}
+			<% $0.style.setProperty('--badge-bg', enum_config.color) %>
+		{% /if %}
+
+		{% if enum_config.text_color %}
+			<% $0.style.setProperty('--badge-color', enum_config.text_color) %>
+		{% /if %}
+
+		{% if enum_config.icon %}
+			<al-icon class="value-icon" icon-name={% enum_config.icon %}></al-icon>
+		{% /if %}
+
+		<span class="alchemy-enum-display-value">{{ display_value }}</span>
+	</span>
 {% /if %}
