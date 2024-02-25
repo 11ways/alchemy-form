@@ -254,7 +254,7 @@ WithDataprovider.setMethod(function loadRemoteData(fetch_config) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.3.0
  *
  * @param    {Object}   config
  *
@@ -265,7 +265,7 @@ WithDataprovider.setMethod(function fetchRemoteData(config) {
 	let pledge;
 
 	if (this.dataprovider) {
-		pledge = Pledge.cast(this.dataprovider.loadData(config, this));
+		pledge = Pledge.Swift.cast(this.dataprovider.loadData(config, this));
 	} else {
 
 		let method = (this.method || 'get').toLowerCase();
