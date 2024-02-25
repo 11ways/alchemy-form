@@ -2,11 +2,9 @@ al-table {
 	display: flex;
 	flex-flow: column;
 	border: 1px solid #dadee0;
-	font-family: sans-serif;
 	background-color: white;
 
 	table {
-		border-collapse: collapse;
 		width: 100%;
 		color: inherit;
 	}

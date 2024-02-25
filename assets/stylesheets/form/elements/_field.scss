@@ -12,11 +12,11 @@ al-field {
 		}
 
 		.boolean-true {
-			@extend .use-true-theme;
+			@extend .use-truthy-theme;
 		}
 
 		.boolean-false {
-			@extend .use-false-theme;
+			@extend .use-falsy-theme;
 		}
 
 		.value-icon {
