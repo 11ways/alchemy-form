@@ -99,9 +99,20 @@ Base.setAttribute('purpose', function getPurpose(value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.11
- * @version  0.1.11
+ * @version  0.3.0
  */
-Base.setAttribute('mode');
+Base.setAttribute('mode', function getMode(value) {
+
+	if (value) {
+		return value;
+	}
+
+	if (!value) {
+		value = this.getParentFieldElement()?.mode;
+	}
+
+	return value;
+});
 
 /**
  * The zone determines where the form/field is being used.
