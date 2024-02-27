@@ -1,3 +1,7 @@
+## 0.3.0-alpha.3 (WIP)
+
+* Add `original_value_container` property to `<al-field>` elements, for when they're not inside a `<al-form>` element but still need the original container
+
 ## 0.3.0-alpha.2 (2024-02-25)
 
 * Added `.alchemy-badge` class

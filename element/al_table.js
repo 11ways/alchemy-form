@@ -602,7 +602,7 @@ Table.setMethod(function showPagination() {
  * @param    {FieldConfig}   field_config   The config on how to display the field
  * @param    {Object}        container      The container where the field should be in
  *
- * @return   
+ * @return   {Element.AlField}
  */
 Table.setMethod(function getFieldConfigView(field_config, container) {
 
@@ -641,6 +641,11 @@ Table.setMethod(function getFieldConfigView(field_config, container) {
 	alchemy_field.config = field;
 	alchemy_field.original_value = value;
 	alchemy_field.model = field?.schema?.model_name;
+
+	// Since these fields are not inside a form,
+	// they won't be able to remember their original value container.
+	// So force them to:
+	alchemy_field.rememberOriginalValueContainer(container);
 
 	return alchemy_field;
 });

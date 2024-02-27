@@ -525,11 +525,31 @@ Field.setProperty(function wrapper_files() {
 });
 
 /**
+ * Get the original value container
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Field.setAssignedProperty(function original_value_container() {
+
+	if (this.assigned_data.original_value_container != null) {
+		return this.assigned_data.original_value_container;
+	}
+
+	let form = this.alchemy_form;
+
+	if (form) {
+		return form.document;
+	}
+});
+
+/**
  * Get the original value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.8
+ * @version  0.3.0
  */
 Field.setProperty(function original_value() {
 
@@ -552,13 +572,13 @@ Field.setProperty(function original_value() {
 		return;
 	}
 
-	let form = this.alchemy_form;
+	let original_container = this.original_value_container;
 
-	if (form && form.document) {
-		return Object.path(form.document, path);
+	if (original_container) {
+		return Object.path(original_container, path);
 	}
 }, function setOriginalValue(value) {
-	return this.assigned_data.original_value = value;
+	return this.assignData('original_value', value);
 });
 
 /**
@@ -659,6 +679,27 @@ Field.setProperty(function value_to_render() {
  */
 Field.setProperty(function allow_empty_value_placeholder() {
 	return !!(this.applied_options?.empty_value_placeholder ?? true);
+});
+
+/**
+ * Set the value container (like the `Document` instance) the value came from.
+ * Will only be set if there is no `alchemy_form` available.
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Field.setMethod(function rememberOriginalValueContainer(container) {
+
+	if (!container) {
+		return;
+	}
+
+	if (this.alchemy_form) {
+		return;
+	}
+
+	this.original_value_container = container;
 });
 
 /**

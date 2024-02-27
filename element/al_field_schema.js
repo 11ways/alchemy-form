@@ -21,7 +21,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.9
+ * @version  0.3.0
  */
 FieldSchema.setProperty(function schema() {
 
@@ -46,8 +46,12 @@ FieldSchema.setProperty(function schema() {
 
 				const form = field_element.alchemy_form;
 
-				let record_value = form.getMainValue();
-				parent_schema_value = record_value;
+				if (form) {
+					let record_value = form.getMainValue();
+					parent_schema_value = record_value;
+				} else {
+					parent_schema_value = field_element.original_value_container;
+				}
 			}
 
 			// If this field is inside an array, get the index
@@ -171,7 +175,7 @@ FieldSchema.setMethod(function introduced() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.4
- * @version  0.1.4
+ * @version  0.3.0
  */
 FieldSchema.setProperty(function original_value() {
 
@@ -179,10 +183,17 @@ FieldSchema.setProperty(function original_value() {
 	    path = this.field_path_in_record;
 
 	if (field && path) {
-		let form = field.alchemy_form || this.alchemy_form || this.field_context.alchemy_form;
+		let form = field.alchemy_form || this.alchemy_form || this.field_context.alchemy_form,
+		    value_container;
 
 		if (form) {
-			return Object.path(form.document, path);
+			value_container = form.document;
+		} else {
+			value_container = field.original_value_container;
+		}
+
+		if (value_container) {
+			return Object.path(value_container, path);
 		}
 	}
 
