@@ -70,7 +70,7 @@ Base.setStatic(function addParentTypeGetter(name, type) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.11
- * @version  0.1.11
+ * @version  0.3.0
  */
 Base.setAttribute('purpose', function getPurpose(value) {
 
@@ -78,10 +78,11 @@ Base.setAttribute('purpose', function getPurpose(value) {
 		return value;
 	}
 
+	// If could also be in the view-type attribute
 	value = this.getAttribute('view-type');
 
-	if (!value && this.alchemy_form) {
-		value = this.alchemy_form.view_type;
+	if (!value) {
+		value = this.getParentFieldElement()?.purpose;
 	}
 
 	// Fallback to the "edit" type
@@ -116,8 +117,8 @@ Base.setAttribute('zone', function getZone(value) {
 		return value;
 	}
 
-	if (!value && this.alchemy_form) {
-		value = this.alchemy_form.zone;
+	if (!value) {
+		value = this.getParentFieldElement()?.zone;
 	}
 
 	return value;
@@ -163,14 +164,14 @@ Base.setProperty(function view_type() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.3.0
  */
 Base.setProperty(function wrapper_type() {
 
 	var value = this.getAttribute('wrapper-type');
 
-	if (!value && this.alchemy_form) {
-		value = this.alchemy_form.wrapper_type;
+	if (!value) {
+		value = this.getParentFieldElement()?.wrapper_type;
 	}
 
 	if (value == 'false') {
@@ -262,11 +263,24 @@ Base.setProperty(function field_path_in_record() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.4
+ * @version  0.3.0
  *
  * @return   {Alchemy.Element.Form.Base}
  */
 Base.setMethod(function getParentField() {
+	return this.getParentFieldElement();
+});
+
+/**
+ * Get the parent field/field-entry element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.3.0
+ *
+ * @return   {Alchemy.Element.Form.Base}
+ */
+Base.setMethod(function getParentFieldElement() {
 
 	let parent = this.parentElement;
 
