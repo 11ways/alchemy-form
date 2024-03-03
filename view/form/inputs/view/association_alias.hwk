@@ -1,7 +1,7 @@
 <div>
 	<span class="alchemy-field-value">
-		<% if (value || value === false) { %>
-			{{ value }}
+		<% if (value) { %>
+			{{ value.getDisplayTitle() }}
 		<% } else { %>
 			<span class="badge alchemy-field-empty-value-placeholder">
 				{%t
@@ -13,7 +13,4 @@
 			</span>
 		<% } %>
 	</span>
-	{% if alchemy_field.config.options.suffix %}
-		<span class="alchemy-field-suffix">{{ alchemy_field.config.options.suffix }}</span>
-	{% /if %}
 </div>

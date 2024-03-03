@@ -4,6 +4,7 @@
 * Use `getParentFieldElement()` instead of `alchemy_form` when resolving inherited attributes
 * Also let the `mode` attribute inherit
 * Add template for `view` mode for `schema` fields
+* Move the badge element to `styleboost`
 
 ## 0.3.0-alpha.2 (2024-02-25)
 
@@ -20,6 +21,7 @@
 * Add settings editor element
 * Make `readonly` attribute work on `al-field` and `al-form` elements
 * Use "alchemy-field-title" and "alchemy-field-description" microcopy in `al-field` labels
+* Add `zone` attribute for use in the microcopy system
 
 ## 0.2.10 (2024-01-15)
 

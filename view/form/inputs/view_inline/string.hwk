@@ -1,7 +1,7 @@
 <div>
 	{% if (value_is_empty AND self.allow_empty_value_placeholder) %}
 		<span class="alchemy-field-value">
-			<span class="alchemy-badge alchemy-field-empty-value-placeholder">
+			<span class="badge alchemy-field-empty-value-placeholder">
 				{{ self.createEmptyValuePlaceholderText() }}
 			</span>
 		</span>
