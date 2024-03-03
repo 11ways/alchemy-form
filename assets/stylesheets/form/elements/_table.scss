@@ -6,6 +6,11 @@
 		display: flex;
 		flex-flow: column;
 
+		.aft-content {
+			overflow-x: scroll;
+			scrollbar-width: thin;
+		}
+
 		table {
 			@extend .table;
 			width: 100%;

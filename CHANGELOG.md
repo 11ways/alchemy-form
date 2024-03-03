@@ -5,6 +5,7 @@
 * Also let the `mode` attribute inherit
 * Add template for `view` mode for `schema` fields
 * Move the badge element to `styleboost`
+* Make `al-table` contents responsive/scrollable by default
 
 ## 0.3.0-alpha.2 (2024-02-25)
 
