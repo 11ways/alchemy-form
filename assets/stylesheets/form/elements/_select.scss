@@ -1,215 +1,215 @@
-al-select {
-	box-sizing: border-box;
-	position: relative;
-	display: block;
+@use "styleboost";
+@use "styleboost/inputs";
 
-	--active-item-bg: #a7deff;
-	--active-item-fg: #272727;
+@layer defaults {
+	$accent: styleboost.themePropertyVar('color', 'accent', 'form');
+	$accent_rgb: styleboost.themePropertyVar('color', 'accent-rgb', 'form');
 
-	--selected-item-bg: #31317a;
-	--selected-item-fg: #f5f5f5;
+	al-select {
+		// Only extend the input defaults (custom properties),
+		// that way we don't inherit the actual applied values to padding etc
+		@extend .input-defaults;
 
-	.dropdown-content,
-	.value-wrapper,
-	.dropdown {
-		box-sizing: border-box;
-	}
+		--al-select-color-active-item-bg: var(--color-t-current-bg, var(--color-t-primary-bg));
+		--al-select-color-active-item-fg: var(--color-t-current-bg-text, var(--color-t-primary-bg-text));
 
-	&:focus {
-		.value-wrapper {
-			border-color: rgba(82, 168, 236, 0.8) !important;
-		}
-	}
+		--al-select-color-selected-item-bg: var(--color-t-current-fill, var(--color-t-primary-fill));
+		--al-select-color-selected-item-fg: var(--color-t-current-fill-text, var(--color-t-primary-fill-text));
 
-	// Default styles:
-	// for inputs with single & multiple values
-	.value-wrapper {
-		border: 1px solid #d0d0d0;
-		padding: 8px 8px;
-		display: inline-block;
-		width: 100%;
-		position: relative;
-		z-index: 1;
-		border-radius: 3px;
-		display: flex;
-		flex-wrap: wrap;
-		//box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+		--color-p-select-border: var(--color-t-current-bg-subtle);
 
-		align-items: center;
+		--color-p-input-active-item-bg: var(--color-p-input-accent);
+		--color-p-input-active-item-bg-text: var(--color-p-input-accent-text);
 
-		input.type-area {
-			height: 1.5rem !important;
-		}
-	}
+		--color-p-input-selected-item-bg: var(--color-p-input-accent);
+		--color-p-input-selected-item-bg-text: var(--color-p-input-accent-text);
 
-	&[aria-expanded="true"] .value-wrapper {
-		border-radius: 3px 3px 0 0;
-	}
+		display: block;
+		border-radius: var(--size-p-input-border-radius);
+		border-width: var(--size-p-input-border);
+		border-style: var(--style-p-input-border);
 
-	// Single value input
-	&:not([multiple]) {
-		.value-wrapper {
-			border-color: #b8b8b8;
-			background-image: linear-gradient(to bottom, #fefefe, #f2f2f2);
-			cursor: pointer;
-
-			&::after {
-				position: absolute;
-				top: 50%;
-				right: 15px;
-				display: block;
-				width: 0;
-				height: 0;
-				margin-top: -3px;
-				border-color: #808080 transparent transparent transparent;
-				border-style: solid;
-				border-width: 5px 5px 0 5px;
-				content: ' ';
+		&:focus {
+			.value-wrapper {
+				border-color: rgba(#{$accent_rgb}, 0.8) !important;
 			}
 		}
 
-		&[aria-expanded="true"] .value-wrapper {
-			background-image: none;
-		}
-
-		&[aria-expanded="false"] .value-wrapper .type-area {
-			cursor: pointer;
-		}
-	}
-
-	// Multiple value input
-	&[multiple] {
+		// The value wrapper is the main visible part of the select
 		.value-wrapper {
-			cursor: text;
-		}
-	}
+			border-radius: var(--size-p-input-border-radius);
 
-	.value-wrapper {
-		min-width: 5rem;
-		overflow: hidden;
-		background: #fff;
+			padding-bottom: var(--size-p-input-spacer-y);
+			padding-top: var(--size-p-input-spacer-y);
+			padding-left: var(--size-p-input-spacer-x);
+			padding-right: var(--size-p-input-spacer-x);
 
-		color: #303030;
-		font-family: inherit;
-		font-size: 13px;
-		line-height: 18px;
-		-webkit-font-smoothing: inherit;
-	}
+			width: 100%;
+			display: flex;
+			position: relative;
+			z-index: 1;
+			flex-wrap: wrap;
+			align-items: center;
 
-	.type-area {
-		color: #303030;
-		font-family: inherit;
-		font-size: 13px;
-		line-height: 18px;
-		display: inline-block !important;
-		padding: 0 !important;
-		min-height: 0 !important;
-		max-height: none !important;
-		max-width: 100% !important;
-		margin: 0 1px !important;
-		text-indent: 0 !important;
-		border: 0 none !important;
-		background: none !important;
-		line-height: inherit !important;
-		box-shadow: none !important;
-		outline: none !important;
-		flex: 0 1 auto;
-		margin-right: 20px !important;
-	}
-
-	.dropdown {
-		color: #303030;
-		font-family: inherit;
-		font-size: 13px;
-		line-height: 18px;
-		-webkit-font-smoothing: inherit;
-		display: none;
-
-		position: absolute;
-		z-index: 999999;
-		border: 1px solid #d0d0d0;
-		background: #fff;
-		margin: -1px 0 0 0;
-		border-top: 0 none;
-
-		// Make it scroll
-		overflow-y: auto;
-		overflow-x: hidden;
-		max-height: 200px;
-	}
-
-	.dropdown-content {
-		display: flex;
-	}
-
-	.dropdown-content {
-		flex-flow: column nowrap;
-	}
-
-	.dropdown [role="option"] {
-		cursor: pointer;
-		overflow: hidden;
-		padding: 6px 8px;
-		flex: 1 0;
-	}
-
-	.dropdown [role="option"] {
-
-		&:hover,
-		&.focused {
-			background-color: var(--active-item-bg, #f5fafd);
-			color: var(--active-item-fg, #495c68);
+			input.type-area {
+				height: 1.5rem !important;
+			}
 		}
 
-		&[selected] {
-			background-color: var(--selected-item-bg, #f5fafd);
-			color: var(--selected-item-fg, #495c68);
+		&[aria-expanded="true"] {
+			border-radius: var(--size-p-input-border-radius) var(--size-p-input-border-radius) 0 0;
 		}
-	}
 
-	&[aria-expanded="true"] .dropdown {
-		display: block !important;
-	}
+		// Single value input
+		&:not([multiple]) {
+			.value-wrapper {
+				//border-color: #b8b8b8;
 
-	div.value {
-		display: inline-block;
-		cursor: pointer;
-		margin: 0 3px 3px 0;
-		padding: 2px 6px;
-		border-color: 1px solid #0073bb;
-		background-color: #1b9dec;
-		background-image: linear-gradient(to bottom, #1da7ee, #178ee9);
-		box-shadow: 0 1px 0 rgba(0,0,0,0.2),inset 0 1px rgba(255,255,255,0.03);
-		border-radius: 3px;
-		text-shadow: 0 1px 0 rgba(0,51,83,0.3);
-		white-space: nowrap;
-		color: white;
-	}
+				cursor: pointer;
 
-	.result-info {
-		position: fixed;
-		left: -200vw;
-		width: 1px;
-		height: 1px;
-	}
+				&::after {
+					position: absolute;
+					top: 50%;
+					right: 15px;
+					display: block;
+					width: 0;
+					height: 0;
+					margin-top: -3px;
+					border-color: #808080 transparent transparent transparent;
+					border-style: solid;
+					border-width: 5px 5px 0 5px;
+					content: ' ';
+				}
+			}
 
-	&[multiple] .value-wrapper {
-		al-select-item {
+			&[aria-expanded="false"] .value-wrapper .type-area {
+				cursor: pointer;
+			}
+		}
+
+		// Multiple value input
+		&[multiple] {
+			.value-wrapper {
+				cursor: text;
+			}
+		}
+
+		.value-wrapper {
+			min-width: 5rem;
+			overflow: hidden;
+		}
+
+		.type-area {
+			font-family: inherit;
+			//font-size: 13px;
+			//line-height: 18px;
+			display: inline-block !important;
+			padding: 0 !important;
+			min-height: 0 !important;
+			max-height: none !important;
+			max-width: 100% !important;
+			margin: 0 1px !important;
+			text-indent: 0 !important;
+			border: 0 none !important;
+			background: none !important;
+			line-height: inherit !important;
+			box-shadow: none !important;
+			outline: none !important;
+			flex: 0 1 auto;
+			margin-right: 20px !important;
+		}
+
+		.dropdown {
+			@extend .input-defaults;
+
+			// The dropdown has to be hidden by default
+			display: none;
+			position: absolute;
+			z-index: 999999;
+			left: 0px;
+
+			margin: 0 0 0 -1px;
+
+			border-radius: 0 0 var(--size-p-input-border-radius) var(--size-p-input-border-radius);
+			border-width: var(--size-p-input-border);
+			border-style: var(--style-p-input-border);
+			border-color: inherit;
+
+			border-top: 0 none;
+
+			// Make it scroll
+			overflow-y: auto;
+			overflow-x: hidden;
+			max-height: 200px;
+
+			scrollbar-width: thin;
+
+			[role="option"] {
+				cursor: pointer;
+				overflow: hidden;
+				padding: 6px 8px;
+				flex: 1 0;
+
+				&:hover,
+				&.focused {
+					background-color: var(--color-p-input-active-item-bg);
+					color: var(--color-p-input-active-item-bg-text);
+				}
+
+				&[selected] {
+					background-color: var(--color-p-input-selected-item-bg);
+					color: var(--color-p-input-selected-item-bg-text);
+				}
+			}
+		}
+
+		.dropdown-content {
+			display: flex;
+			flex-flow: column nowrap;
+		}
+
+		&[aria-expanded="true"] .dropdown {
+			display: block !important;
+		}
+
+		div.value {
 			display: inline-block;
-
-			text-shadow: 0 1px 0 rgba(0,51,83,0.3);
-			background-image: linear-gradient(to bottom, #1da7ee, #178ee9);
-			background-repeat: repeat-x;
-			border-radius: 3px;
-			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03);
-			padding: 2px 6px;
+			cursor: pointer;
 			margin: 0 3px 3px 0;
-			color: white;
-			border: 1px solid #0073bb;
+			padding: 2px 6px;
+			border-color: 1px solid #{$accent};
 
-			&.active {
-				background-image: linear-gradient(to bottom, #008fd8, #0075cf);
+			background-color: var(--color-p-input-selected-item-bg);
+			color: var(--color-p-input-selected-item-bg-text);
+
+			box-shadow: 0 1px 0 rgba(0,0,0,0.2),inset 0 1px rgba(255,255,255,0.03);
+			border-radius: 3px;
+			text-shadow: 0 1px 0 rgba(0,51,83,0.3);
+			white-space: nowrap;
+		}
+
+		.result-info {
+			position: fixed;
+			left: -200vw;
+			width: 1px;
+			height: 1px;
+		}
+
+		&[multiple] .value-wrapper {
+			al-select-item {
+				display: inline-block;
+
+				text-shadow: 0 1px 0 rgba(0,51,83,0.3);
+				background-color: var(--color-p-input-selected-item-bg);
+				color: var(--color-p-input-selected-item-bg-text);
+
+				border-radius: 3px;
+				box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.03);
+				padding: 2px 6px;
+				margin: 0 3px 3px 0;
+
+				border: 1px solid #{$accent};
+
 			}
 		}
 	}

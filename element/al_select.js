@@ -1165,7 +1165,7 @@ AlchemySelect.setMethod(function open(event) {
 	this.dropdown_content.scrollTop = 0;
 
 	// Make the dropdown the same width
-	this.dropdown.style.width = ~~this.clientWidth + 'px';
+	this.dropdown.style.width = (~~this.clientWidth + 1) + 'px';
 
 	if (event) {
 		if (event.key) {

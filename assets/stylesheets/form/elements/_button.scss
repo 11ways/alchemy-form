@@ -1,7 +1,7 @@
 @use "styleboost";
 
 al-button {
-	@extend .default-button;
+	@extend .button;
 
 	display: inline-block;
 	position: relative;

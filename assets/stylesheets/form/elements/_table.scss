@@ -1,75 +1,131 @@
-al-table {
-	display: flex;
-	flex-flow: column;
-	border: 1px solid #dadee0;
-	background-color: white;
+@use "styleboost";
+@use "styleboost/inputs";
 
-	table {
-		width: 100%;
-		color: inherit;
-	}
+@layer defaults {
+	al-table {
+		display: flex;
+		flex-flow: column;
 
-	thead {
-		td, th {
-			background-color: #F4F5F9;
-			padding: 1rem;
-			border-bottom: 1px solid #dadee0;
-			text-transform: uppercase;
-			font-weight: 500;
-			font-size: 0.9rem;
+		table {
+			@extend .table;
+			width: 100%;
+		}
 
-			al-icon {
-				margin-left: 1rem;
+		&.table-hover {
+			table {
+				@extend .table-hover;
 			}
+		}
 
-			&.sortable {
-				cursor: pointer;
+		&.table-striped {
+			table {
+				@extend .table-striped;
 			}
+		}
 
-			a.sorting-anchor {
-				text-decoration: none;
-				color: inherit;
+		&.table-bordered {
+			// Custom bordering
+		}
+
+		thead {
+
+			td,
+			th {
+				&.sortable {
+					cursor: pointer;
+				}
+
+				a.sorting-anchor {
+					text-decoration: none;
+					color: inherit;
+				}
 			}
 		}
 
 		th input {
 			width: 100%;
-			padding: 0px 12px;
-			border: 1px solid var(--color-input-border);
-			color: var(--text-color);
 			height: 2rem;
 		}
-	}
 
-	td, th {
-		padding: 0.5rem 1rem;
-		border-bottom: 1px solid #EDEFF0;
-		cursor: default;
-	}
+		td al-field[field-type="fixed_decimal"] {
+			text-align: right;
+		}
 
-	td al-field[field-type="fixed_decimal"] {
-		text-align: right;
-	}
+		footer {
+			padding: 0.5rem 1rem;
 
-	tr:last-of-type {
-		td, th {
-			border-bottom: 0;
+			&:empty {
+				display: none;
+			}
 		}
 	}
 
-	tr.aft-selected {
-		td, th {
-			background-color: #edeff5;
+	old-al-table {
+		
+
+		border: 1px solid #dadee0;
+		background-color: white;
+
+		
+
+		thead {
+			td, th {
+				background-color: #F4F5F9;
+				padding: 1rem;
+				border-bottom: 1px solid #dadee0;
+				text-transform: uppercase;
+				font-weight: 500;
+				font-size: 0.9rem;
+
+				al-icon {
+					margin-left: 1rem;
+				}
+
+				&.sortable {
+					cursor: pointer;
+				}
+
+				a.sorting-anchor {
+					text-decoration: none;
+					color: inherit;
+				}
+			}
+
+			th input {
+				width: 100%;
+				padding: 0px 12px;
+				border: 1px solid var(--color-input-border);
+				color: var(--text-color);
+				height: 2rem;
+			}
 		}
-	}
 
-	footer {
-		border-top: 1px solid #EDEFF0;
-		background-color: #F4F5F9;
-		padding: 0.5rem 1rem;
+		td, th {
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid #EDEFF0;
+			cursor: default;
+		}
 
-		&:empty {
-			display: none;
+		tr:last-of-type {
+			td, th {
+				border-bottom: 0;
+			}
+		}
+
+		tr.aft-selected {
+			td, th {
+				background-color: #edeff5;
+			}
+		}
+
+		footer {
+			border-top: 1px solid #EDEFF0;
+			background-color: #F4F5F9;
+			padding: 0.5rem 1rem;
+
+			&:empty {
+				display: none;
+			}
 		}
 	}
 }
