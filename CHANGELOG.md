@@ -8,6 +8,7 @@
 * Make `al-table` contents responsive/scrollable by default
 * Fix `<al-field-schema>#getSchemaSupplierField()` not finding the supplier field when it's a nested schema
 * Don't let `<al-field-schema>#sub_fields` return meta fields
+* Fix `<al-field-schema>` having issues with nested `<al-field-schema>` fields
 
 ## 0.3.0-alpha.2 (2024-02-25)
 

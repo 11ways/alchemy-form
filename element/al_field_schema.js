@@ -36,40 +36,59 @@ FieldSchema.setProperty(function schema() {
 		// that *should* contain the schema.
 		if (typeof schema == 'string') {
 
-			let parent_schema_value;
-
-			let parent_schema = field_element.queryParents('al-field[field-type="schema"]');
-
-			if (parent_schema) {
-				parent_schema_value = parent_schema.value;
-			} else {
-
-				const form = field_element.alchemy_form;
-
-				if (form) {
-					let record_value = form.getMainValue();
-					parent_schema_value = record_value;
-				} else {
-					parent_schema_value = field_element.original_value_container;
-				}
-			}
-
-			// If this field is inside an array, get the index
-			let array_entry_element = field_element.queryParents('al-field-array-entry');
-			if (array_entry_element) {
-				let index = array_entry_element.index;
-
-				// If it has an index, get the value at that index
-				if (index != null && Array.isArray(parent_schema_value)) {
-					parent_schema_value = parent_schema_value[index];
-				}
-			}
+			let parent_schema_value = this.parent_schema_value;
 
 			return field.getSubschema(parent_schema_value, schema)
 		}
 
 		return schema;
 	}
+});
+
+/**
+ * Get the parent schema value this field is part of
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+FieldSchema.setProperty(function parent_schema_value() {
+
+	const field_element = this.alchemy_field;
+
+	if (!field_element) {
+		return;
+	}
+
+	let parent_schema_value;
+	let parent_schema = field_element.queryParents('al-field[field-type="schema"]');
+
+	if (parent_schema) {
+		parent_schema_value = parent_schema.value;
+	} else {
+
+		const form = field_element.alchemy_form;
+
+		if (form) {
+			let record_value = form.getMainValue();
+			parent_schema_value = record_value;
+		} else {
+			parent_schema_value = field_element.original_value_container;
+		}
+	}
+
+	// If this field is inside an array, get the index
+	let array_entry_element = field_element.queryParents('al-field-array-entry');
+	if (array_entry_element) {
+		let index = array_entry_element.index;
+
+		// If it has an index, get the value at that index
+		if (index != null && Array.isArray(parent_schema_value)) {
+			parent_schema_value = parent_schema_value[index];
+		}
+	}
+
+	return parent_schema_value;
 });
 
 /**
@@ -175,7 +194,9 @@ FieldSchema.setMethod(function introduced() {
 
 		this.rerender();
 	} else {
-		console.warn('Failed to find supplier field for', this);
+		// @TODO: Some fields seem to get added to the DOM for a second
+		// before being removed.
+		//console.warn('Failed to find supplier field for', this, this.parentElement);
 	}
 });
 
