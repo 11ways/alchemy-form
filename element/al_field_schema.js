@@ -77,11 +77,12 @@ FieldSchema.setProperty(function schema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.3
+ * @version  0.3.0
  */
 FieldSchema.setProperty(function sub_fields() {
 
-	let schema = this.schema;
+	let schema = this.schema,
+	    result;
 
 	if (schema) {
 
@@ -90,11 +91,12 @@ FieldSchema.setProperty(function sub_fields() {
 		}
 
 		if (schema) {
-			return schema.getSorted();
+			// Don't show meta fields by default
+			result = schema.getSorted().filter(field => !field.is_meta_field);
 		}
 	}
 
-	return [];
+	return result || [];
 });
 
 /**
