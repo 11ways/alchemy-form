@@ -127,7 +127,7 @@ FieldSchema.setProperty(function value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.3.0
  */
 FieldSchema.setMethod(function getSchemaSupplierField() {
 
@@ -138,7 +138,12 @@ FieldSchema.setMethod(function getSchemaSupplierField() {
 	let schema = this.alchemy_field.config.options.schema;
 
 	if (typeof schema == 'string') {
-		let other_field_path = this.resolvePath(schema);
+		let other_field_path = this.resolvePathToArray(schema),
+		    schema_path;
+
+		if (schema.includes('.')) {
+			schema_path = other_field_path.pop();
+		}
 
 		schema = null;
 	
@@ -167,6 +172,8 @@ FieldSchema.setMethod(function introduced() {
 		});
 
 		this.rerender();
+	} else {
+		console.warn('Failed to find supplier field for', this);
 	}
 });
 

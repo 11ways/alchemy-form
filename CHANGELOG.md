@@ -6,6 +6,7 @@
 * Add template for `view` mode for `schema` fields
 * Move the badge element to `styleboost`
 * Make `al-table` contents responsive/scrollable by default
+* Fix `FieldSchema#getSchemaSupplierField()` not finding the supplier field when it's a nested schema
 
 ## 0.3.0-alpha.2 (2024-02-25)
 

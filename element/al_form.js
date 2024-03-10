@@ -428,7 +428,7 @@ Form.setMethod(async function showViolations(err) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.4
+ * @version  0.3.0
  *
  * @param    {String}   path
  *
@@ -441,11 +441,15 @@ Form.setMethod(function findFieldByPath(path) {
 	}
 
 	let current = this,
-	    result,
-	    pieces = path.split('.'),
+	    pieces,
 	    piece,
-	    query,
-	    temp;
+	    query;
+
+	if (Array.isArray(path)) {
+		pieces = path;
+	} else {
+		pieces = path.split('.');
+	}
 
 	for (piece of pieces) {
 
@@ -463,7 +467,6 @@ Form.setMethod(function findFieldByPath(path) {
 	}
 
 	return current;
-
 });
 
 /**

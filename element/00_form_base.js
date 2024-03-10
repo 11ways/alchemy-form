@@ -351,18 +351,20 @@ Base.setMethod(function getPathOrigin() {
 });
 
 /**
- * Resolve the given path
+ * Resolve the given path to an array
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.3.0
  * 
- * @param    {String}   name   The name to resolve
- * @param    {String}   origin The origin to use (optional)
+ * @param    {string}   name   The name to resolve
+ * @param    {string}   origin The origin to use (optional)
  *
- * @return   {String}
+ * @return   {string[]}
  */
-Base.setMethod(function resolvePath(name, origin) {
+Base.setMethod(function resolvePathToArray(name, origin) {
+
+	name = name.split('.');
 
 	if (origin == null) {
 		origin = this.getPathOrigin();
@@ -383,7 +385,23 @@ Base.setMethod(function resolvePath(name, origin) {
 	}
 
 	origin.pop();
-	origin.push(name);
-	
-	return origin.join('.');
+	origin.push(...name);
+
+	return origin;
+});
+
+/**
+ * Resolve the given path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.3
+ * @version  0.3.0
+ * 
+ * @param    {String}   name   The name to resolve
+ * @param    {String}   origin The origin to use (optional)
+ *
+ * @return   {String}
+ */
+Base.setMethod(function resolvePath(name, origin) {
+	return this.resolvePathToArray(name, origin).join('.');
 });
