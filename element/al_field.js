@@ -209,9 +209,15 @@ Field.enforceProperty(function config(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.9
+ * @version  0.3.0
  */
 Field.enforceProperty(function schema(new_value, old_value) {
+
+	let forced_value = !!new_value;
+
+	if (!new_value && this.assigned_data?.schema) {
+		new_value = this.assigned_data.schema;
+	}
 
 	if (!new_value) {
 		// See if this is in a schema field
@@ -236,6 +242,10 @@ Field.enforceProperty(function schema(new_value, old_value) {
 				new_value = model.schema;
 			}
 		}
+	}
+
+	if (forced_value) {
+		this.assignData('schema', new_value);
 	}
 
 	return new_value;
