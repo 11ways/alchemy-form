@@ -11,6 +11,7 @@
 * Fix `<al-field-schema>` having issues with nested `<al-field-schema>` fields
 * Make `<al-field>` remember forced `schema` values
 * Prefer `fallback` template over `string` template when no specific template is found for a field
+* Make `<al-field>` prefer the nearest descendant when getting the `value_element` property
 
 ## 0.3.0-alpha.2 (2024-02-25)
 

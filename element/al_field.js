@@ -599,26 +599,38 @@ Field.setProperty(function original_value() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.3.0
  */
 Field.setProperty(function value_element() {
 
-	let input;
+	let special_input;
 
 	// Translations always get preference
 	if (this.is_translatable) {
-		input = this.querySelector('al-field-translatable');
+		special_input = this.querySelector('al-field-translatable');
 	} else if (this.is_array) {
-		input = this.querySelector('al-field-array');
+		special_input = this.querySelector('al-field-array');
 	} else if (this.contains_schema) {
-		input = this.querySelector('al-field-schema');
+		special_input = this.querySelector('al-field-schema');
 	}
 
-	if (!input) {
-		input = this.querySelector('.alchemy-field-value');
+	let main_input = this.querySelector('.alchemy-field-value');
+
+	// If there is no main input, but there is a special input, simply use that
+	if (!main_input) {
+		return special_input;
 	}
 
-	return input;
+	if (!special_input) {
+		return main_input;
+	}
+
+	// Use the top level one
+	if (special_input.contains(main_input)) {
+		return special_input;
+	}
+
+	return main_input;
 });
 
 /**
