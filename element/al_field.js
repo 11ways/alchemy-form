@@ -451,7 +451,7 @@ Field.enforceProperty(function wrapper_file(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.3.0
  */
 Field.setProperty(function view_files() {
 
@@ -481,6 +481,9 @@ Field.setProperty(function view_files() {
 	if (result.length == 0) {
 		return false;
 	}
+
+	// Fallback to the fallback
+	result.push(this.generateTemplatePath('inputs', view_type, 'fallback'));
 
 	// Fallback to a simple string input
 	result.push(this.generateTemplatePath('inputs', view_type, 'string'));

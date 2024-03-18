@@ -10,6 +10,7 @@
 * Don't let `<al-field-schema>#sub_fields` return meta fields
 * Fix `<al-field-schema>` having issues with nested `<al-field-schema>` fields
 * Make `<al-field>` remember forced `schema` values
+* Prefer `fallback` template over `string` template when no specific template is found for a field
 
 ## 0.3.0-alpha.2 (2024-02-25)
 
