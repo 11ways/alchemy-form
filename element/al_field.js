@@ -176,7 +176,7 @@ Field.enforceProperty(function config(new_value, old_value) {
 
 	// If an explicit field is set without a schema,
 	// we need to remember it for serializing purposes
-	if (new_value && !new_value.schema) {
+	if (new_value && (!new_value.schema || new_value == new_value.schema)) {
 		this.assigned_data.field_config = new_value;
 	}
 
@@ -274,14 +274,18 @@ Field.setProperty(function is_array() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.3.0
  */
  Field.setProperty(function contains_schema() {
 
 	let config = this.config;
 
 	if (config) {
-		return config instanceof Classes.Alchemy.Field.Schema;
+		if (config instanceof Classes.Alchemy.Field.Schema) {
+			return true;
+		}
+
+		return Classes.Alchemy.Client.Schema.isSchema(config);
 	}
 
 	return false;
@@ -647,7 +651,7 @@ Field.setProperty(function value() {
 	if (element) {
 		let value = element.value;
 
-		if (this.config) {
+		if (this.config?.castContainedValues) {
 			value = this.config.castContainedValues(value);
 		}
 

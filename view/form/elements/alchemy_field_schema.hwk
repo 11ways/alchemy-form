@@ -1,7 +1,7 @@
-{% each self.sub_fields as sub_field %}
+{% each sub_fields as sub_field %}
 	<al-field
 		#alchemy_field_schema=<% self %>
-		#schema=<% self.schema %>
+		#schema=<% sub_schema %>
 		field-name=<% sub_field.name %>
 	></al-field>
 {% /each %}

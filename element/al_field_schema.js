@@ -17,32 +17,41 @@ var FieldSchema = Function.inherits('Alchemy.Element.Form.FieldCustom', 'FieldSc
 FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
 
 /**
- * Get the actual schema
+ * Get the parent "schema" al-field element.
+ * This is NOT the `al-field[field-type="schema"]` element this
+ * `al-field-schema` is part of, but the one that is part of!
+ *
+ * It is possible this does not use the "schema" type in the HTML attribute.
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
+ * @since    0.3.0
  * @version  0.3.0
  */
-FieldSchema.setProperty(function schema() {
+FieldSchema.setProperty(function parent_schema_field() {
 
-	const field_element = this.alchemy_field;
-	const field = field_element?.config;
+	// Start looking from the parent element of our own `al-field` element
+	let current = this.alchemy_field?.parentElement;
 
-	if (field?.options) {
+	while (current) {
 
-		let schema = field.options.schema;
-
-		// If the schema is a string, it's actually a reference to another field
-		// that *should* contain the schema.
-		if (typeof schema == 'string') {
-
-			let parent_schema_value = this.parent_schema_value;
-
-			return field.getSubschema(parent_schema_value, schema)
+		if (current.nodeName != 'AL-FIELD') {
+			current = current.parentElement;
+			continue;
 		}
 
-		return schema;
+		// If it is using the explicit schema type, return it
+		if (current.field_type == 'schema') {
+			return current;
+		}
+
+		let field = current.config;
+
+		if (field && field instanceof Classes.Alchemy.Field.Schema) {
+			return current;
+		}
 	}
+
+	return false;
 });
 
 /**
@@ -60,8 +69,8 @@ FieldSchema.setProperty(function parent_schema_value() {
 		return;
 	}
 
-	let parent_schema_value;
-	let parent_schema = field_element.queryParents('al-field[field-type="schema"]');
+	let parent_schema_value,
+	    parent_schema = this.parent_schema_field;
 
 	if (parent_schema) {
 		parent_schema_value = parent_schema.value;
@@ -92,33 +101,6 @@ FieldSchema.setProperty(function parent_schema_value() {
 });
 
 /**
- * Get the actual subschema fields
- *
- * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.3.0
- */
-FieldSchema.setProperty(function sub_fields() {
-
-	let schema = this.schema,
-	    result;
-
-	if (schema) {
-
-		if (typeof schema != 'object') {
-			throw new Error('Expected a schema object, but found "' + typeof schema + '" instead');
-		}
-
-		if (schema) {
-			// Don't show meta fields by default
-			result = schema.getSorted().filter(field => !field.is_meta_field);
-		}
-	}
-
-	return result || [];
-});
-
-/**
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -141,6 +123,97 @@ FieldSchema.setProperty(function value() {
 
 }, function setValue(value) {
 	throw new Error('Unable to set value of schema field');
+});
+
+/**
+ * Get the actual schema
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.3.0
+ *
+ * @return   {Alchemy.Schema|Pledge<Alchemy.Schema>}
+ */
+FieldSchema.setMethod(function getSchema() {
+
+	const field_element = this.alchemy_field,
+	      field = field_element?.config;
+
+	if (!field) {
+		return;
+	}
+
+	if (Classes.Alchemy.Client.Schema.isSchema(field)) {
+		return field;
+	}
+
+	if (field?.options) {
+
+		let schema = field.options.schema;
+
+		// If the schema is a string, it's actually a reference to another field
+		// that *should* contain the schema.
+		if (typeof schema == 'string') {
+
+			let parent_schema_value = this.parent_schema_value;
+
+			console.log('Getting', schema, 'from', parent_schema_value)
+
+			return field.getSubschema(parent_schema_value, schema)
+		}
+
+		return schema;
+	}
+});
+
+/**
+ * Get the actual subschema fields
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.3.0
+ */
+FieldSchema.setMethod(function getSubFields() {
+
+	let schema = this.getSchema();
+
+	if (Pledge.isThenable(schema)) {
+		let pledge = new Pledge.Swift();
+
+		Pledge.Swift.done(schema, (err, result) => {
+
+			if (err) {
+				return pledge.reject(err);
+			}
+
+			pledge.resolve(this.getFieldsFromSchema(result));
+		});
+
+		return pledge;
+	}
+
+	return this.getFieldsFromSchema(schema);
+});
+
+/**
+ * Get the fields from the given schema 
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.0
+ * @version  0.3.0
+ */
+FieldSchema.setMethod(function getFieldsFromSchema(schema) {
+
+	if (!schema) {
+		return [];
+	}
+
+	if (typeof schema != 'object') {
+		throw new Error('Expected a schema object, but found "' + typeof schema + '" instead');
+	}
+
+	// Don't show meta fields by default
+	return schema.getSorted().filter(field => !field.is_meta_field);
 });
 
 /**
@@ -174,6 +247,41 @@ FieldSchema.setMethod(function getSchemaSupplierField() {
 			return form.findFieldByPath(other_field_path);
 		}
 	}
+});
+
+/**
+ * Prepare variables
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+FieldSchema.setMethod(function prepareRenderVariables() {
+
+	let schema = this.getSchema();
+
+	if (Pledge.isThenable(schema)) {
+		let pledge = new Pledge.Swift();
+
+		Pledge.Swift.done(schema, (err, schema) => {
+
+			if (err) {
+				return pledge.reject(err);
+			}
+
+			pledge.resolve({
+				sub_fields: this.getFieldsFromSchema(schema),
+				sub_schema: schema,
+			});
+		});
+
+		return pledge;
+	}
+
+	return {
+		sub_fields: this.getFieldsFromSchema(schema),
+		sub_schema: schema,
+	};
 });
 
 /**
@@ -212,6 +320,13 @@ FieldSchema.setProperty(function original_value() {
 	let field = this.alchemy_field,
 	    path = this.field_path_in_record;
 
+	// This is needed for SemanticWiki's metadata fields.
+	// They use al-field-schema elements, but they refer to the main
+	// `al-form` element, and that is not where it can find the original value...
+	if (field && field.original_value) {
+		return field.original_value;
+	}
+
 	if (field && path) {
 		let form = field.alchemy_form || this.alchemy_form || this.field_context.alchemy_form,
 		    value_container;
@@ -234,7 +349,7 @@ FieldSchema.setProperty(function original_value() {
 		data = context.original_value;
 	} else {
 		context = this.field_context.alchemy_form || this.alchemy_field.alchemy_form;
-		data = context.document;
+		data = context?.document;
 	}
 
 	path = this.field_path_in_current_schema;
