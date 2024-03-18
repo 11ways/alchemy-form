@@ -13,6 +13,7 @@
 * Prefer `fallback` template over `string` template when no specific template is found for a field
 * Make `<al-field>` prefer the nearest descendant when getting the `value_element` property
 * Support the `<al-field>` `config` property being a `Schema` instance (for now)
+* Add API action to get enum info
 
 ## 0.3.0-alpha.2 (2024-02-25)
 

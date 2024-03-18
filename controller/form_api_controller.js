@@ -89,6 +89,34 @@ FormApi.setAction(async function related(conduit) {
 });
 
 /**
+ * The enum info action:
+ * Return information about a record for use in an enum element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ *
+ * @param    {Conduit}   conduit
+ */
+FormApi.setAction(async function enumInfo(conduit, model_name, id) {
+
+	const model = this.getModel(model_name);
+	let record = await model.findByPk(id);
+
+	if (!record) {
+		return conduit.notFound();
+	}
+
+	let result = {
+		title : record.getDisplayFieldValue(),
+		icon  : record.enum_icon || record.icon,
+		color : record.enum_color || record.color,
+	};
+
+	conduit.end(result);
+});
+
+/**
  * The action to recompute field values
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>

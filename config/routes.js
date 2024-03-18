@@ -24,3 +24,13 @@ Plugin.addRoute({
 	is_system_route : true,
 	permission      : 'model.{model_name}.recompute.{field}',
 });
+
+Plugin.addRoute({
+	name       : 'FormApi#enumInfo',
+	methods    : 'get',
+	paths      : '/api/form/data/enum_info/{model_name}/{id}',
+	policy     : 'logged_in',
+	cache      : true,
+	is_system_route : true,
+	permission      : 'model.{model_name}.enum_info',
+});
