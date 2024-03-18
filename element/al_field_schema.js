@@ -320,11 +320,20 @@ FieldSchema.setProperty(function original_value() {
 	let field = this.alchemy_field,
 	    path = this.field_path_in_record;
 
+	let array_entry = this.queryUp('al-field-array-entry'),
+	    original_value_context = field;
+
+	if (array_entry) {
+		if (!array_entry.isConnected || (field && field.contains(array_entry))) {
+			original_value_context = array_entry;
+		}
+	}
+
 	// This is needed for SemanticWiki's metadata fields.
 	// They use al-field-schema elements, but they refer to the main
 	// `al-form` element, and that is not where it can find the original value...
-	if (field && field.original_value) {
-		return field.original_value;
+	if (original_value_context && original_value_context.original_value) {
+		return original_value_context.original_value;
 	}
 
 	if (field && path) {

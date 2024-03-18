@@ -14,6 +14,7 @@
 * Make `<al-field>` prefer the nearest descendant when getting the `value_element` property
 * Support the `<al-field>` `config` property being a `Schema` instance (for now)
 * Add API action to get enum info
+* Make `<al-field-schema>` `original_value` getter aware of it being in an array
 
 ## 0.3.0-alpha.2 (2024-02-25)
 
