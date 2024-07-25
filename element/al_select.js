@@ -957,7 +957,7 @@ AlchemySelect.setMethod(function applyFetchedData(err, result, config) {
 
 	if (err) {
 		this.loading_dropdown = false;
-		alchemy.handleError(err);
+		alchemy.registerError(err);
 		return;
 	}
 
