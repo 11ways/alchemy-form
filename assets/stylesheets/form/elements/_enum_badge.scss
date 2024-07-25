@@ -1,0 +1,7 @@
+@use "styleboost";
+
+@layer defaults {
+	al-enum-badge {
+		@extend .badge;
+	}
+}

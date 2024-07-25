@@ -30,8 +30,6 @@ alchemy.registerCustomHandler('recompute_field', async function fieldRecomputeHa
 		field      : field.name,
 	};
 
-	console.log(document)
-
 	let helpers;
 
 	if (Blast.isServer) {

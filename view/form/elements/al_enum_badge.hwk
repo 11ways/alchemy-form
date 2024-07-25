@@ -1,0 +1,9 @@
+{% if icon %}
+	<al-icon icon-name={% icon %}></al-icon>
+{% /if %}
+{% if title %}
+	<span class="enum-badge-title">{{ title }}</span>
+{% /if %}
+{% if color %}
+	<% $0.dataset.badgeColorSet = color %>
+{% /if %}
