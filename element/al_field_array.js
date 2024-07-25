@@ -17,6 +17,24 @@ const FieldArray = Function.inherits('Alchemy.Element.Form.FieldCustom', 'FieldA
 FieldArray.setTemplateFile('form/elements/alchemy_field_array');
 
 /**
+ * Minimum amount of values (in case of an array)
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+FieldArray.setAttribute('min-entry-count', {type: 'number'});
+
+/**
+ * Maximum amount of values (in case of an array)
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+FieldArray.setAttribute('max-entry-count', {type: 'number'});
+
+/**
  * Get the live value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -52,6 +70,10 @@ FieldArray.setProperty(function value() {
 FieldArray.setMethod(function introduced() {
 
 	const that = this;
+
+	if (this.max_entry_count === 1) {
+		return;
+	}
 
 	this.onEventSelector('click', '.remove', function onClick(e) {
 

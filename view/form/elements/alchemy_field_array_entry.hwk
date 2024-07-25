@@ -10,8 +10,13 @@
 <div class="field">
 	<% include(view_files, variables) %>
 </div>
-<div class="button">
-	<button class="remove">
-		{%t "remove-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
-	</button>
-</div>
+
+{% if self.alchemy_field_array.max_entry_count eq 1 %}
+
+{% else %}
+	<div class="button">
+		<button class="remove">
+			{%t "remove-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
+		</button>
+	</div>
+{% /if %}

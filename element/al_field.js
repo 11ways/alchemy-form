@@ -73,6 +73,24 @@ Field.setAttribute('field-view');
 Field.setAttribute('wrapper-view');
 
 /**
+ * Minimum amount of values (in case of an array)
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ */
+Field.setAttribute('min-entry-count', {type: 'number'});
+
+/**
+ * Maximum amount of values (in case of an array)
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.1.12
+ * @version  0.1.12
+ */
+Field.setAttribute('max-entry-count', {type: 'number'});
+
+/**
  * Is this a read only field?
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -196,7 +214,7 @@ Field.enforceProperty(function config(new_value, old_value) {
 	}
 
 	if (new_value && new_value.constructor && new_value.constructor.type_name) {
-		this.field_type = new_value.constructor.type_name;
+		this.field_type = new_value.constructor.type_path || new_value.constructor.type_name;
 	} else if (new_value) {
 		this.field_type = null;
 	}
@@ -256,9 +274,13 @@ Field.enforceProperty(function schema(new_value, old_value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.3.0
  */
 Field.setProperty(function is_array() {
+
+	if (this.assigned_data?.is_array != null) {
+		return this.assigned_data.is_array;
+	}
 
 	let config = this.config;
 
@@ -267,6 +289,8 @@ Field.setProperty(function is_array() {
 	}
 
 	return false;
+}, function setValue(value) {
+	this.assignData('is_array', value);
 });
 
 /**
@@ -276,7 +300,7 @@ Field.setProperty(function is_array() {
  * @since    0.1.3
  * @version  0.3.0
  */
- Field.setProperty(function contains_schema() {
+Field.setProperty(function contains_schema() {
 
 	let config = this.config;
 
@@ -359,17 +383,17 @@ Field.setProperty(function field_path_in_schema() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.3.0
  *
  * @return   {String}
  */
- Field.setMethod(function getPathEntryName() {
+Field.setMethod(function getPathEntryName() {
 
 	if (this.config && this.config.name) {
 		return this.config.name;
 	}
 
-	return '';
+	return this.field_name;
 });
 
 /**
@@ -399,21 +423,17 @@ Field.setProperty(function model() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.3.0
  */
 Field.enforceProperty(function view_file(new_value, old_value) {
 
 	if (!new_value) {
 
 		let view_type = this.view_type,
-			field_view = this.field_view || this.field_type;
-		
-		if (!field_view) {
-			let config = this.config;
+		    field_view = this.field_view;
 
-			if (config) {
-				field_view = config.constructor.type_name;
-			}
+		if (!field_view) {
+			field_view = this.getFieldType().replaceAll('.', '_');
 		}
 
 		new_value = this.generateTemplatePath('inputs', view_type, field_view);
@@ -570,12 +590,17 @@ Field.setAssignedProperty(function original_value_container() {
  */
 Field.setProperty(function original_value() {
 
-	if (this.assigned_data.original_value != null) {
+	if (this.assigned_data.original_value !== undefined) {
 		return this.assigned_data.original_value;
 	}
 
-	let alchemy_field_schema = this.alchemy_field_schema,
-	    path = this.field_path_in_current_schema;
+	let path = this.field_path_in_current_schema;
+
+	if (path == null) {
+		return;
+	}
+
+	let alchemy_field_schema = this.alchemy_field_schema;
 
 	if (alchemy_field_schema) {
 		let original_schema_value = alchemy_field_schema.original_value;
@@ -664,7 +689,7 @@ Field.setProperty(function value() {
 
 	let has_changed = !Object.alike(this[LAST_SET_VALUE], value);
 
-	if (this.original_value == null) {
+	if (this.original_value === undefined) {
 		this.original_value = value;
 	}
 
@@ -751,7 +776,7 @@ Field.setMethod(function createEmptyValuePlaceholderText() {
 	microcopy = Classes.Alchemy.Microcopy('empty-value-placeholder', {
 		field_name : this.field_name,
 		model_name : this.model,
-		field_type : this.field_type,
+		field_type : this.getFieldType(),
 		zone       : this.zone,
 		path       : this.config?.path_in_document,
 	});

@@ -12,6 +12,8 @@
 		<al-field-array
 			#field_context=<% self %>
 			#alchemy_field=<% self %>
+			max-entry-count={% self.max_entry_count %}
+			min-entry-count={% self.min_entry_count %}
 		></al-field-array>
 	<% } else if (view_files && view_files.length) { %>
 		<div class="field">

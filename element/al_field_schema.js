@@ -157,9 +157,11 @@ FieldSchema.setMethod(function getSchema() {
 
 			let parent_schema_value = this.parent_schema_value;
 
-			console.log('Getting', schema, 'from', parent_schema_value)
+			let schema_context = new Classes.Alchemy.OperationalContext.Schema();
+			schema_context.setHolder(parent_schema_value);
+			schema_context.setSchema(field.schema);
 
-			return field.getSubschema(parent_schema_value, schema)
+			return field.getSubSchema(schema_context);
 		}
 
 		return schema;
@@ -178,9 +180,9 @@ FieldSchema.setMethod(function getSubFields() {
 	let schema = this.getSchema();
 
 	if (Pledge.isThenable(schema)) {
-		let pledge = new Pledge.Swift();
+		let pledge = new Swift();
 
-		Pledge.Swift.done(schema, (err, result) => {
+		Swift.done(schema, (err, result) => {
 
 			if (err) {
 				return pledge.reject(err);

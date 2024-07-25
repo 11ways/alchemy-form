@@ -2,13 +2,24 @@
 <% view_files = alchemy_field.view_files %>
 <% values = self.original_value %>
 
-<button class="add-entry">
-	{%t "add-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
-</button>
+{% if self.field_context.max_entry_count eq 1 %}
+	<%
+		if (!values) {
+			self.original_value = values = [];
+		}
+
+		if (values.length === 0) {
+			values.push(undefined);
+		}
+	%>
+{% else %}
+	<button class="add-entry">
+		{%t "add-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
+	</button>
+{% /if %}
 
 <div class="entries">
-	{% with values as value %}
-	{% each %}
+	{% each values as value %}
 		<al-field-array-entry
 			#alchemy_field_array=<% self %>
 			#field_context=<% self %>
@@ -18,5 +29,4 @@
 			index=<% $index %>
 		></al-field-array-entry>
 	{% /each %}
-	{% /with %}
 </div>

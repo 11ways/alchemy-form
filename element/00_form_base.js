@@ -210,13 +210,14 @@ Base.setProperty(function wrapper_type() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.4
- * @version  0.1.4
+ * @version  0.3.0
  */
 Base.setProperty(function field_path_in_current_schema() {
 
-	let result = [],
+	let ancestor,
+	    result = [],
 	    parent = this.getParentField(),
-		name;
+	    name;
 
 	name = this.getPathEntryName();
 
@@ -224,17 +225,28 @@ Base.setProperty(function field_path_in_current_schema() {
 		result.push(name);
 	}
 
-	while (parent && !(parent instanceof Classes.Alchemy.Element.Form.FieldSchema)) {
-		name = parent.getPathEntryName();
+	ancestor = parent;
+
+	while (ancestor && !(ancestor instanceof Classes.Alchemy.Element.Form.FieldSchema)) {
+		name = ancestor.getPathEntryName();
 
 		if (name) {
 			result.unshift(name);
 		}
 
-		parent = parent.getParentField();
+		ancestor = ancestor.getParentField();
 	}
 
-	return result.join('.');
+	let result_path = result.join('.');
+
+	// Don't allow a child field to have the same path as its parent
+	// This can happen when we use an `al-field` element that isn't
+	// part of a schema for some reason.
+	if (result.length == 1 && parent?.field_path_in_current_schema === result_path) {
+		return null;
+	}
+
+	return result_path;
 });
 
 /**

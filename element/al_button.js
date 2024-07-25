@@ -62,11 +62,20 @@ Button.setAttribute('behaviour', {type: 'token_list'});
 Button.setAssignedProperty('action_instance');
 
 /**
+ * The last error
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ */
+Button.setProperty('last_error', null);
+
+/**
  * Emit the activate event
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.2
+ * @version  0.3.0
  */
 Button.setMethod(function activate() {
 
@@ -104,6 +113,8 @@ Button.setMethod(function activate() {
 
 					let temp_state,
 					    duration;
+
+					this.last_error = err;
 
 					if (err) {
 						temp_state = 'error';
