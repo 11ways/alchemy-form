@@ -1,7 +1,7 @@
 <al-select
 	class="alchemy-field-value"
 ><%
-$0.values = vars.alchemy_field.config.options.values;
+$0.values = alchemy_field?.config?.options?.values;
 $0.value = value;
 $0.name = path;
 %></al-select>
