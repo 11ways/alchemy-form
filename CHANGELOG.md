@@ -1,4 +1,4 @@
-## 0.3.0-alpha.3 (WIP)
+## 0.3.0-alpha.3 (2024-08-04)
 
 * Add `original_value_container` property to `<al-field>` elements, for when they're not inside a `<al-form>` element but still need the original container
 * Use `getParentFieldElement()` instead of `alchemy_form` when resolving inherited attributes
