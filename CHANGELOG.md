@@ -1,3 +1,7 @@
+## 0.3.0-alpha.4
+
+* Always make `al-field`'s `getFieldType()` method return a string
+
 ## 0.3.0-alpha.3 (2024-08-04)
 
 * Add `original_value_container` property to `<al-field>` elements, for when they're not inside a `<al-form>` element but still need the original container

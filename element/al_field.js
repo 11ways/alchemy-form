@@ -880,7 +880,7 @@ Field.setMethod(function getFieldType() {
 		}
 	}
 
-	return result;
+	return result || '';
 });
 
 /**
