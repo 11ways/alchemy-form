@@ -1,6 +1,7 @@
 ## 0.3.0-alpha.4
 
 * Always make `al-field`'s `getFieldType()` method return a string
+* Add the `mixed` field view
 
 ## 0.3.0-alpha.3 (2024-08-04)
 
