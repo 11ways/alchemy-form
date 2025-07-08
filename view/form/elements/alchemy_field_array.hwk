@@ -13,7 +13,8 @@
 		}
 	%>
 {% else %}
-	<button class="add-entry">
+	<button class="button add-entry">
+		<al-icon icon-name="plus"></al-icon>
 		{%t "add-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
 	</button>
 {% /if %}

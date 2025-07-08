@@ -5,13 +5,20 @@ al-field-array {
 al-field-array-entry {
 	display: flex;
 
-	> .button {
+	> .button-remove-wrapper {
 		display: flex;
 		align-content: center;
-		padding-left: 0.5rem;
+		padding-left: 0.75rem;
+
+		> .remove {
+			height: 100%;
+			display: flex;
+			flex-flow: column;
+			gap: 0.5em;
+		}
 	}
 
-	.button .remove > * {
+	.button-remove-wrapper .remove > * {
 		writing-mode: vertical-rl;
 	}
 }

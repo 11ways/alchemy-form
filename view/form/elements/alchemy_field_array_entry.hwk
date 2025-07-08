@@ -14,8 +14,9 @@
 {% if self.alchemy_field_array.max_entry_count eq 1 %}
 
 {% else %}
-	<div class="button">
-		<button class="remove">
+	<div class="button-remove-wrapper">
+		<button class="button remove">
+			<al-icon icon-name="trash"></al-icon>
 			{%t "remove-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}
 		</button>
 	</div>
