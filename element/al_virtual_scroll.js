@@ -281,7 +281,8 @@ VirtualScroll.setMethod(function ensureTriggerElements() {
 			}
 		}
 	}, {
-		threshold: 0,
+		threshold: 0.1,
+		root: this,
 		rootMargin: '50px 0px 50px 0px',
 	});
 
