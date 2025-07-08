@@ -932,6 +932,10 @@ Table.setMethod(function onFieldsetAssignment(value, old_value) {
 
 	this.clearAll();
 
+	if (!value) {
+		return;
+	}
+
 	if (!(value instanceof Classes.Alchemy.Criteria.FieldSet)) {
 		if (Array.isArray(value)) {
 			value = Classes.Alchemy.Criteria.FieldSet.fromArray(value);
