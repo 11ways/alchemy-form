@@ -1,3 +1,7 @@
+## 0.3.0-alpha.5 (2025-07-10)
+
+* Add `al-datetime-input` to properly handle Date values with timezones
+
 ## 0.3.0-alpha.4 (2025-07-10)
 
 * Always make `al-field`'s `getFieldType()` method return a string
