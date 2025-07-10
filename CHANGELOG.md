@@ -1,7 +1,11 @@
-## 0.3.0-alpha.4
+## 0.3.0-alpha.4 (2025-07-10)
 
 * Always make `al-field`'s `getFieldType()` method return a string
 * Add the `mixed` field view
+* Just clear the al-table when an falsy fieldset is assigned
+* Explicitly pass on the `self` value in alchemy_select_item
+* Add more info to enum badges
+* Improve array-field buttons
 
 ## 0.3.0-alpha.3 (2024-08-04)
 
