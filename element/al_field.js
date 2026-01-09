@@ -139,7 +139,7 @@ Field.setAttribute('placeholder');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.2.0
+ * @version  0.3.0
  */
 Field.enforceProperty(function alchemy_form(new_value) {
 
@@ -153,8 +153,22 @@ Field.enforceProperty(function alchemy_form(new_value) {
 		if (!new_value && this.alchemy_field_schema && this.alchemy_field_schema.alchemy_field) {
 			new_value = this.alchemy_field_schema.alchemy_field.alchemy_form;
 		}
+
+		// Fallback: try to find al-form through the hawkejs renderer's ancestor chain
+		// This is needed during client-side re-render when the element isn't in the DOM yet
+		if (!new_value && this.hawkejs_renderer) {
+			let ancestor = this.hawkejs_renderer.current_variables?.$ancestor_element;
+
+			if (ancestor) {
+				ancestor = ancestor.queryUp('al-form');
+
+				if (ancestor) {
+					new_value = ancestor;
+				}
+			}
+		}
 	}
-	
+
 	return new_value;
 });
 
@@ -401,7 +415,7 @@ Field.setMethod(function getPathEntryName() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.3.0
  */
 Field.setProperty(function model() {
 
@@ -413,6 +427,27 @@ Field.setProperty(function model() {
 
 	if (form) {
 		return form.model;
+	}
+
+	// Fallback: check if we have a stored resolved model from a previous render
+	// This is especially useful during client-side re-render when queryUp fails
+	if (this.assigned_data?._resolved_model) {
+		return this.assigned_data._resolved_model;
+	}
+
+	// Fallback: try to get the model name from the field_context
+	// Note: this only works if field_context is a different element (not this)
+	if (this.field_context && this.field_context !== this && this.field_context.model) {
+		return this.field_context.model;
+	}
+
+	// Fallback: try to get it from the alchemy_field_schema
+	if (this.alchemy_field_schema) {
+		let parent_field = this.alchemy_field_schema.alchemy_field;
+
+		if (parent_field) {
+			return parent_field.model;
+		}
 	}
 }, function setModel(model) {
 	return this.setAttribute('model', model);
@@ -520,7 +555,7 @@ Field.setProperty(function view_files() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.0
- * @version  0.1.11
+ * @version  0.3.0
  */
 Field.setProperty(function wrapper_files() {
 
@@ -554,8 +589,11 @@ Field.setProperty(function wrapper_files() {
 		result.push(view);
 	}
 
+	// If no wrappers were found (e.g., field_type couldn't be determined),
+	// add a fallback to the default wrapper so slots can still render
 	if (result.length == 0) {
-		return false;
+		result.push(this.generateTemplatePath('wrappers', view_type, 'default'));
+		result.push(this.generateTemplatePath('wrappers', 'default', 'default'));
 	}
 
 	return result;
@@ -795,6 +833,14 @@ Field.setMethod(function prepareRenderVariables() {
 
 	let value = this.value_to_render,
 	    value_is_empty = value == null || value === '' || (Array.isArray(value) ? value.length == 0 : false);
+
+	// Resolve the model name now while we might still have DOM access
+	// Store it in assigned_data so it survives re-renders
+	let resolved_model = this.model;
+
+	if (resolved_model && !this.assigned_data._resolved_model) {
+		this.assigned_data._resolved_model = resolved_model;
+	}
 
 	let result = {
 		alchemy_field  : this,
