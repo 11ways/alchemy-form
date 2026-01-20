@@ -379,10 +379,22 @@ VirtualScroll.setMethod(function getDomKeyRange() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.10
- * @version  0.2.10
+ * @version  0.3.0
  */
 VirtualScroll.setMethod(function handleScrollEvent() {
-	// @TODO
+	
+	// Throttle the culling operation to avoid performance issues
+	// during rapid scrolling
+	if (this._cull_scheduled) {
+		return;
+	}
+	
+	this._cull_scheduled = true;
+	
+	requestAnimationFrame(() => {
+		this._cull_scheduled = false;
+		this.cullInvisibleElements();
+	});
 });
 
 /**

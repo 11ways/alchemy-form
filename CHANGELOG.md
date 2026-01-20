@@ -2,6 +2,7 @@
 
 * Fix model and form resolution during client-side re-render when element is not yet in DOM
 * Add fallback to default wrappers when field_type cannot be determined
+* Implement `handleScrollEvent()` in `al-virtual-scroll` element - throttled culling of invisible elements during scroll
 
 ## 0.3.0-alpha.5 (2025-07-10)
 
