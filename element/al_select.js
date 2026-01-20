@@ -1567,7 +1567,7 @@ AlchemySelect.setMethod(function _getSelection(input) {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.3.0
  */
 AlchemySelect.setMethod(function advanceSelection(direction) {
 
@@ -1606,7 +1606,44 @@ AlchemySelect.setMethod(function advanceSelection(direction) {
 			}
 		}
 	} else {
-		console.log('@TODO: Advance selection');
+		// Focus is on the al-select element itself, not the type_area.
+		// Move focus/highlight to the appropriate value item.
+		let active_item = this.wrapper?.querySelector('al-select-item.active');
+		let value_items = this.wrapper?.querySelectorAll('al-select-item.value');
+
+		if (!value_items || value_items.length === 0) {
+			// No value items to navigate, focus the input
+			this.type_area.focus();
+			return;
+		}
+
+		let items_array = Array.from(value_items);
+		let current_index = active_item ? items_array.indexOf(active_item) : -1;
+		let new_index;
+
+		if (current_index === -1) {
+			// No active item yet, select first or last based on direction
+			new_index = direction > 0 ? 0 : items_array.length - 1;
+		} else {
+			new_index = current_index + direction;
+		}
+
+		// Remove active class from current item
+		if (active_item) {
+			active_item.classList.remove('active');
+		}
+
+		// Check bounds
+		if (new_index < 0 || new_index >= items_array.length) {
+			// Moved past the edge, focus the input
+			this.type_area.focus();
+			return;
+		}
+
+		// Set new active item
+		let new_active = items_array[new_index];
+		new_active.classList.add('active');
+		new_active.focus();
 	}
 
 });
