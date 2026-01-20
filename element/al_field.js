@@ -734,8 +734,10 @@ Field.setProperty(function value() {
 	this[LAST_SET_VALUE] = value;
 
 	if (!this.valueElementHasValuePropertySetter()) {
-		// @TODO: Rerendering during a render causes a deadlock 
-		if (has_changed) {
+		// Only rerender if we're not already rendering.
+		// If we are rendering, the value is stored in LAST_SET_VALUE
+		// and will be picked up via value_to_render.
+		if (has_changed && !this.hasAttribute('data-he-rerendering')) {
 			this.rerender();
 		}
 	} else {
