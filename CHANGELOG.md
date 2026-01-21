@@ -1,3 +1,7 @@
+## 0.3.0 (2026-01-21)
+
+* Release as v0.3.0
+
 ## 0.3.0-alpha.6
 
 * Fix model and form resolution during client-side re-render when element is not yet in DOM
