@@ -1,18 +1,21 @@
 <% alchemy_field = self.alchemy_field %>
 <% view_files = alchemy_field.view_files %>
 <% values = self.original_value %>
+<% is_editable = self.purpose != 'view' %>
 
 {% if self.field_context.max_entry_count eq 1 %}
-	<%
-		if (!values) {
-			self.original_value = values = [];
-		}
+	{% if is_editable %}
+		<%
+			if (!values) {
+				self.original_value = values = [];
+			}
 
-		if (values.length === 0) {
-			values.push(undefined);
-		}
-	%>
-{% else %}
+			if (values.length === 0) {
+				values.push(undefined);
+			}
+		%>
+	{% /if %}
+{% elseif is_editable %}
 	<button class="button add-entry">
 		<al-icon icon-name="plus"></al-icon>
 		{%t "add-entry" name=alchemy_field.field_name title=alchemy_field.field_title %}

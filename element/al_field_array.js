@@ -75,6 +75,11 @@ FieldArray.setMethod(function introduced() {
 		return;
 	}
 
+	// A view-purpose array is display-only: no add/remove controls exist
+	if (this.purpose === 'view') {
+		return;
+	}
+
 	this.onEventSelector('click', '.remove', function onClick(e) {
 
 		e.preventDefault();

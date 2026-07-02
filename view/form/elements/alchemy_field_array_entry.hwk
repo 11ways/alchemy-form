@@ -11,7 +11,7 @@
 	<% include(view_files, variables) %>
 </div>
 
-{% if self.alchemy_field_array.max_entry_count eq 1 %}
+{% if self.alchemy_field_array.max_entry_count eq 1 or self.purpose eq 'view' %}
 
 {% else %}
 	<div class="button-remove-wrapper">
