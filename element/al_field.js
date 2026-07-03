@@ -1122,9 +1122,48 @@ Field.setMethod(function isInList(list) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.9
- * @version  0.2.9
+ * @version  0.3.1
  */
 Field.setMethod(function introduced() {
+	this.attachDependencyListener();
+});
+
+/**
+ * The element has been re-inserted into the DOM
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+Field.setMethod(function reconnected() {
+	this.attachDependencyListener();
+});
+
+/**
+ * The element has been removed from the DOM
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+Field.setMethod(function disconnected() {
+	this.detachDependencyListener();
+});
+
+/**
+ * Listen for changes of fields this one depends on.
+ * The listener lives on the (long-lived) form element, so it is detached
+ * again on removal or the form would keep every removed field alive.
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+Field.setMethod(function attachDependencyListener() {
+
+	if (this._dependency_listener) {
+		return;
+	}
 
 	let dependencies = this.getDependencyFields();
 
@@ -1138,18 +1177,39 @@ Field.setMethod(function introduced() {
 		return;
 	}
 
-	form.addEventListener('change', e => {
+	const listener = e => {
 
 		let changed_field = e.target.closest('al-field');
-
-		console.log('Field change', changed_field, e, this)
 
 		// Rerender the entire field when a field we depend on changes
 		// (@TODO: use something less drastic than a rerender)
 		if (changed_field?.field_name && changed_field.isInList(dependencies)) {
 			this.handleDependentFieldValueChange(changed_field);
 		}
-	});
+	};
+
+	this._dependency_listener = listener;
+	this._dependency_listener_form = form;
+
+	form.addEventListener('change', listener);
+});
+
+/**
+ * Remove the dependency-change listener again
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+Field.setMethod(function detachDependencyListener() {
+
+	if (!this._dependency_listener) {
+		return;
+	}
+
+	this._dependency_listener_form.removeEventListener('change', this._dependency_listener);
+	this._dependency_listener = null;
+	this._dependency_listener_form = null;
 });
 
 /**

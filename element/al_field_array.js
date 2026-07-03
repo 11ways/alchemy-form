@@ -57,7 +57,7 @@ FieldArray.setProperty(function value() {
 
 }, function setValue(value) {
 
-	throw new Error('Unable to set value of translatable field');
+	throw new Error('Unable to set value of array field');
 });
 
 /**
@@ -84,9 +84,15 @@ FieldArray.setMethod(function introduced() {
 
 		e.preventDefault();
 
+		if (that.min_entry_count && that.getEntryCount() <= that.min_entry_count) {
+			return;
+		}
+
 		let entry = e.target.queryUp('al-field-array-entry');
 
 		entry.remove();
+
+		that.updateEntryControls();
 	});
 
 	let add_entry = this.querySelector('.add-entry');
@@ -99,6 +105,10 @@ FieldArray.setMethod(function introduced() {
 
 			e.preventDefault();
 
+			if (that.max_entry_count && that.getEntryCount() >= that.max_entry_count) {
+				return;
+			}
+
 			let view_files = alchemy_field.view_files;
 
 			if (!view_files || !view_files.length) {
@@ -110,8 +120,55 @@ FieldArray.setMethod(function introduced() {
 			new_entry.alchemy_field_array = that;
 
 			that.entries_element.append(new_entry);
+
+			that.updateEntryControls();
 		});
 	}
 
+	this.updateEntryControls();
+});
+
+/**
+ * Count the current amount of entries
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ *
+ * @return   {number}
+ */
+FieldArray.setMethod(function getEntryCount() {
+	return this.queryAllNotNested('al-field-array-entry').length;
+});
+
+/**
+ * Enforce `min-entry-count`/`max-entry-count` by hiding the
+ * add/remove controls when a bound is reached
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+FieldArray.setMethod(function updateEntryControls() {
+
+	let count = this.getEntryCount();
+
+	let add_entry = this.querySelector('.add-entry');
+
+	if (add_entry) {
+		add_entry.hidden = !!(this.max_entry_count && count >= this.max_entry_count);
+	}
+
+	if (this.min_entry_count) {
+		let at_minimum = count <= this.min_entry_count;
+
+		for (let entry of this.queryAllNotNested('al-field-array-entry')) {
+			let remove = entry.querySelector('.remove');
+
+			if (remove) {
+				remove.hidden = at_minimum;
+			}
+		}
+	}
 });
 

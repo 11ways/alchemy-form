@@ -174,12 +174,13 @@ Pager.setMethod(function getVisiblePagesElements() {
  */
 Pager.setMethod(function showPage(page, amount_of_pages) {
 
-	let start = page - 2,
-	    end = page + 2;
+	let count = this.visible_pages || 5,
+	    start = page - Math.floor(count / 2),
+	    end = start + count - 1;
 
 	if (start < 1) {
 		start = 1;
-		end = 5;
+		end = count;
 	}
 
 	let url = this.getCurrentUrl();

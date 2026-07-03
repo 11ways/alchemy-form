@@ -592,6 +592,9 @@ VirtualScroll.setMethod(function cullInvisibleElements(added) {
 		added = [];
 	}
 
+	// `added` contains loaded-entry KEYS, not elements
+	const added_keys = new Set(added.map(String));
+
 	// Get the lowest and highest dom index
 	let [lowest_key, highest_key] = this.getDomKeyRange();
 
@@ -603,7 +606,7 @@ VirtualScroll.setMethod(function cullInvisibleElements(added) {
 
 	const isNear = (element) => {
 
-		if (added.includes(element)) {
+		if (added_keys.has(element.getAttribute('data-loaded-entry-key'))) {
 			return true;
 		}
 

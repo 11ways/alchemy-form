@@ -1,6 +1,13 @@
 ## 0.3.1-alpha (WIP)
 
 * Suppress array field add/remove controls in view purpose: a view-purpose `al-field-array` rendered the add-entry button and per-entry remove buttons, so display-only array columns leaked editing controls. Both templates (and the `introduced()` handlers) are now gated on `purpose != 'view'`
+* Fix an infinite loop in `al-field-schema`'s `parent_schema_field` getter: an unrelated `al-field` ancestor (neither schema-typed nor holding a Schema config) made the DOM walk spin forever on the same element, freezing the tab
+* Remove a leftover `console.log` from the field dependency-change listener
+* Detach the dependency-change listener (on the form) and the schema-supplier listener when a field leaves the DOM: removed array/schema entries stayed referenced by their form forever
+* Enforce `min-entry-count`/`max-entry-count` on array fields: the add-entry button now refuses (and hides) past the maximum and remove buttons refuse (and hide) at the minimum - the attributes existed but were never enforced
+* Fix `al-field-array#setValue` throwing an error that talked about a "translatable field"
+* Make `al-pager` respect the `visible-pages` attribute when clamping near page 1 (the window size was hardcoded to 5)
+* Fix the just-added-rows safeguard in `al-virtual-scroll`'s culling: it compared DOM elements against a list of string keys, so it never matched and freshly added rows could be culled in the same pass
 
 ## 0.3.0 (2026-01-21)
 

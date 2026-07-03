@@ -25,7 +25,7 @@ FieldSchema.setTemplateFile('form/elements/alchemy_field_schema');
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.3.0
- * @version  0.3.0
+ * @version  0.3.1
  */
 FieldSchema.setProperty(function parent_schema_field() {
 
@@ -49,6 +49,10 @@ FieldSchema.setProperty(function parent_schema_field() {
 		if (field && field instanceof Classes.Alchemy.Field.Schema) {
 			return current;
 		}
+
+		// Keep walking up: an unrelated `al-field` ancestor used to make
+		// this loop spin forever on the same element
+		current = current.parentElement;
 	}
 
 	return false;
@@ -291,23 +295,79 @@ FieldSchema.setMethod(function prepareRenderVariables() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.3
- * @version  0.1.3
+ * @version  0.3.1
  */
 FieldSchema.setMethod(function introduced() {
 
 	let supplier_field = this.getSchemaSupplierField();
 
 	if (supplier_field) {
-		supplier_field.addEventListener('change', e => {
-			this.rerender();
-		});
-
+		this.attachSupplierListener(supplier_field);
 		this.rerender();
 	} else {
 		// @TODO: Some fields seem to get added to the DOM for a second
 		// before being removed.
 		//console.warn('Failed to find supplier field for', this, this.parentElement);
 	}
+});
+
+/**
+ * The element has been re-inserted into the DOM
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+FieldSchema.setMethod(function reconnected() {
+
+	let supplier_field = this.getSchemaSupplierField();
+
+	if (supplier_field) {
+		this.attachSupplierListener(supplier_field);
+	}
+});
+
+/**
+ * The element has been removed from the DOM
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ */
+FieldSchema.setMethod(function disconnected() {
+
+	if (this._supplier_listener) {
+		this._supplier_listener_field.removeEventListener('change', this._supplier_listener);
+		this._supplier_listener = null;
+		this._supplier_listener_field = null;
+	}
+});
+
+/**
+ * Rerender when the supplier field changes.
+ * The listener is detached on removal: the supplier field outlives this
+ * element and would otherwise keep rerendering detached instances.
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.3.1
+ * @version  0.3.1
+ *
+ * @param    {HTMLElement}   supplier_field
+ */
+FieldSchema.setMethod(function attachSupplierListener(supplier_field) {
+
+	if (this._supplier_listener) {
+		return;
+	}
+
+	const listener = e => {
+		this.rerender();
+	};
+
+	this._supplier_listener = listener;
+	this._supplier_listener_field = supplier_field;
+
+	supplier_field.addEventListener('change', listener);
 });
 
 /**
