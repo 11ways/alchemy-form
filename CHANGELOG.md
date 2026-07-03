@@ -1,4 +1,4 @@
-## 0.3.1-alpha (WIP)
+## 0.3.1 (2026-07-03)
 
 * Suppress array field add/remove controls in view purpose: a view-purpose `al-field-array` rendered the add-entry button and per-entry remove buttons, so display-only array columns leaked editing controls. Both templates (and the `introduced()` handlers) are now gated on `purpose != 'view'`
 * Fix an infinite loop in `al-field-schema`'s `parent_schema_field` getter: an unrelated `al-field` ancestor (neither schema-typed nor holding a Schema config) made the DOM walk spin forever on the same element, freezing the tab
