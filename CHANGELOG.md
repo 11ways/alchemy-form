@@ -1,3 +1,5 @@
+## 0.3.2-alpha (WIP)
+
 ## 0.3.1 (2026-07-03)
 
 * Suppress array field add/remove controls in view purpose: a view-purpose `al-field-array` rendered the add-entry button and per-entry remove buttons, so display-only array columns leaked editing controls. Both templates (and the `introduced()` handlers) are now gated on `purpose != 'view'`
